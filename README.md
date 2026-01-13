@@ -7,47 +7,54 @@ Collaborative calendaring specifically designed for college students (though any
 
 ## 🚀 Specification Deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
-
 ### Elevator pitch
 
-College students are an interesting demographic when it comes to event planning. They so much want to hang out with friends and do fun activities, but while that stage in life is often seen as the most "liberating", they ironically struggle to find common free time among the classes, work hours, and other responsibilities. They all have free-time eventually, but finding a common free-time is always a hassle. `What's Your Schedule` allows college students (or anyone, for that matter) to easily share their schedule with friends, find common availability, and create event invitations to spend less time coordinating, and more time having fun!
+College students are an interesting demographic when it comes to event planning. They so much want to hang out with friends and do fun activities, but while that stage in life is often seen as the most "liberating", they ironically struggle to find common free time among the classes, work hours, and other responsibilities. They all have free-time eventually, but finding a common free-time is always a hassle. **_What's Your Schedule_** allows college students (or anyone, for that matter) to easily share their schedule with friends, find common availability, and create event invitations to spend less time coordinating, and more time having fun!
 
 ### Design
 
-![Design image](placeholder.png)
+![Design image](<UI Design.png>)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Here is a sequence diagram that shows how to people would interact with the backend to plan events.
 
 ```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
+    actor John
+    actor Jane
+    actor Alex
+    John ->> Server: Schedule
+    Jane ->> Server: Schedule
+    Alex ->> Server: Schedule
+    John ->> Server: Event Planning Request with: Jane and Alex
+    Server -->> John: Best times for event
+    John ->> Server: Event plan
+    Server -->> Jane: Event plan/proposal
+    Server -->> Alex: Event plan/proposal
+    Jane -->> Server: RSVP
+    Alex -->> Server: RSVP
 ```
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Social Media style schedule sharing (e.g. friends and groups system)
+- Plan events and send proposals to friends/groups
+    - Service automatically finds best times for events by comparing schedules
+    - RSVP to events
+    - Make events be conditional one how many people RSVP to it
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Uses correct HTML structure for application. Pages for login, viewing ones own schedule and creating events, and viewing another persons schedule.
+- **CSS** - Application styling that looks good on different screen sizes, uses good whitespace, color choice and contrast. Clean, modern look.
+- **React** - Provides login, schedule management, and event creation
+- **Service** - Backend service with endpoints for:
+    - login
+    - managing schedule
+    - event creation
+- **DB/Login** - Store users, schedules, and events in database. Register and login users. Credentials securely stored in database. Must be authenticated to do anything.
+- **WebSocket** - As events are made, the notification is broadcast to user's friends
 
 ## 🚀 AWS deliverable
 
