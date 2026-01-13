@@ -17,26 +17,38 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ### Elevator pitch
 
-College students are an interesting demographic when it comes to event planning. They so much want to hang out with friends and do fun activities, but while that stage in life is often seen as the most "liberating", they ironically struggle to find common free time among the classes, work hours, and other responsibilities. They all have free-time eventually, but finding a common free-time is always a hassle. `What's Your Schedule` allows college students (or anyone, for that matter) to easily share their schedule with friends, find common availability, and create event invitations to spend less time coordinating, and more time having fun!
+College students are an interesting demographic when it comes to event planning. They so much want to hang out with friends and do fun activities, but while that stage in life is often seen as the most "liberating", they ironically struggle to find common free time among the classes, work hours, and other responsibilities. They all have free-time eventually, but finding a common free-time is always a hassle. **_What's Your Schedule_** allows college students (or anyone, for that matter) to easily share their schedule with friends, find common availability, and create event invitations to spend less time coordinating, and more time having fun!
 
 ### Design
 
-![Design image](placeholder.png)
+![Design image](<UI Design.png>)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Here is a sequence diagram that shows how to people would interact with the backend to plan events.
 
 ```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
+    actor John
+    actor Jane
+    actor Alex
+    John ->> Server: Schedule
+    Jane ->> Server: Schedule
+    Alex ->> Server: Schedule
+    John ->> Server: Event Planning Request with: Jane and Alex
+    Server -->> John: Best times for event
+    John ->> Server: Event plan
+    Server -->> Jane: Event plan/proposal
+    Server -->> Alex: Event plan/proposal
+    Jane -->> Server: RSVP
+    Alex -->> Server: RSVP
 ```
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Social Media style schedule sharing (e.g. friends and groups system)
+- Plan events and send proposals to friends/groups
+    - Service automatically finds best times for events by comparing schedules
+    - RSVP to events
+    - Make events be conditional one how many people RSVP to it
 
 ### Technologies
 
