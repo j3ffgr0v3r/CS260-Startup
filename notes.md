@@ -1,6 +1,7 @@
 # CS 260 Notes
 
-[My startup - Simon](https://simon.cs260.click)
+- [My startup - What's Your Schedule?](https://whatsyourschedule.click)
+- [Reference startup - Simon](https://simon.cs260.click)
 
 ## Helpful links
 
@@ -10,8 +11,13 @@
 
 ## AWS
 
-My IP address is: 54.81.96.130
-Launching my AMI I initially put it on a private subnet. Even though it had a public IP address and the security group was right, I wasn't able to connect to it.
+Public IP address: 44.217.251.165
+
+ssh -i ~/.ssh/keys/production.pem ubuntu@44.217.251.165
+
+EC2 - Server Management (Server Instance & Elastic IP addresses)
+
+Route 53 - DNS Management
 
 ## Caddy
 
