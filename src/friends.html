@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's Your Schedule?</title>
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <!-- Use header, main, and footer elements to give semantic structure -->
+    <header>
+      <h1>What's Your Schedule?</h1>
+      <h3>Plan with friends, easier than ever</h3>
+
+      <!-- Navigation elements -->
+      <nav>
+        <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
+        <menu>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="friends.html">Friends</a></li>
+          <li><a href="about.html">About</a></li>
+        </menu>
+      </nav>
+
+      <hr />
+    </header>
+
+    <main>
+      <h2>Connect with your friends!</h2>
+      <h4>View their availability, and invite them to events</h4>
+
+      <h3>Pending Invites</h3>
+      <ul>
+        <li>Preston Clarke <button>Accept</button><button>Decline</button></li>
+        <li>Layne Peterson <button>Accept</button><button>Decline</button></li>
+        <li>Jessica McRae <button>Accept</button><button>Decline</button></li>
+      </ul>
+
+      <h3>Send Friend Request</h3>
+      <form method="get">
+        <div>
+          <span>@</span>
+          <input type="text" placeholder="their@email.com" />
+        </div>
+        <button type="submit">Send</button>
+      </form>
+
+      <h3>Friends</h3>
+      <ul>
+        <li>Claire Vance <a href="friend_schedule.html"><button>View Schedule</button></a><button>Send Message</button></li>
+        <li>Alex Turing <a href="friend_schedule.html"><button>View Schedule</button></a><button>Send Message</button></li>
+        <li>Matthew Hart <a href="friend_schedule.html"><button>View Schedule</button></a><button>Send Message</button></li>
+      </ul>
+    </main>
+
+    <footer>
+      <hr />
+      <span class="text-reset">Jeff Grover</span>
+      <br />
+      <a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a>
+    </footer>
+  </body>
+</html>
