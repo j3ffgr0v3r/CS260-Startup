@@ -19,6 +19,8 @@ EC2 - Server Management (Server Instance & Elastic IP addresses)
 
 Route 53 - DNS Management
 
+Deployment: ./deployFiles.sh -k ~/.ssh/keys/production.pem -h whatsyourschedule.click -s startup
+
 ## Caddy
 
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
