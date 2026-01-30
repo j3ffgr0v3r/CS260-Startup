@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="calGrad" x1="50" y1="40" x2="206" y2="196" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5AD6FF"/>
+      <stop offset="1" stop-color="#8B5BFF"/>
+    </linearGradient>
+
+    <radialGradient id="checkGrad" cx="50%" cy="50%" r="60%">
+      <stop offset="0" stop-color="#7CFFB6"/>
+      <stop offset="1" stop-color="#2FD3FF"/>
+    </radialGradient>
+
+    <!-- Glow filters -->
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.55 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="checkGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="0 0 0 0 0.20
+                0 1 0 0 0.85
+                1 1 1 0 0.35
+                0 0 0 0.65 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Transparent background (good for favicon / PWA icons) -->
+  <rect width="256" height="256" fill="none"/>
+
+  <!-- Calendar (outline) -->
+  <g filter="url(#softGlow)">
+    <!-- Outer calendar body -->
+    <rect x="56" y="62" width="124" height="112" rx="22"
+          fill="none" stroke="url(#calGrad)" stroke-width="10" stroke-linejoin="round"/>
+
+    <!-- Header line -->
+    <path d="M64 96 H172" fill="none" stroke="url(#calGrad)" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- Binder tabs -->
+    <rect x="82" y="42" width="26" height="44" rx="13"
+          fill="none" stroke="url(#calGrad)" stroke-width="10"/>
+    <rect x="128" y="42" width="26" height="44" rx="13"
+          fill="none" stroke="url(#calGrad)" stroke-width="10"/>
+
+    <!-- Simple grid squares (subtle) -->
+    <g opacity="0.75" stroke="url(#calGrad)" stroke-width="8" fill="none">
+      <rect x="65" y="105" width="30" height="26" rx="6"/>
+      <rect x="103" y="105" width="30" height="26" rx="6"/>
+      <rect x="65" y="139" width="30" height="26" rx="6"/>
+      <rect x="103" y="139" width="30" height="26" rx="6"/>
+      <rect x="141" y="105" width="30" height="26" rx="6"/>
+      <rect x="141" y="139" width="30" height="26" rx="6"/>
+    </g>
+  </g>
+
+  <!-- Check badge -->
+  <g filter="url(#checkGlow)">
+    <circle cx="176" cy="160" r="44" fill="url(#checkGrad)"/>
+    <path d="M156 160 L169 173 L199 143"
+          fill="none" stroke="#FFFFFF" stroke-width="14"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

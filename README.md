@@ -58,22 +58,22 @@ I am going to use the required technologies in the following ways.
 
 ## 🚀 AWS deliverable
 
-
 - [x] **Server deployed and accessible with custom domain name** - [Server link](https://whatsyourschedule.click).
 
 ## 🚀 HTML deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+Login(index), home, friends, friend_schedule, and about pages added. Placeholder and example data in place.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [x] **HTML pages** - 5 HTML Pages to represent logging in, the home page, about page, friends page and individual friends' schedules
+- [x] **Proper HTML element usage** - Divs, forms, and buttons for interactivity, and some `i` for fancy. Plus, the calendar is a table.
+- [x] **Links** - Login(index) -> Home, and Home has links to friends and about. Friends links to individual. 
+- [x] **Text** - This app doesn't require a massive about of text, since the major focus is the calendar, but titles and event placeholders are there
+- [x] **3rd party API placeholder** - Button that will redirect to link account with BYU CAS
+- [x] **Images** - Website Logo
+- [x] **Login placeholder** - Is there
+- [x] **DB data placeholder** - Besides the user data, it's a calendar- the events will be in the database, as well as the users friends
+- [x] **WebSocket placeholder** - Pending events and friend chat
 
 ## 🚀 CSS deliverable
 
