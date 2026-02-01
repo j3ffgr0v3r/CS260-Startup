@@ -1,0 +1,43 @@
+body {
+    background-image: url("../images/logo.svg");
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 35vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+.login-buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+footer {
+    display: none;
+    position: absolute;
+}
+
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  header {
+    flex: 2;
+  }
+
+  main {
+    flex: 3;
+  }
+}
