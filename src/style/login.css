@@ -1,12 +1,19 @@
 body {
-    background-image: url("../images/logo.svg");
-    background-repeat: no-repeat;
-    background-position: 50%;
-    background-size: 35vw;
     min-height: 100vh;
     display: flex;
     align-items: center;
+    /* flex-wrap: wrap; */
     justify-content: space-around;
+}
+
+.background-logo {
+    position: fixed;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100vh;
+    opacity: 30%;
 }
 
 
@@ -23,18 +30,24 @@ header {
 }
 
 footer {
-    display: none;
-    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-width: 100vw;
 }
 
-@media (max-width: 600px) {
+@media (orientation: portrait) {
   body {
     flex-direction: column;
     justify-content: space-evenly;
   }
 
   header {
-    flex: 2;
+    flex: 4;
   }
 
   main {
