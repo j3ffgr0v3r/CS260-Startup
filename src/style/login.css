@@ -46,6 +46,10 @@ footer {
     justify-content: space-evenly;
   }
 
+  .background-logo {
+    width: 125vw;
+}
+
   header {
     flex: 4;
   }
