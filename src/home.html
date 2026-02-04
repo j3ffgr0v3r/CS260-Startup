@@ -17,12 +17,17 @@
   <body class="bg-light text-dark">
     <!-- Use header, main, and footer elements to give semantic structure -->
     <header class="bg-white">
-      
-      <div class="title">
-        <h1 class="text-primary"><img class="logo" src="images/logo.svg" alt="logo">What's Your Schedule?</h1>
+      <div class="top">
+        <div class="title">
+          <h1 class="text-primary"><img class="logo" src="images/logo.svg" alt="logo">What's Your Schedule?</h1>
+        </div>
+        <div class="profile me-3">
+          <span>Username</span><img class="profile-symbol" src="images/profile.svg" alt="profile">
+        </div>
       </div>
+      
       <!-- Navigation elements -->
-      <nav class="">
+      <nav class="navbar navbar-expand-lg bg-white">
         <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
         <menu class="navbar-nav">
           <li class="nav-item"><a class="nav-link active" href="home.html">Home</a></li>
@@ -30,8 +35,6 @@
           <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         </menu>
       </nav>
-
-      <hr />
     </header>
 
     <main>
@@ -39,8 +42,6 @@
       <button>Create New Event</button>
       <button>Edit My Availability (Link class schedule)</button>
       <br>
-      <hr>
-      <h5><i>THIS WILL BE IN A POP UP:</i></h5>
       <form style="display: none;">
         <div>
           <span>Event Name:</span>
@@ -125,11 +126,9 @@
       </div>
     </main>
 
-    <footer>
-      <hr />
-      <span class="text-reset">Jeff Grover</span>
-      <br />
-      <a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a>
-    </footer>
+    <footer class="border-top bg-light py-1 px-2">
+    <div>Jeff Grover</div>
+    <div><a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a></div>
+  </footer>
   </body>
 </html>

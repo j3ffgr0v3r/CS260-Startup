@@ -2,6 +2,16 @@ body {
     min-height: 100vh;
 }
 
+footer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-width: 100vw;
+}
+
 menu {
   flex: 1;
   display: flex;
@@ -10,16 +20,35 @@ menu {
   list-style: none;
 }
 
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    min-width: 100vw;
+}
+
+.profile {
+    font-size: 20px;
+}
+
+.title .logo, .top .profile-symbol {
+    height: 2em;
+}
+
 menu .nav-item {
   padding: 0 0.3em;
+  font-size: 1.2em;
 }
+
+/* Calendar */
 
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-rows: 1fr repeat(5, minmax(0, 5fr));
     border-collapse: collapse;
     text-align: center;
-    width: 100%;
 }
 
 .day-label {
@@ -32,7 +61,6 @@ menu .nav-item {
 }
 
 .day {
-    height: 80px;
     padding: 3px;
     border: 1px solid #ccc;
 }
