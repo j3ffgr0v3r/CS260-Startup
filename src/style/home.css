@@ -1,3 +1,23 @@
 .logo {
     height: 2em;
 }
+
+.center {
+    display: flex;
+    flex-direction: row;
+}
+
+.calendar {
+    flex: 5;
+}
+
+.pending-invites {
+    flex: 2;
+}
+
+@media (orientation: portrait) {
+  .center {
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+}
