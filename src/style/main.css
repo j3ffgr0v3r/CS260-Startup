@@ -1,0 +1,113 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-width: 100vw;
+}
+
+menu {
+  flex: 1;
+  display: flex;
+  /*  overwrite Bootstrap so the menu does not wrap */
+  flex-direction: row !important;
+  list-style: none;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    min-width: 100vw;
+}
+
+.profile {
+    font-size: 20px;
+}
+
+.title .logo, .top .profile-symbol {
+    height: 2em;
+}
+
+menu .nav-item {
+  padding: 0 0.3em;
+  font-size: 1.2em;
+}
+
+/* Calendar */
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-rows: 1fr repeat(5, minmax(0, 5fr));
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.day-label {
+    padding-top: 3px;
+    font-size: 75%;
+    text-align: center;
+    justify-content: center;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+
+.day {
+    padding: 3px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+
+.day-top {
+    border-top: 0;
+}
+
+.day-bottom {
+    border-bottom: 0;
+}
+
+.day-right {
+    border-right: 0;
+}
+
+.day-left {
+    border-left: 0;
+}
+
+.event {
+    white-space: nowrap;
+    align-items: center;
+}
+
+.event-all-day {
+    background-color: aqua;
+    border-radius: 7px;
+    padding: 1px 7px;
+}
+
+.event-timed::before {
+  content: "• ";
+  color: purple;
+  font-weight: bold;
+  font-size: 3em;
+  line-height: 0;
+  display: inline-block;
+  vertical-align: -7px;
+}
+

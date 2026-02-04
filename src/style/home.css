@@ -1,0 +1,25 @@
+.center {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.calendar {
+    flex: 3;
+    font-size: 13px;
+}
+
+.pending-event-invites {
+    flex: 1;
+}
+
+@media (orientation: portrait) {
+  .center {
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .management {
+    margin-top: 15px;
+  }
+}
