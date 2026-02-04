@@ -63,6 +63,7 @@ menu .nav-item {
 .day {
     padding: 3px;
     border: 1px solid #ccc;
+    overflow: hidden;
 }
 
 .day-top {
@@ -79,5 +80,26 @@ menu .nav-item {
 
 .day-left {
     border-left: 0;
+}
+
+.event {
+    white-space: nowrap;
+    align-items: center;
+}
+
+.event-all-day {
+    background-color: aqua;
+    border-radius: 7px;
+    padding: 1px 7px;
+}
+
+.event-timed::before {
+  content: "• ";
+  color: purple;
+  font-weight: bold;
+  font-size: 3em;
+  line-height: 0;
+  display: inline-block;
+  vertical-align: -7px;
 }
 

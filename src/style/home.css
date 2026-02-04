@@ -17,6 +17,7 @@ main {
 
 .calendar {
     flex: 3;
+    font-size: 13px;
 }
 
 .pending-invites {

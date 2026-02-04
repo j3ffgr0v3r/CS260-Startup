@@ -37,10 +37,8 @@
       </nav>
     </header>
 
-    <main>
-      <h2>What's your schedule looking like today, USERNAME?</h2>
-      <button>Create New Event</button>
-      <button>Edit My Availability (Link class schedule)</button>
+    <main class="m-1">
+      <h2 class="mt-4">What's your schedule looking like today, <i>USERNAME</i>?</h2>
       <br>
       <form style="display: none;">
         <div>
@@ -69,8 +67,6 @@
           <button>Cancel</button>
         </div>
       </form>
-      <hr>
-
       <div class="center">
         <div class="mx-1 bg-white border rounded-4 calendar">
           <div class="day-label day-left">SUN</div>
@@ -86,7 +82,7 @@
           <div class="day day-top">4</div>
           <div class="day day-top">5</div>
           <div class="day day-top">6</div>
-          <div class="day day-top day-right">7<br>LoTR Marathon - 8pm</div>
+          <div class="day day-top day-right">7<br><span class="event event-timed">8:00pm LoTR Marathon</span></div>
           <div class="day day-left">8</div>
           <div class="day">9</div>
           <div class="day">10</div>
@@ -97,12 +93,12 @@
           <div class="day day-left">15</div>
           <div class="day">16</div>
           <div class="day">17</div>
-          <div class="day">18</div>
+          <div class="day">18<br><span class="event event-all-day">Camping</span></div>
           <div class="day">19</div>
           <div class="day">20</div>
           <div class="day day-right">21</div>
           <div class="day day-left">22</div>
-          <div class="day">23<br>Service Project - 10am</div>
+          <div class="day">23<br><span class="event event-timed">10:00am Service Project</span></div>
           <div class="day">24</div>
           <div class="day">25</div>
           <div class="day">26</div>
@@ -117,6 +113,8 @@
           <div class="day day-bottom day-right">4</div>
         </div>
         <div class="pending-invites">
+          <button class="btn btn-lg btn-primary"><span>+</span> Create Event</button>
+          <button class="btn btn-secondary btn-lg"><span>✎</span> Edit Availability</button>
           <h3>Pending Invites</h3>
           <ul>
             <li>Skate Night - Friday 6th<br>Claire Vance</li>
