@@ -77,14 +77,14 @@ Login(index), home, friends, friend_schedule, and about pages added. Placeholder
 
 ## 🚀 CSS deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+I drew a lot of inspiration from Facebook and Google Calendar (since this is basically a baby of the two).
 
-- [ ] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
-- [ ] **Use of a CSS framework** - I did not complete this part of the deliverable.
-- [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
-- [ ] **Use of a imported font** - I did not complete this part of the deliverable.
-- [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
+- [x] **Visually appealing colors and layout. No overflowing elements.** - A clean, minimalistic color pallet and layout. Again, I tried to make it look reminiscent of some other social media/scheduling platforms.
+- [x] **Use of a CSS framework** - CSS Bootstrap all over the place. I have mixed feelings about it.... It does do a lot just by adding one class to the element, but it just seems like we're back to in-line styling again.
+- [x] **All visual elements styled using CSS** - It's all styled by CSS. I'm not a boomer and therefore did not use `<center>` html for styling.
+- [x] **Responsive to window resizing using flexbox and/or grid display** - Very responsive and will format slightly differently depending on screen size/orientation. Looks good on a desktop or phone.
+- [x] **Use of a imported font** - I did not complete this part of the deliverable.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - Mostly classes, but I used ID's for the Modal and a ::before to get the dot before the events on the calendar
 
 ## 🚀 React part 1: Routing deliverable
 
