@@ -1,3 +1,11 @@
 .friend-invite, .friend {
     width: 30em;
+    margin: 0 .5em;
+}
+
+
+@media (max-width: 31em) {
+    .friend-invite, .friend {
+        width: 95%;
+    }
 }
