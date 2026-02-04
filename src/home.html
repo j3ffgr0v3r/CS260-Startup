@@ -38,35 +38,8 @@
     </header>
 
     <main class="m-1">
-      <h2 class="mt-4">What's your schedule looking like today, <i>USERNAME</i>?</h2>
-      <br>
-      <form style="display: none;">
-        <div>
-          <span>Event Name:</span>
-          <input type="text" placeholder="Super Cool Party" />
-        </div>
-        <div>
-          <span>Event Description</span>
-          <textarea placeholder="Description"></textarea>
-        </div>
-        <div>
-          <span>Friends</span>
-          <select multiple size="3">
-            <option>Claire Vance</option>
-            <option>Alex Turing</option>
-            <option>Matthew Hart</option>
-            <option>Jessica McRae</option>
-          </select>
-        </div>
-        <div>
-          <span>Date</span>
-          <input type="date"></input>
-        </div>
-        <div>
-          <button>Create</button>
-          <button>Cancel</button>
-        </div>
-      </form>
+      <h2 class="mt-4 mb-3">What's your schedule looking like today, <i>USERNAME</i>?</h2>
+      
       <div class="center">
         <div class="mx-1 bg-white border rounded-4 calendar">
           <div class="day-label day-left">SUN</div>
@@ -113,7 +86,47 @@
           <div class="day day-bottom day-right">4</div>
         </div>
         <div class="management">
-          <button class="btn btn-lg btn-primary"><span>+</span> Create Event</button>
+          <div class="modal fade" id="eventCreationModal" tabindex="-1" aria-labelledby="eventCreationModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="eventCreationModalLabel">New Event</h5>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div>
+                      <span>Event Name:</span>
+                      <input class="form-control" type="text" placeholder="Super Cool Party" required/>
+                    </div>
+                    <div>
+                      <span>Event Description</span>
+                      <textarea class="form-control" placeholder="Description"></textarea>
+                    </div>
+                    <div>
+                      <span>Friends</span>
+                      <select class="form-select" multiple size="8">
+                        <option>Claire Vance</option>
+                        <option>Alex Turing</option>
+                        <option>Matthew Hart</option>
+                        <option>Jessica McRae</option>
+                      </select>
+                    </div>
+                    <div>
+                      <span>Date</span>
+                      <input class="form-control" type="date" required></input>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary">Save Event</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+          <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#eventCreationModal"><span>+</span> Create Event</button>
           <button class="btn btn-secondary btn-lg"><span>✎</span> Edit Availability</button>
           <h3>Pending Invites</h3>
           <div class="pending-event-invites">
