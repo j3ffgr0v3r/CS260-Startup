@@ -1,3 +1,31 @@
-html {
+body {
     min-height: 100vh;
+}
+
+menu {
+  flex: 1;
+  display: flex;
+  /*  overwrite Bootstrap so the menu does not wrap */
+  flex-direction: row !important;
+  list-style: none;
+}
+
+menu .nav-item {
+  padding: 0 0.3em;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-collapse: collapse;
+    text-align: center;
+    width: 60vw;
+    background: #EEAECA;
+    background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+}
+
+.day-label, .day {
+    padding: 10px;
+    border: 1px solid #ccc;
+    height: 80px;
 }
