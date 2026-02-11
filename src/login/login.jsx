@@ -2,6 +2,8 @@ import React from 'react';
 
 import "./login.css";
 
+import { useNavigate } from 'react-router-dom';
+
 export function Login() {
     return (
         <main className="login-content">
@@ -11,7 +13,7 @@ export function Login() {
                 <h3 className="wys-motto px-3 text-secondary">Plan with friends, easier than ever.</h3>
             </div>
             <div className="login-interface">
-                <form method="get" action="home.html" className="login-form mx-3 px-4 py-3 bg-light bg-opacity-50 border rounded">
+                <form method="get" action="/home" className="login-form mx-3 px-4 py-3 bg-light bg-opacity-50 border rounded">
                     <h2>What's your schedule looking like today?</h2>
                     <div className="m-3">
                         <input className="form-control" type="email" placeholder="Email" required />
@@ -20,8 +22,8 @@ export function Login() {
                         <input className="form-control" type="password" placeholder="Password" required />
                     </div>
                     <div className="login-buttons">
-                        <button className="m-2 btn btn-primary" type="submit">Log In</button>
-                        <button className="m-2 btn btn-secondary" type="submit">Create New Account</button>
+                        <button className="m-2 btn btn-primary" type="submit" onClick={useNavigate("/home")}>Log In</button>
+                        <button className="m-2 btn btn-secondary" type="submit" onClick={useNavigate("/home")}>Create New Account</button>
                     </div>
                 </form>
             </div>
