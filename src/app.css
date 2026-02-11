@@ -5,7 +5,7 @@
   font-style: normal;
 }
 
-body {
+.app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -95,6 +95,10 @@ menu .nav-item {
 
 .day-left {
     border-left: 0;
+}
+
+.management > button {
+    margin: 0 2px;
 }
 
 .event {
