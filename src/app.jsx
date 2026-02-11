@@ -23,9 +23,7 @@ export default function App() {
                         </div>
                     </div>
 
-                    {/* <!-- Navigation elements --> */}
                     <nav className="navbar navbar-expand-lg bg-white pt-0">
-                        {/* <!-- Menu is NavLink semantic alternative to <ul> that represents an interaction --> */}
                         <menu className="navbar-nav mt-0">
                             <li className="nav-item"><NavLink className="nav-link active" to="home">Home</NavLink></li>
                             <li className="nav-item"><NavLink className="nav-link" to="friends">Friends</NavLink></li>
