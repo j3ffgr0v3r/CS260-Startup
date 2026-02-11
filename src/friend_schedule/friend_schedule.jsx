@@ -51,7 +51,7 @@ export function FriendSchedule() {
           <div className="day day-bottom">3</div>
           <div className="day day-bottom day-right">4</div>
         </div>
-        <div className="management">
+        <div className="management friend-schedule-management">
           <button className="btn btn-lg btn-primary"><span>💬</span> Send Message</button>
           <button className="btn btn-danger btn-lg"><span>✖</span> Remove Friend</button>
         </div>

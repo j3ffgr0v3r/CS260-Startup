@@ -7,8 +7,8 @@ export function Home() {
     <main className="m-1">
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>USERNAME</i>?</h2>
 
-      <div className="center">
-        <div className="mx-1 bg-white border rounded-4 calendar">
+      <div className="home-center">
+        <div className="mx-1 bg-white border rounded-4 calendar home-calendar">
           <div className="day-label day-left">SUN</div>
           <div className="day-label">MON</div>
           <div className="day-label">TUE</div>
@@ -52,7 +52,7 @@ export function Home() {
           <div className="day day-bottom">3</div>
           <div className="day day-bottom day-right">4</div>
         </div>
-        <div className="management">
+        <div className="home-management">
           <div className="modal fade" id="eventCreationModal" tabIndex="-1" aria-labelledby="eventCreationModalLabel" style={{display: "none"}} aria-hidden="true">
             <div className="modal-dialog">
               <div className="modal-content">
