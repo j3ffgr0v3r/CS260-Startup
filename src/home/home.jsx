@@ -4,7 +4,7 @@ import "./home.css";
 
 export function Home() {
   return (
-    <main className="m-1">
+    <main className="m-1 bg-light text-dark">
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>USERNAME</i>?</h2>
 
       <div className="home-center">
@@ -52,7 +52,7 @@ export function Home() {
           <div className="day day-bottom">3</div>
           <div className="day day-bottom day-right">4</div>
         </div>
-        <div className="home-management">
+        <div className="management home-management">
           <div className="modal fade" id="eventCreationModal" tabIndex="-1" aria-labelledby="eventCreationModalLabel" style={{display: "none"}} aria-hidden="true">
             <div className="modal-dialog">
               <div className="modal-content">

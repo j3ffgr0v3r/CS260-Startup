@@ -97,6 +97,10 @@ menu .nav-item {
     border-left: 0;
 }
 
+.management > button {
+    margin: 0 2px;
+}
+
 .event {
     white-space: nowrap;
     align-items: center;
