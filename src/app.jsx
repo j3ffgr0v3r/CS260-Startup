@@ -12,7 +12,7 @@ import { About } from './about/about';
 export default function App() {
     return (
         <BrowserRouter>
-            <div className="body">
+            <div className="app">
                 <Routes>
                     <Route path='/' element={<Login />} exact />
                     <Route element={<Header />}>

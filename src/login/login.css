@@ -1,13 +1,8 @@
-/* .body {
+main.login-content {
     display: flex;
-    min-height: 100vh;
     align-items: center;
     justify-content: space-around;
     flex-direction: row;
-} */
-
-footer {
-  position: fixed;
 }
 
 .background-logo {
@@ -20,13 +15,12 @@ footer {
     opacity: 30%;
 }
 
-
 .login-buttons {
     display: flex;
     flex-direction: column;
 }
 
-header {
+.login-logo {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,7 +28,7 @@ header {
 }
 
 @media (orientation: portrait) {
-  body {
+  main.login-content {
     flex-direction: column;
     justify-content: space-evenly;
   }
@@ -43,11 +37,11 @@ header {
     width: 125vw;
 }
 
-  header {
+  .login-logo {
     flex: 4;
   }
 
-  main {
+  .login-interface {
     flex: 3;
   }
 }
