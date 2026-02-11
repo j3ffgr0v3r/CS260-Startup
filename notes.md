@@ -19,7 +19,7 @@ EC2 - Server Management (Server Instance & Elastic IP addresses)
 
 Route 53 - DNS Management
 
-Deployment: ./deployFiles.sh -k ~/.ssh/keys/production.pem -h whatsyourschedule.click -s startup
+REACT Deployment: ./deployReact.sh -k ~/.ssh/keys/production.pem -h whatsyourschedule.click -s startup
 
 ## Caddy
 
