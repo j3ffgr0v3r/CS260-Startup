@@ -5,7 +5,7 @@ import "./login.css";
 export function Login() {
     return (
         <main>
-            <image className="background-logo" src="./images/logo.svg"></image>
+            <img className="background-logo" src="./images/logo.svg"></img>
             <form method="get" action="home.html" className="login-form mx-3 px-4 py-3 bg-light bg-opacity-50 border rounded">
                 <h2>What's your schedule looking like today?</h2>
                 <div className="m-3">
