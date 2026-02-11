@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 
 import "./friends.css";
 
@@ -24,9 +25,9 @@ export function Friends() {
 
       <h3>Friends</h3>
       <div className="friends">
-        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Claire Vance<a href="friend_schedule.html" className="btn mx-1 btn-outline-info">View Schedule</a><button className="btn mx-1 btn-outline-success">Send Message</button></div>
-        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Alex Turing<a href="friend_schedule.html" className="btn mx-1 btn-outline-info">View Schedule</a><button className="btn mx-1 btn-outline-success">Send Message</button></div>
-        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Matthew Hart<a href="friend_schedule.html" className="btn mx-1 btn-outline-info">View Schedule</a><button className="btn mx-1 btn-outline-success">Send Message</button></div>
+        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Claire Vance<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink><button className="btn mx-1 btn-outline-success">Send Message</button></div>
+        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Alex Turing<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink><button className="btn mx-1 btn-outline-success">Send Message</button></div>
+        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Matthew Hart<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink><button className="btn mx-1 btn-outline-success">Send Message</button></div>
       </div>
     </main>
   );
