@@ -25,7 +25,7 @@ export default function App() {
 
                     <nav className="navbar navbar-expand-lg bg-white pt-0">
                         <menu className="navbar-nav mt-0">
-                            <li className="nav-item"><NavLink className="nav-link active" to="home">Home</NavLink></li>
+                            <li className="nav-item"><NavLink className="nav-link" to="home">Home</NavLink></li>
                             <li className="nav-item"><NavLink className="nav-link" to="friends">Friends</NavLink></li>
                             <li className="nav-item"><NavLink className="nav-link" to="about">About</NavLink></li>
                         </menu>

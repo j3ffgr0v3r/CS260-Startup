@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 export function About() {
   return (
@@ -7,7 +8,7 @@ export function About() {
       <hr />
       <p>A question of the past. Stop wasting time coordinating for an activity, and start spending more time having fun! With <i>What's Your Schedule?</i> you can easily find mutual availability with friends and send invites to activities— Game Nights, Movie Nights, Service Projects, Campus Activities and more!</p>
 
-      <p>To get started, set your availability on the <a href="home.html">home page</a> and start connecting with your <a href="friends.html">friends</a>.</p>
+      <p>To get started, set your availability on the <NavLink to="../home">home page</NavLink> and start connecting with your <NavLink to="../friends">friends</NavLink>.</p>
     </main>
   );
 }
