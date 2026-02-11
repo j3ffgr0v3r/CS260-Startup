@@ -87,12 +87,11 @@ I drew a lot of inspiration from Facebook and Google Calendar (since this is bas
 - [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - Mostly classes, but I used ID's for the Modal and a ::before to get the dot before the events on the calendar
 
 ## 🚀 React part 1: Routing deliverable
+Converted all the old HTML files into JSX files, and used Routing to make this a single page application.
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - Vite is downloaded and has bundled. How nice of it.
+- [x] **Components** - Each page is it's own component that gets rendered in when correctly routed. I added another component for the header and used nested routing so that the header is only visible on the pages I want it to be visible at.
+- [x] **Router** - Routing between all the pages/components (login, home, friends, friend_schedule, and about).
 
 ## 🚀 React part 2: Reactivity deliverable
 
