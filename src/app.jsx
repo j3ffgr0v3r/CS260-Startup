@@ -8,13 +8,22 @@ import { Home } from './home/home';
 import { Friends } from './friends/friends';
 import { FriendSchedule } from './friend_schedule/friend_schedule';
 import { About } from './about/about';
+import { AuthState } from './login/authState';
 
 export default function App() {
+    const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
+    const [authState, setAuthState] = React.useState(username ? AuthState.Authenticated : AuthState.Unauthenticated);
+
     return (
         <BrowserRouter>
             <div className="app">
                 <Routes>
-                    <Route path='/' element={<Login />} exact />
+                    <Route path='/' element={<Login username={username}
+                                            authState={authState}
+                                            onAuthChange={(username, authState) => {
+                                            setAuthState(authState);
+                                            setUsername(username);
+                                            }}/>} exact />
                     <Route element={<Header />}>
                         <Route path='/home' element={<Home />} />
                         <Route path='/friends' element={<Friends />} />
