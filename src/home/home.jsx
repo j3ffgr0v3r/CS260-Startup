@@ -8,7 +8,7 @@ export function Home({ username }) {
   React.useEffect(() => {
     const scoresText = localStorage.getItem('events');
     if (scoresText) {
-      setScores(JSON.parse(scoresText));
+      setEvents(JSON.parse(scoresText));
     }
   });
 
