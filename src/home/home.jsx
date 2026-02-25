@@ -3,6 +3,15 @@ import React from 'react';
 import "./home.css";
 
 export function Home({ username }) {
+  const [events, setEvents] = React.useState([]);
+
+  React.useEffect(() => {
+    const scoresText = localStorage.getItem('events');
+    if (scoresText) {
+      setScores(JSON.parse(scoresText));
+    }
+  });
+
   return (
     <main className="m-1 bg-light text-dark">
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{username}</i>?</h2>
