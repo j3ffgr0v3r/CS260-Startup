@@ -28,8 +28,8 @@ export default function App() {
                                             }}/>} exact />
                     </Route>
                     <Route element={<PrivateRoute userEmail={userEmail} />}>
-                        <Route element={<Header />}>
-                            <Route path='/home' element={<Home />} />
+                        <Route element={<Header username={username} />}>
+                            <Route path='/home' element={<Home username={username} />} />
                             <Route path='/friends' element={<Friends />} />
                             <Route path='/friend_schedule' element={<FriendSchedule />} />
                             <Route path='/about' element={<About />} />
@@ -47,7 +47,7 @@ export default function App() {
     );
 }
 
-function Header() {
+function Header({ username }) {
     return (
         <>
             <header className="bg-white">
@@ -56,7 +56,7 @@ function Header() {
                         <h1 className="text-primary mb-0"><img className="logo" src="images/logo.svg" alt="logo" />What's Your Schedule?</h1>
                     </div>
                     <div className="profile me-3">
-                        <span>Username</span><img className="profile-symbol" src="images/profile.svg" alt="profile" />
+                        <span>{username}</span><img className="profile-symbol" src="images/profile.svg" alt="profile" />
                     </div>
                 </div>
 
