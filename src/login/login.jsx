@@ -12,6 +12,7 @@ export function Login({ onAuthChange }) {
     const [loginPassword, setLoginPassword] = React.useState('');
     const [displayError, setDisplayError] = React.useState(null);
 
+
     const navigate = useNavigate();
 
     async function loginUser() {
@@ -42,6 +43,7 @@ export function Login({ onAuthChange }) {
                     <div className="m-3">
                         <input className="form-control" type="password" placeholder="Password" onChange={(e) => setLoginPassword(e.target.value)} required />
                     </div>
+                    {displayError && <div className="m-3 text-danger">{displayError}</div>}
                     <div className="login-buttons">
                         <Button className="m-2 btn" variant='primary' onClick={() => loginUser()} disabled={!loginEmail || !loginPassword}>Log In</Button>
                         <Button className="m-2 btn" variant='secondary' onClick={() => createUser()} disabled={!loginEmail || !loginPassword}>Create New Account</Button>
