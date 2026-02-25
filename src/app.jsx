@@ -27,11 +27,13 @@ export default function App() {
                                             setAuthState(authState);
                                             }}/>} exact />
                     </Route>
-                    <Route element={<><PrivateRoute userEmail={userEmail} /><Header /></>}>
-                        <Route path='/home' element={<Home />} />
-                        <Route path='/friends' element={<Friends />} />
-                        <Route path='/friend_schedule' element={<FriendSchedule />} />
-                        <Route path='/about' element={<About />} />
+                    <Route element={<PrivateRoute userEmail={userEmail} />}>
+                        <Route element={<Header />}>
+                            <Route path='/home' element={<Home />} />
+                            <Route path='/friends' element={<Friends />} />
+                            <Route path='/friend_schedule' element={<FriendSchedule />} />
+                            <Route path='/about' element={<About />} />
+                        </Route> 
                     </Route>
                     <Route path='*' element={<NotFound />} />
                 </Routes>
@@ -66,7 +68,7 @@ function Header() {
                     </menu>
                 </nav>
             </header>
-            
+            <Outlet />
         </>
     );
 }
