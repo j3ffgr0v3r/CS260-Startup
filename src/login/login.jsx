@@ -43,10 +43,8 @@ export function Login({ onAuthChange }) {
                         <input className="form-control" type="password" placeholder="Password" onChange={(e) => setLoginPassword(e.target.value)} required />
                     </div>
                     <div className="login-buttons">
-                        {/* <button className="m-2 btn btn-primary" type="submit" onClick={}>Log In</button> */}
                         <Button className="m-2 btn" variant='primary' onClick={() => loginUser()} disabled={!loginEmail || !loginPassword}>Log In</Button>
                         <Button className="m-2 btn" variant='secondary' onClick={() => createUser()} disabled={!loginEmail || !loginPassword}>Create New Account</Button>
-                        {/* <button className="m-2 btn btn-secondary" type="submit" onClick={useNavigate("/home")}>Create New Account</button> */}
                     </div>
                 </form>
             </div>
