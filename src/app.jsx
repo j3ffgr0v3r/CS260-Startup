@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import { BrowserRouter, NavLink, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, NavLink, Outlet, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { Home } from './home/home';
 import { Friends } from './friends/friends';
@@ -19,14 +19,15 @@ export default function App() {
         <BrowserRouter>
             <div className="app">
                 <Routes>
-                    <Route path='/' element={<Login userEmail={userEmail}
-                                            authState={authState}
+                    <Route element={<PublicRoute userEmail={userEmail}/>}>
+                        <Route path='/' element={<Login userEmail={userEmail}
                                             onAuthChange={(username, userEmail, authState) => {
                                             setUsername(username);
                                             setUserEmail(userEmail);
                                             setAuthState(authState);
                                             }}/>} exact />
-                    <Route element={<Header />}>
+                    </Route>
+                    <Route element={<><PrivateRoute userEmail={userEmail} /><Header /></>}>
                         <Route path='/home' element={<Home />} />
                         <Route path='/friends' element={<Friends />} />
                         <Route path='/friend_schedule' element={<FriendSchedule />} />
@@ -65,10 +66,21 @@ function Header() {
                     </menu>
                 </nav>
             </header>
-            <Outlet />
+            
         </>
     );
 }
+
+function PublicRoute ({ userEmail }) {
+    // If user exists, redirect them to home instead of showing Login/Landing
+    return userEmail ? (<Navigate to="/home" replace />) : (<Outlet />);
+};
+
+function PrivateRoute ({ userEmail }) {
+    // If user does not exist, redirect them to Login
+    return !userEmail ? (<Navigate to="/" replace />) : (<Outlet />);
+    
+};
 
 function NotFound() {
     return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
