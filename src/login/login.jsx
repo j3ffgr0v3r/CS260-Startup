@@ -2,9 +2,30 @@ import React from 'react';
 
 import "./login.css";
 
-import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
-export function Login() {
+import { useNavigate } from 'react-router-dom';
+import { AuthState } from './authState';
+
+export function Login({ onAuthChange }) {
+    const [loginEmail, setLoginEmail] = React.useState('');
+    const [loginPassword, setLoginPassword] = React.useState('');
+    const [displayError, setDisplayError] = React.useState(null);
+
+    const navigate = useNavigate();
+
+    async function loginUser() {
+        localStorage.setItem('userEmail', loginEmail);
+        localStorage.setItem('username', loginEmail);
+        onAuthChange(loginEmail, loginEmail, AuthState.Authenticated);
+        navigate("/home");
+    }
+
+    async function createUser() {
+        // TODO - User Creation Logic
+        loginUser();
+    }
+
     return (
         <main className="login-content">
             <img className="background-logo" src="./images/logo.svg" />
@@ -16,14 +37,16 @@ export function Login() {
                 <form method="get" action="/home" className="login-form mx-3 px-4 py-3 bg-light bg-opacity-50 border rounded">
                     <h2>What's your schedule looking like today?</h2>
                     <div className="m-3">
-                        <input className="form-control" type="email" placeholder="Email" required />
+                        <input className="form-control" type="email" placeholder="Email" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
                     </div>
                     <div className="m-3">
-                        <input className="form-control" type="password" placeholder="Password" required />
+                        <input className="form-control" type="password" placeholder="Password" onChange={(e) => setLoginPassword(e.target.value)} required />
                     </div>
                     <div className="login-buttons">
-                        <button className="m-2 btn btn-primary" type="submit" onClick={useNavigate("/home")}>Log In</button>
-                        <button className="m-2 btn btn-secondary" type="submit" onClick={useNavigate("/home")}>Create New Account</button>
+                        {/* <button className="m-2 btn btn-primary" type="submit" onClick={}>Log In</button> */}
+                        <Button className="m-2 btn" variant='primary' onClick={() => loginUser()} disabled={!loginEmail || !loginPassword}>Log In</Button>
+                        <Button className="m-2 btn" variant='secondary' onClick={() => createUser()} disabled={!loginEmail || !loginPassword}>Create New Account</Button>
+                        {/* <button className="m-2 btn btn-secondary" type="submit" onClick={useNavigate("/home")}>Create New Account</button> */}
                     </div>
                 </form>
             </div>

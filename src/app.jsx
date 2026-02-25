@@ -13,7 +13,7 @@ import { AuthState } from './login/authState';
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
     const [userEmail, setUserEmail] = React.useState(localStorage.getItem('userEmail') || '');
-    const [authState, setAuthState] = React.useState(username ? AuthState.Authenticated : AuthState.Unauthenticated);
+    const [authState, setAuthState] = React.useState(userEmail ? AuthState.Authenticated : AuthState.Unauthenticated);
 
     return (
         <BrowserRouter>
