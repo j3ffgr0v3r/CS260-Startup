@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Calendar({ events }) {
+export function Calendar({ month, year, events }) {
     return (
         <div className="mx-1 bg-white border rounded-4 calendar home-calendar">
             <div className="day-label day-left">SUN</div>
@@ -12,7 +12,7 @@ export function Calendar({ events }) {
             <div className="day-label day-right">SAT</div>
             {
                 GenerateDays(1, 2026, events).map((day) => (
-                    <div className="day day-top">{day.date.getDate()}</div>
+                    <div className={day.classNames.join(" ")}>{day.date.getDate()}</div>
                 ))
             
             
@@ -73,9 +73,22 @@ function GenerateDays(month, year, events) {
     let days = [];
 
     const currentDate = new Date(firstSundayOfMonth);
-    const lastDate = new Date(year, month+1, 1);
+    let classNames = [];
     for (let i = 0; i < 35; i++) {
-        days.push({date : new Date(currentDate), events: []});
+        classNames = ["day"];
+        if (i < 7) {
+            classNames.push("day-top");
+        }
+        if (i >= 28) {
+            classNames.push("day-bottom");
+        }
+        if (i % 7 == 0) {
+            classNames.push("day-left");
+        }
+        if (i % 7 == 6) {
+            classNames.push("day-right");
+        }
+        days.push({date : new Date(currentDate), classNames: classNames, events: []});
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
