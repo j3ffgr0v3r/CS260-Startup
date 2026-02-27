@@ -32,7 +32,7 @@ export default function App() {
                     <Route element={<PrivateRoute authState={authState} />}>
                         <Route element={<Header username={username} />}>
                             <Route path='/home' element={<Home username={username} />} />
-                            <Route path='/friends/:friendName' element={<FriendSchedule />} />
+                            <Route path='/friends/:friendID' element={<FriendSchedule />} />
                             <Route path='/friends' element={<Friends />} />
                             {/* <Route path='/friend_schedule' element={<FriendSchedule />} /> */}
                             <Route path='/about' element={<About />} />
@@ -88,6 +88,6 @@ function PrivateRoute ({ authState }) {
     
 };
 
-function NotFound() {
+export function NotFound() {
     return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
 }
