@@ -5,6 +5,7 @@ import "./friends.css";
 
 export function Friends() {
   const [friends, setFriends] = React.useState([]);
+  const [friendRequests, setFriendRequests] = React.useState([]);
 
   React.useEffect(() => {
     const friendsText = localStorage.getItem('friends');
@@ -12,14 +13,22 @@ export function Friends() {
       setFriends(JSON.parse(friendsText));
     }
   }, []);
+  React.useEffect(() => {
+    const friendRequestsText = localStorage.getItem('friendRequests');
+    if (friendRequestsText) {
+      setFriendRequests(JSON.parse(friendRequestsText));
+    }
+  }, []);
 
   return (
     <main>
       <h3>Pending Invites</h3>
       <div className="pending-friend-invites">
-        <div className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Preston Clarke<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
-        <div className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Layne Peterson<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
-        <div className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Jessica McRae<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
+        {
+          friendRequests.map((request) => (
+            <div key={request.name} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.name}<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
+          ))
+        }
       </div>
       <hr />
 

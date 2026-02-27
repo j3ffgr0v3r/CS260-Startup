@@ -97,5 +97,19 @@ export function ResetDatabase() {
         
     ]
     localStorage.setItem('friends', JSON.stringify(friends));
+
+        const friendRequests = [
+        {
+            name: "Preston Clarke"
+        },
+        {
+            name: "Layne Peterson"
+        },
+        {
+            name: "Jessica McRae"
+        }
+        
+    ]
+    localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
 }
 
