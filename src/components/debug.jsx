@@ -74,7 +74,7 @@ export function ResetDatabase() {
                     title: "Service Project",
                     allDay: false
                 },
-                {   
+                {
                     eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 13, 12),
                     title: "Luncheon",
@@ -92,7 +92,7 @@ export function ResetDatabase() {
                     title: "Club Night",
                     allDay: false
                 },
-                {   
+                {
                     eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 18, 14),
                     title: "Mission Reunion",
@@ -112,11 +112,11 @@ export function ResetDatabase() {
                 }
             ]
         }
-        
+
     ]
     localStorage.setItem('friends', JSON.stringify(friends));
 
-        const friendRequests = [
+    const friendRequests = [
         {
             username: "plarke_",
             displayName: "Preston Clarke"
@@ -129,10 +129,28 @@ export function ResetDatabase() {
             username: "JeffersonBestPres",
             displayName: "Jessica McRae"
         }
-        
+
     ]
     localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
 
     window.location.reload();
+
+    const eventInvites = [
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 6, 18),
+            title: "Skate Night",
+            allDay: false,
+            host: friends.at(0)
+        },
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 12, 19),
+            title: "Game Night",
+            allDay: false,
+            host: friends.at(1)
+        }
+    ]
+    localStorage.setItem('eventInvites', JSON.stringify(eventInvites));
 }
 

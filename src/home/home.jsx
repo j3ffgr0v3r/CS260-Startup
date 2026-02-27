@@ -4,23 +4,32 @@ import "./home.css";
 import { Calendar } from '../components/calendar';
 
 export function Home({ username }) {
-  const [userEvents, setEvents] = React.useState([]);
-
+  // Import and hook userEvents
+  const [userEvents, setEvents] = React.useState(() => {
+    const saved = localStorage.getItem('userEvents');
+    return saved ? JSON.parse(saved) : [];
+  });
   React.useEffect(() => {
-    const eventsText = localStorage.getItem('userEvents');
-    if (eventsText) {
-      setEvents(JSON.parse(eventsText));
-    }
-  }, []);
+    localStorage.setItem('userEvents', JSON.stringify(userEvents));
+  }, [userEvents]);
+
+  // Import and hook eventInvites
+  const [eventInvites, setEventInvites] = React.useState(() => {
+    const saved = localStorage.getItem('eventInvites');
+    return saved ? JSON.parse(saved) : [];
+  });
+  React.useEffect(() => {
+    localStorage.setItem('eventInvites', JSON.stringify(eventInvites));
+  }, [eventInvites]);
 
   return (
     <main className="m-1 bg-light text-dark">
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{username}</i>?</h2>
 
       <div className="home-center">
-        <Calendar year = {2026} month = {1} events={userEvents}/>
+        <Calendar year={2026} month={1} events={userEvents} />
         <div className="management home-management">
-          <div className="modal fade" id="eventCreationModal" tabIndex="-1" aria-labelledby="eventCreationModalLabel" style={{display: "none"}} aria-hidden="true">
+          <div className="modal fade" id="eventCreationModal" tabIndex="-1" aria-labelledby="eventCreationModalLabel" style={{ display: "none" }} aria-hidden="true">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -64,8 +73,13 @@ export function Home({ username }) {
           <button className="btn btn-secondary btn-lg"><span>✎</span> Edit Availability</button>
           <h3>Pending Invites</h3>
           <div className="pending-event-invites">
-            <div className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Skate Night - Friday 6th<br />Claire Vance<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
-            <div className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Game Night - Thursday 12th<br />Alex Truing<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
+            {
+              eventInvites.map((event) => (
+                <div className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', {weekday: 'short', month: 'short', day: 'numeric', hour:'numeric', minute:'2-digit'}).format(new Date(event.date))}<br />
+                {event.host.displayName}<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
+
+              ))
+            }
           </div>
         </div>
       </div>
