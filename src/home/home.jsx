@@ -22,6 +22,15 @@ export function Home({ username }) {
     localStorage.setItem('eventInvites', JSON.stringify(eventInvites));
   }, [eventInvites]);
 
+
+  // Respond to event invite
+  async function respondToEventInvite(event, accepted) {
+    if (accepted) {
+      setEvents((prev) => [...prev, event]);
+    }
+    setEventInvites((prev) => prev.filter((req) => req !== event));
+  }
+
   return (
     <main className="m-1 bg-light text-dark">
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{username}</i>?</h2>
@@ -73,11 +82,10 @@ export function Home({ username }) {
           <button className="btn btn-secondary btn-lg"><span>✎</span> Edit Availability</button>
           <h3>Pending Invites</h3>
           <div className="pending-event-invites">
-            {
+            { eventInvites.length == 0 ? <div><i>There are no pending invites</i></div> :
               eventInvites.map((event) => (
-                <div className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', {weekday: 'short', month: 'short', day: 'numeric', hour:'numeric', minute:'2-digit'}).format(new Date(event.date))}<br />
-                {event.host.displayName}<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
-
+                <div key={event.eventID} className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(event.date))}<br />
+                  {event.host.displayName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToEventInvite(event, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
               ))
             }
           </div>
