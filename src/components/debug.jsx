@@ -20,7 +20,8 @@ export function ResetDatabase() {
 
     const friends = [
         {
-            name: "Claire Vance",
+            username: "clairevance07",
+            displayName: "Claire Vance",
             events: [
                 {
                     date: new Date(2026, 1, 7, 21),
@@ -45,7 +46,8 @@ export function ResetDatabase() {
             ]
         },
         {
-            name: "Alex Turing",
+            username: "turingA13",
+            displayName: "Alex Turing",
             events: [
                 {
                     date: new Date(2026, 1, 7, 21),
@@ -70,7 +72,8 @@ export function ResetDatabase() {
             ]
         },
         {
-            name: "Matthew Hart",
+            username: "Matt<3",
+            displayName: "Matthew Hart",
             events: [
                 {
                     date: new Date(2026, 1, 7, 21),
@@ -100,16 +103,21 @@ export function ResetDatabase() {
 
         const friendRequests = [
         {
-            name: "Preston Clarke"
+            username: "plarke_",
+            displayName: "Preston Clarke"
         },
         {
-            name: "Layne Peterson"
+            username: "LMP",
+            displayName: "Layne Peterson"
         },
         {
-            name: "Jessica McRae"
+            username: "JeffersonBestPres",
+            displayName: "Jessica McRae"
         }
         
     ]
     localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
+
+    window.location.reload();
 }
 

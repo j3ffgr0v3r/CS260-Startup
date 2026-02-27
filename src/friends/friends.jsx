@@ -35,7 +35,7 @@ export function Friends() {
       <div className="pending-friend-invites">
         {
           friendRequests.map((request) => (
-            <div key={request.name} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.name}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
+            <div key={request.username} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.displayName}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
           ))
         }
       </div>
@@ -54,7 +54,7 @@ export function Friends() {
       <div className="friends">
         {
           friends.map((friend) => (
-            <div key={friend.name} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.name}<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
+            <div key={friend.username} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.displayName}<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
           ))
         }
       </div>
