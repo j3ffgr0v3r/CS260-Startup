@@ -38,6 +38,7 @@ function GenerateDayKey(date) {
 }
 
 function GenerateDays(year, month, events) {
+    events = events == undefined ? [] : events
     // Get Date Range
     const firstDayOfMonth = new Date(year, month, 1);
     const firstSundayOfMonth = new Date(firstDayOfMonth)
