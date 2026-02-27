@@ -57,10 +57,10 @@ function Header({ username }) {
             <header className="bg-white">
                 <div className="top">
                     <div className="title">
-                        <h1 className="text-primary mb-0"><img className="logo" src="images/logo.svg" alt="logo" />What's Your Schedule?</h1>
+                        <h1 className="text-primary mb-0"><img className="logo" src="/images/logo.svg" alt="logo" />What's Your Schedule?</h1>
                     </div>
                     <div className="profile me-3">
-                        <span>{username}</span><img className="profile-symbol" src="images/profile.svg" alt="profile" />
+                        <span>{username}</span><img className="profile-symbol" src="/images/profile.svg" alt="profile" />
                     </div>
                 </div>
 
