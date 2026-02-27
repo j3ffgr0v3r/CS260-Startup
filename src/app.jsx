@@ -9,6 +9,8 @@ import { Friends } from './friends/friends';
 import { FriendSchedule } from './friend_schedule/friend_schedule';
 import { About } from './about/about';
 import { AuthState } from './login/authState';
+import { ResetDatabase } from './components/debug';
+import { Button } from 'react-bootstrap';
 
 export default function App() {
     const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
@@ -40,6 +42,7 @@ export default function App() {
 
                 <footer className="border-top bg-light py-1 px-2">
                     <div>Jeff Grover</div>
+                    <Button onClick={ResetDatabase}>Reset Database</Button>
                     <div><a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a></div>
                 </footer>
             </div>
