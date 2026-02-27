@@ -4,21 +4,30 @@ import { NavLink } from 'react-router-dom';
 import "./friends.css";
 
 export function Friends() {
-  const [friends, setFriends] = React.useState([]);
-  const [friendRequests, setFriendRequests] = React.useState([]);
+  const [friends, setFriends] = React.useState(() => {
+    const saved = localStorage.getItem('friends');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [friendRequests, setFriendRequests] = React.useState(() => {
+    const saved = localStorage.getItem('friendRequests');
+    return saved ? JSON.parse(saved) : [];
+  });
 
+  // Save whenever state changes
   React.useEffect(() => {
-    const friendsText = localStorage.getItem('friends');
-    if (friendsText) {
-      setFriends(JSON.parse(friendsText));
-    }
-  }, []);
+    localStorage.setItem('friends', JSON.stringify(friends));
+  }, [friends]);
   React.useEffect(() => {
-    const friendRequestsText = localStorage.getItem('friendRequests');
-    if (friendRequestsText) {
-      setFriendRequests(JSON.parse(friendRequestsText));
+    localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
+  }, [friendRequests]);
+
+  async function respondToFriendRequest( request, accepted ) {
+    if (accepted) {
+      setFriends((prev) => [...prev, request]);
     }
-  }, []);
+    setFriendRequests((prev) => prev.filter((req) => req !== request));
+  }
+
 
   return (
     <main>
@@ -26,7 +35,7 @@ export function Friends() {
       <div className="pending-friend-invites">
         {
           friendRequests.map((request) => (
-            <div key={request.name} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.name}<br /><button className="btn mx-1 btn-outline-primary">Accept</button><button className="btn mx-1 btn-outline-danger">Decline</button></div>
+            <div key={request.name} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.name}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
           ))
         }
       </div>
