@@ -53,32 +53,32 @@ export function ResetDatabase() {
             ]
         },
         {
-            username: "turingA13",
+            username: "turingA113",
             displayName: "Alex Turing",
             events: [
                 {
                     eventID: crypto.randomUUID(),
-                    date: new Date(2026, 1, 7, 21),
-                    title: "Karaoke",
+                    date: new Date(2026, 1, 28, 20),
+                    title: "Game Night",
                     allDay: false
                 },
                 {
                     eventID: crypto.randomUUID(),
-                    date: new Date(2026, 1, 11, 20),
-                    title: "Mission Prep",
+                    date: new Date(2026, 1, 1, 8),
+                    title: "Hike",
                     allDay: false
                 },
                 {
-                    eventID: crypto.randomUUID(),
+                    eventID: events.at(2),
                     date: new Date(2026, 1, 23, 10),
                     title: "Service Project",
                     allDay: false
                 },
                 {   
                     eventID: crypto.randomUUID(),
-                    date: new Date(2026, 1, 27),
-                    title: "Ski Trip",
-                    allDay: true
+                    date: new Date(2026, 1, 13, 12),
+                    title: "Luncheon",
+                    allDay: false
                 }
             ]
         },
@@ -88,26 +88,26 @@ export function ResetDatabase() {
             events: [
                 {
                     eventID: crypto.randomUUID(),
-                    date: new Date(2026, 1, 7, 21),
-                    title: "Karaoke",
+                    date: new Date(2026, 1, 2, 19),
+                    title: "Club Night",
                     allDay: false
                 },
                 {   
                     eventID: crypto.randomUUID(),
-                    date: new Date(2026, 1, 11, 20),
-                    title: "Mission Prep",
+                    date: new Date(2026, 1, 18, 14),
+                    title: "Mission Reunion",
                     allDay: false
                 },
                 {
-                    eventID: crypto.randomUUID(),
+                    eventID: events.at(2),
                     date: new Date(2026, 1, 23, 10),
                     title: "Service Project",
                     allDay: false
                 },
                 {
                     eventID: crypto.randomUUID(),
-                    date: new Date(2026, 1, 27),
-                    title: "Ski Trip",
+                    date: new Date(2026, 1, 20),
+                    title: "Salsa Chocolate",
                     allDay: true
                 }
             ]
