@@ -1,4 +1,5 @@
 import React from 'react';
+import { data } from 'react-router-dom';
 
 export function Calendar({ year, month, events }) {
     return (
@@ -12,7 +13,12 @@ export function Calendar({ year, month, events }) {
             <div className="day-label day-right">SAT</div>
             {
                 GenerateDays(year, month, events).map((day) => (
-                    <div className={day.classNames.join(" ")}>{day.date.getDate()}</div>
+                    <div className={day.classNames.join(" ")}>
+                        {day.date.getDate()}<br />
+                        {day.events.map((event) => (
+                            <span className="event event-timed">{event.title}</span>
+                        ))}
+                        </div>
                 ))
             
             
@@ -88,8 +94,11 @@ function GenerateDays(year, month, events) {
     let days = [];
     const currentDate = new Date(firstSundayOfMonth);
     let classNames = [];
+    let dayEvents = [];
     for (let i = 0; i < 35; i++) {
         classNames = ["day"];
+        dayEvents = [];
+
         if (i < 7) {
             classNames.push("day-top");
         }
@@ -103,7 +112,10 @@ function GenerateDays(year, month, events) {
             classNames.push("day-right");
         }
 
-        days.push({date : new Date(currentDate), classNames: classNames, events: eventsMap.get(currentDate.toISOString().split('T')[0])});
+        dayEvents = eventsMap.get(currentDate.toISOString().split('T')[0]);
+        dayEvents = !dayEvents ? [] : dayEvents;
+
+        days.push({date : new Date(currentDate), classNames: classNames, events: dayEvents});
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
