@@ -17,15 +17,13 @@ export function Calendar({ year, month, events }) {
                         {day.date.getDate()}<br />
                         {day.events.map((event) => (
                             <span className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>{!event.allDay && event.date.toLocaleString('en-US', {
-                                                                hour: 'numeric',
-                                                                minute: 'numeric', 
-                                                                hour12: true 
-                                                            })} {event.title}</span>
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                hour12: true
+                            })} {event.title}</span>
                         ))}
-                        </div>
+                    </div>
                 ))
-            
-            
             }
         </div>
     )
@@ -36,7 +34,7 @@ function GenerateDays(year, month, events) {
     // Get Date Range
     const firstDayOfMonth = new Date(year, month, 1);
     const firstSundayOfMonth = new Date(firstDayOfMonth)
-    firstSundayOfMonth.setDate(firstDayOfMonth.getDate()-firstDayOfMonth.getDay())
+    firstSundayOfMonth.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay())
 
     // Create map of events for more efficient lookup
     const eventsMap = new Map();
@@ -77,11 +75,11 @@ function GenerateDays(year, month, events) {
         dayEvents = eventsMap.get(currentDate.toISOString().split('T')[0]);
         dayEvents = !dayEvents ? [] : dayEvents;
 
-        days.push({date : new Date(currentDate), classNames: classNames, events: dayEvents});
+        days.push({ date: new Date(currentDate), classNames: classNames, events: dayEvents });
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    console.log(days)   
+    console.log(days)
 
     return days;
 }
