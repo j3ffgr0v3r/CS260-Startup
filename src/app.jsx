@@ -21,7 +21,7 @@ export default function App() {
         <BrowserRouter>
             <div className="app">
                 <Routes>
-                    <Route element={<PublicRoute userEmail={userEmail}/>}>
+                    <Route element={<PublicRoute authState={authState}/>}>
                         <Route path='/' element={<Login userEmail={userEmail}
                                             onAuthChange={(username, userEmail, authState) => {
                                             setUsername(username);
@@ -29,7 +29,7 @@ export default function App() {
                                             setAuthState(authState);
                                             }}/>} exact />
                     </Route>
-                    <Route element={<PrivateRoute userEmail={userEmail} />}>
+                    <Route element={<PrivateRoute authState={authState} />}>
                         <Route element={<Header username={username} />}>
                             <Route path='/home' element={<Home username={username} />} />
                             <Route path='/friends' element={<Friends />} />
@@ -76,14 +76,14 @@ function Header({ username }) {
     );
 }
 
-function PublicRoute ({ userEmail }) {
+function PublicRoute ({ authState }) {
     // If user exists, redirect them to home instead of showing Login/Landing
-    return userEmail ? (<Navigate to="/home" replace />) : (<Outlet />);
+    return authState == AuthState.Authenticated ? (<Navigate to="/home" replace />) : (<Outlet />);
 };
 
-function PrivateRoute ({ userEmail }) {
+function PrivateRoute ({ authState }) {
     // If user does not exist, redirect them to Login
-    return !userEmail ? (<Navigate to="/" replace />) : (<Outlet />);
+    return authState != AuthState.Authenticated ? (<Navigate to="/" replace />) : (<Outlet />);
     
 };
 
