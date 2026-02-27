@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Calendar({ month, year, events }) {
+export function Calendar({ year, month, events }) {
     return (
         <div className="mx-1 bg-white border rounded-4 calendar home-calendar">
             <div className="day-label day-left">SUN</div>
@@ -11,7 +11,7 @@ export function Calendar({ month, year, events }) {
             <div className="day-label">FRI</div>
             <div className="day-label day-right">SAT</div>
             {
-                GenerateDays(1, 2026, events).map((day) => (
+                GenerateDays(year, month, events).map((day) => (
                     <div className={day.classNames.join(" ")}>{day.date.getDate()}</div>
                 ))
             
@@ -65,13 +65,27 @@ export function Calendar({ month, year, events }) {
 }
 
 
-function GenerateDays(month, year, events) {
+function GenerateDays(year, month, events) {
+    // Get Date Range
     const firstDayOfMonth = new Date(year, month, 1);
     const firstSundayOfMonth = new Date(firstDayOfMonth)
     firstSundayOfMonth.setDate(firstDayOfMonth.getDate()-firstDayOfMonth.getDay())
 
-    let days = [];
+    // Create map of events for more efficient lookup
+    const eventsMap = new Map();
 
+    let eventDate;
+    for (const event of events) {
+        eventDate = event.date
+        const key = eventDate.split('T')[0];
+        if (!eventsMap.has(key)) {
+            eventsMap.set(key, []);
+        }
+        eventsMap.get(key).push(event);
+    }
+
+    // Construct Day objects out of range
+    let days = [];
     const currentDate = new Date(firstSundayOfMonth);
     let classNames = [];
     for (let i = 0; i < 35; i++) {
@@ -88,7 +102,8 @@ function GenerateDays(month, year, events) {
         if (i % 7 == 6) {
             classNames.push("day-right");
         }
-        days.push({date : new Date(currentDate), classNames: classNames, events: []});
+
+        days.push({date : new Date(currentDate), classNames: classNames, events: eventsMap.get(currentDate.toISOString().split('T')[0])});
         currentDate.setDate(currentDate.getDate() + 1);
     }
 

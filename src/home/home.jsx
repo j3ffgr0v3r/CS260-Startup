@@ -1,25 +1,24 @@
 import React from 'react';
 
 import "./home.css";
-import "../components/calendar.jsx"
 import { Calendar } from '../components/calendar';
 
 export function Home({ username }) {
-  const [events, setEvents] = React.useState([]);
+  const [userEvents, setEvents] = React.useState([]);
 
   React.useEffect(() => {
-    const scoresText = localStorage.getItem('events');
-    if (scoresText) {
-      setEvents(JSON.parse(scoresText));
+    const eventsText = localStorage.getItem('userEvents');
+    if (eventsText) {
+      setEvents(JSON.parse(eventsText));
     }
-  });
+  }, []);
 
   return (
     <main className="m-1 bg-light text-dark">
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{username}</i>?</h2>
 
       <div className="home-center">
-        <Calendar events={events}/>
+        <Calendar year = {2026} month = {1} events={userEvents}/>
         <div className="management home-management">
           <div className="modal fade" id="eventCreationModal" tabIndex="-1" aria-labelledby="eventCreationModalLabel" style={{display: "none"}} aria-hidden="true">
             <div className="modal-dialog">
