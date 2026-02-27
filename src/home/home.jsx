@@ -19,7 +19,7 @@ export function Home({ username }) {
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{username}</i>?</h2>
 
       <div className="home-center">
-        <Calendar />
+        <Calendar events={events}/>
         <div className="management home-management">
           <div className="modal fade" id="eventCreationModal" tabIndex="-1" aria-labelledby="eventCreationModalLabel" style={{display: "none"}} aria-hidden="true">
             <div className="modal-dialog">
