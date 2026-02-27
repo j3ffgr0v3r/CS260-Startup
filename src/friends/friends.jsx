@@ -54,7 +54,7 @@ export function Friends() {
       <div className="friends">
         {
           friends.map((friend) => (
-            <div key={friend.username} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.displayName}<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
+            <div key={friend.username} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.displayName}<NavLink to={friend.username} className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
           ))
         }
       </div>

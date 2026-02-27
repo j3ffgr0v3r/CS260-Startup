@@ -32,8 +32,9 @@ export default function App() {
                     <Route element={<PrivateRoute authState={authState} />}>
                         <Route element={<Header username={username} />}>
                             <Route path='/home' element={<Home username={username} />} />
+                            <Route path='/friends/:friendName' element={<FriendSchedule />} />
                             <Route path='/friends' element={<Friends />} />
-                            <Route path='/friend_schedule' element={<FriendSchedule />} />
+                            {/* <Route path='/friend_schedule' element={<FriendSchedule />} /> */}
                             <Route path='/about' element={<About />} />
                         </Route> 
                     </Route>
