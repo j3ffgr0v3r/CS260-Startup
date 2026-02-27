@@ -13,7 +13,7 @@ export function Calendar({ year, month, events }) {
             <div className="day-label day-right">SAT</div>
             {
                 GenerateDays(year, month, events).map((day) => (
-                    <div key={day.date.toISOString()}  className={day.classNames.join(" ")}>
+                    <div key={day.date.toISOString()} className={day.classNames.join(" ")}>
                         {day.date.getDate()}<br />
                         {day.events.map((event) => (
                             <span key={event.eventID} className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>{!event.allDay && event.date.toLocaleString('en-US', {
@@ -29,6 +29,13 @@ export function Calendar({ year, month, events }) {
     )
 }
 
+function GenerateDayKey(date) {
+    return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+    })
+}
 
 function GenerateDays(year, month, events) {
     // Get Date Range
@@ -43,7 +50,7 @@ function GenerateDays(year, month, events) {
     for (const event of events) {
         event.date = new Date(event.date)
         eventDate = event.date
-        const key = eventDate.toISOString().split('T')[0];
+        const key = GenerateDayKey(eventDate);
         if (!eventsMap.has(key)) {
             eventsMap.set(key, []);
         }
@@ -72,7 +79,7 @@ function GenerateDays(year, month, events) {
             classNames.push("day-right");
         }
 
-        dayEvents = eventsMap.get(currentDate.toISOString().split('T')[0]);
+        dayEvents = eventsMap.get(GenerateDayKey(currentDate));
         dayEvents = !dayEvents ? [] : dayEvents;
 
         days.push({ date: new Date(currentDate), classNames: classNames, events: dayEvents });
