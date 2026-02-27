@@ -19,7 +19,6 @@ export function FriendSchedule() {
   const { friendID } = useParams();
 
   const friend = friends.find((friend) => friend.username === friendID)
-  console.log(friend);
 
   if (friend == undefined) {
     return NotFound();
