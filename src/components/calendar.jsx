@@ -13,10 +13,10 @@ export function Calendar({ year, month, events }) {
             <div className="day-label day-right">SAT</div>
             {
                 GenerateDays(year, month, events).map((day) => (
-                    <div className={day.classNames.join(" ")}>
+                    <div key={day.date.toISOString()}  className={day.classNames.join(" ")}>
                         {day.date.getDate()}<br />
                         {day.events.map((event) => (
-                            <span className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>{!event.allDay && event.date.toLocaleString('en-US', {
+                            <span key={event.eventID} className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>{!event.allDay && event.date.toLocaleString('en-US', {
                                 hour: 'numeric',
                                 minute: 'numeric',
                                 hour12: true
@@ -78,8 +78,6 @@ function GenerateDays(year, month, events) {
         days.push({ date: new Date(currentDate), classNames: classNames, events: dayEvents });
         currentDate.setDate(currentDate.getDate() + 1);
     }
-
-    console.log(days)
 
     return days;
 }

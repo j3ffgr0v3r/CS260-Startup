@@ -1,16 +1,19 @@
 export function ResetDatabase() {
     const events = [
         {
+            eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 6, 20),
             title: "LoTR Marathon",
             allDay: false
         },
         {
+            eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 17),
             title: "Camping",
             allDay: true
         },
         {
+            eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 23, 10),
             title: "Service Project",
             allDay: false
@@ -24,21 +27,25 @@ export function ResetDatabase() {
             displayName: "Claire Vance",
             events: [
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 7, 21),
                     title: "Karaoke",
                     allDay: false
                 },
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 11, 20),
                     title: "Mission Prep",
                     allDay: false
                 },
                 {
+                    eventID: events.at(2),
                     date: new Date(2026, 1, 23, 10),
                     title: "Service Project",
                     allDay: false
                 },
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 27),
                     title: "Ski Trip",
                     allDay: true
@@ -50,21 +57,25 @@ export function ResetDatabase() {
             displayName: "Alex Turing",
             events: [
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 7, 21),
                     title: "Karaoke",
                     allDay: false
                 },
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 11, 20),
                     title: "Mission Prep",
                     allDay: false
                 },
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 23, 10),
                     title: "Service Project",
                     allDay: false
                 },
-                {
+                {   
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 27),
                     title: "Ski Trip",
                     allDay: true
@@ -76,21 +87,25 @@ export function ResetDatabase() {
             displayName: "Matthew Hart",
             events: [
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 7, 21),
                     title: "Karaoke",
                     allDay: false
                 },
-                {
+                {   
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 11, 20),
                     title: "Mission Prep",
                     allDay: false
                 },
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 23, 10),
                     title: "Service Project",
                     allDay: false
                 },
                 {
+                    eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 27),
                     title: "Ski Trip",
                     allDay: true
