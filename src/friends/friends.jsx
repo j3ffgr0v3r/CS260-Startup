@@ -4,6 +4,15 @@ import { NavLink } from 'react-router-dom';
 import "./friends.css";
 
 export function Friends() {
+  const [friends, setFriends] = React.useState([]);
+
+  React.useEffect(() => {
+    const friendsText = localStorage.getItem('friends');
+    if (friendsText) {
+      setFriends(JSON.parse(friendsText));
+    }
+  }, []);
+
   return (
     <main>
       <h3>Pending Invites</h3>
@@ -25,9 +34,11 @@ export function Friends() {
 
       <h3>Friends</h3>
       <div className="friends">
-        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Claire Vance<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink><button className="btn mx-1 btn-outline-success">Send Message</button></div>
-        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Alex Turing<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink><button className="btn mx-1 btn-outline-success">Send Message</button></div>
-        <div className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">Matthew Hart<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink><button className="btn mx-1 btn-outline-success">Send Message</button></div>
+        {
+          friends.map((friend) => (
+            <div key={friend.name} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.name}<NavLink to="../friend_schedule" className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
+          ))
+        }
       </div>
     </main>
   );
