@@ -92,7 +92,6 @@ export function Home({ activeUser }) {
 
 
           <button type="button" className="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#eventCreationModal"><span>+</span> Create Event</button>
-          <button className="btn btn-secondary btn-lg"><span>✎</span> Edit Availability</button>
           <h3>Pending Invites</h3>
           <div className="pending-event-invites">
             {eventInvites.length == 0 ? <div><i>There are no pending invites</i></div> :
