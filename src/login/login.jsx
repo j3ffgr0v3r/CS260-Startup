@@ -42,7 +42,7 @@ export function Login({ onAuthChange }) {
 
     async function beginCreateUser() {
         setDisplayError(null);
-        const match = users.find(user => user.username.toLowerCase() === username.toLowerCase());
+        const match = users.find(user => user.username.toLowerCase() === loginUsername.toLowerCase());
         if (match != undefined) {
             setDisplayError("Error: Account found with given username. Please sign in.");
         } else {
@@ -102,7 +102,7 @@ export function Login({ onAuthChange }) {
                         </div>
                         {displayError && <div className="m-3 text-danger">{displayError}</div>}
                         <div className="login-buttons">
-                            <Button className="m-2 btn" variant='secondary' onClick={() => createUser()} disabled={!createUsername || !createFirstName || !createLastName}>Create Account</Button>
+                            <Button className="m-2 btn" variant='secondary' onClick={() => createUser()} disabled={!createFirstName || !createLastName}>Create Account</Button>
                         </div>
                     </>)
                     }
