@@ -131,8 +131,8 @@ function ProfileMenu({ activeUser, onLogout, linkToSchoolAccount }) {
             <Dropdown.Toggle username={activeUser.username} as={IconToggle} id="profile-menu" />
 
             <Dropdown.Menu>
-                <Dropdown.Item onClick={onLogout}>Log out</Dropdown.Item>
                 <Dropdown.Item onClick={linkToSchoolAccount}>Import Class Schedule</Dropdown.Item>
+                <Dropdown.Item onClick={onLogout}>Log Out</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );
