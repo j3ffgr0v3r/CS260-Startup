@@ -10,33 +10,33 @@ import { FriendSchedule } from './friend_schedule/friend_schedule';
 import { About } from './about/about';
 import { AuthState } from './login/authState';
 import { ResetDatabase } from './components/debug';
-import { Button } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 
 export default function App() {
     const [activeUser, setActiveUser] = React.useState(() => {
         const saved = localStorage.getItem('activeUser');
-        return saved ? JSON.parse(saved) : [];
-      });
+        return saved ? JSON.parse(saved) : null;
+    });
     const [authState, setAuthState] = React.useState(activeUser ? AuthState.Authenticated : AuthState.Unauthenticated);
 
     return (
         <BrowserRouter>
             <div className="app">
                 <Routes>
-                    <Route element={<PublicRoute authState={authState}/>}>
+                    <Route element={<PublicRoute authState={authState} />}>
                         <Route path='/' element={<Login onAuthChange={(activeUser, authState) => {
-                                            setActiveUser(activeUser);
-                                            setAuthState(authState);
-                                            }}/>} exact />
+                            setActiveUser(activeUser);
+                            setAuthState(authState);
+                        }} />} exact />
                     </Route>
                     <Route element={<PrivateRoute authState={authState} />}>
-                        <Route element={<Header activeUser={activeUser} />}>
+                        <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
                             <Route path='/home' element={<Home activeUser={activeUser} />} />
                             <Route path='/friends/:friendID' element={<FriendSchedule />} />
                             <Route path='/friends' element={<Friends />} />
                             {/* <Route path='/friend_schedule' element={<FriendSchedule />} /> */}
                             <Route path='/about' element={<About />} />
-                        </Route> 
+                        </Route>
                     </Route>
                     <Route path='*' element={<NotFound />} />
                 </Routes>
@@ -51,7 +51,14 @@ export default function App() {
     );
 }
 
-function Header({ activeUser }) {
+function Header({ activeUser, setActiveUser, setAuthState }) {
+    function logout() {
+        setActiveUser(null);
+        localStorage.removeItem("activeUser");
+        setAuthState(AuthState.Unauthenticated);
+        <Navigate to="/" replace />;
+    }
+
     return (
         <>
             <header className="bg-white">
@@ -60,7 +67,7 @@ function Header({ activeUser }) {
                         <h1 className="text-primary mb-0"><img className="logo" src="/images/logo.svg" alt="logo" />What's Your Schedule?</h1>
                     </div>
                     <div className="profile me-3">
-                        <span>{activeUser.username}</span><img className="profile-symbol" src="/images/profile.svg" alt="profile" />
+                        <ProfileMenu activeUser={activeUser} onLogout={() => logout()} />
                     </div>
                 </div>
 
@@ -77,15 +84,43 @@ function Header({ activeUser }) {
     );
 }
 
-function PublicRoute ({ authState }) {
+// Custom toggle to use an SVG instead of default caret
+const IconToggle = React.forwardRef(({ username, onClick }, ref) => (
+    <button
+        ref={ref}
+        type="button"
+        className="btn p-1 border-0"
+        onClick={(e) => {
+            e.preventDefault();
+            onClick(e);
+        }}
+        aria-label="Open profile menu"
+    >
+        <span>{username}</span><img className="profile-symbol" src="/images/profile.svg" alt="profile" />
+    </button>
+));
+
+function ProfileMenu({ activeUser, onLogout }) {
+    return (
+        <Dropdown align="end">
+            <Dropdown.Toggle username={activeUser.username} as={IconToggle} id="profile-menu" />
+
+            <Dropdown.Menu>
+                <Dropdown.Item onClick={onLogout}>Log out</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+    );
+}
+
+function PublicRoute({ authState }) {
     // If user exists, redirect them to home instead of showing Login/Landing
     return authState == AuthState.Authenticated ? (<Navigate to="/home" replace />) : (<Outlet />);
 };
 
-function PrivateRoute ({ authState }) {
+function PrivateRoute({ authState }) {
     // If user does not exist, redirect them to Login
     return authState != AuthState.Authenticated ? (<Navigate to="/" replace />) : (<Outlet />);
-    
+
 };
 
 export function NotFound() {

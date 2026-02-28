@@ -43,8 +43,12 @@ menu {
     min-width: 100vw;
 }
 
-.profile {
+.profile button {
     font-size: 20px;
+}
+
+.profile button:hover {
+    color: darkslategray;
 }
 
 .title .logo, .top .profile-symbol {
