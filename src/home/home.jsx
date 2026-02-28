@@ -25,7 +25,6 @@ export function Home({ activeUser }) {
 
   const { showToast } = useToast();
 
-
   // Respond to event invite
   async function respondToEventInvite(event, accepted) {
     if (accepted) {
@@ -40,7 +39,7 @@ export function Home({ activeUser }) {
           title: 'Declined Event Invite',
           message: `Event "${event.title}" has been removed from your invites.`,
           bg: 'warning',
-        })
+        });
     }
     setEventInvites((prev) => prev.filter((req) => req !== event));
   }
