@@ -17,7 +17,7 @@ export function Calendar({ year, month, events }) {
                     <div key={day.date.toISOString()} className={day.classNames.join(" ")}>
                         {day.date.getDate()}<br />
                         {day.events.map((event) => (
-                            <EventChip key={event.id} event={event} />
+                            <EventChip key={event.eventID} event={event} />
                         ))}
                     </div>
                 ))
