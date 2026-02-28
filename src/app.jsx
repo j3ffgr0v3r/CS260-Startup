@@ -13,25 +13,25 @@ import { ResetDatabase } from './components/debug';
 import { Button } from 'react-bootstrap';
 
 export default function App() {
-    const [username, setUsername] = React.useState(localStorage.getItem('username') || '');
-    const [userEmail, setUserEmail] = React.useState(localStorage.getItem('userEmail') || '');
-    const [authState, setAuthState] = React.useState(userEmail ? AuthState.Authenticated : AuthState.Unauthenticated);
+    const [activeUser, setActiveUser] = React.useState(() => {
+        const saved = localStorage.getItem('activeUser');
+        return saved ? JSON.parse(saved) : [];
+      });
+    const [authState, setAuthState] = React.useState(activeUser ? AuthState.Authenticated : AuthState.Unauthenticated);
 
     return (
         <BrowserRouter>
             <div className="app">
                 <Routes>
                     <Route element={<PublicRoute authState={authState}/>}>
-                        <Route path='/' element={<Login userEmail={userEmail}
-                                            onAuthChange={(username, userEmail, authState) => {
-                                            setUsername(username);
-                                            setUserEmail(userEmail);
+                        <Route path='/' element={<Login onAuthChange={(activeUser, authState) => {
+                                            setActiveUser(activeUser);
                                             setAuthState(authState);
                                             }}/>} exact />
                     </Route>
                     <Route element={<PrivateRoute authState={authState} />}>
-                        <Route element={<Header username={username} />}>
-                            <Route path='/home' element={<Home username={username} />} />
+                        <Route element={<Header activeUser={activeUser} />}>
+                            <Route path='/home' element={<Home activeUser={activeUser} />} />
                             <Route path='/friends/:friendID' element={<FriendSchedule />} />
                             <Route path='/friends' element={<Friends />} />
                             {/* <Route path='/friend_schedule' element={<FriendSchedule />} /> */}
@@ -51,7 +51,7 @@ export default function App() {
     );
 }
 
-function Header({ username }) {
+function Header({ activeUser }) {
     return (
         <>
             <header className="bg-white">
@@ -60,7 +60,7 @@ function Header({ username }) {
                         <h1 className="text-primary mb-0"><img className="logo" src="/images/logo.svg" alt="logo" />What's Your Schedule?</h1>
                     </div>
                     <div className="profile me-3">
-                        <span>{username}</span><img className="profile-symbol" src="/images/profile.svg" alt="profile" />
+                        <span>{activeUser.username}</span><img className="profile-symbol" src="/images/profile.svg" alt="profile" />
                     </div>
                 </div>
 

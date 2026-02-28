@@ -18,7 +18,7 @@ export function FriendSchedule() {
 
   const { friendID } = useParams();
 
-  const friend = friends.find((friend) => friend.username === friendID)
+  const friend = friends.find((friend) => friend.user.username === friendID)
 
   if (friend == undefined) {
     return NotFound();
@@ -26,9 +26,9 @@ export function FriendSchedule() {
 
   return (
     <main>
-      <h2>{friend.displayName}'{friend.displayName.at(-1) == "s" ? "" : "s"} Schedule</h2>
+      <h2>{friend.user.firstName}'{friend.user.firstName.at(-1) == "s" ? "" : "s"} Schedule</h2>
       <div className="center">
-        <Calendar year={2026} month={1} events={friend.events} />
+        <Calendar year={2026} month={1} events={friend.user.events} />
         <div className="management friend-schedule-management">
           <button className="btn btn-danger btn-lg"><span>✖</span> Remove Friend</button>
         </div>

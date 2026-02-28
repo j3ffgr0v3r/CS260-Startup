@@ -3,7 +3,7 @@ import React from 'react';
 import "./home.css";
 import { Calendar } from '../components/calendar';
 
-export function Home({ username }) {
+export function Home({ activeUser }) {
   // Import and hook userEvents
   const [userEvents, setEvents] = React.useState(() => {
     const saved = localStorage.getItem('userEvents');
@@ -33,7 +33,7 @@ export function Home({ username }) {
 
   return (
     <main className="m-1 bg-light text-dark">
-      <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{username}</i>?</h2>
+      <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{activeUser.firstName}</i>?</h2>
 
       <div className="home-center">
         <Calendar year={2026} month={1} events={userEvents} />
@@ -85,7 +85,7 @@ export function Home({ username }) {
             { eventInvites.length == 0 ? <div><i>There are no pending invites</i></div> :
               eventInvites.map((event) => (
                 <div key={event.eventID} className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(event.date))}<br />
-                  {event.host.displayName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToEventInvite(event, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
+                  {event.host.user.firstName + " " + event.host.user.lastName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToEventInvite(event, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
               ))
             }
           </div>

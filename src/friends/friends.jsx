@@ -33,9 +33,9 @@ export function Friends() {
     <main>
       <h3>Pending Invites</h3>
       <div className="pending-friend-invites">
-        {
+        { friendRequests.length == 0 ? <div><i>There are no pending friend requests</i></div> :
           friendRequests.map((request) => (
-            <div key={request.username} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.displayName}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
+            <div key={request.user.username} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.user.firstName + " " + request.user.lastName}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
           ))
         }
       </div>
@@ -52,9 +52,9 @@ export function Friends() {
 
       <h3>Friends</h3>
       <div className="friends">
-        {
+        { friends.length == 0 ? <div><i>It's looking a little empty here... why don't you invite some friends?</i></div> :
           friends.map((friend) => (
-            <div key={friend.username} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.displayName}<NavLink to={friend.username} className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
+            <div key={friend.user.username} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.user.firstName + " " + friend.user.lastName}<NavLink to={friend.user.username} className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
           ))
         }
       </div>

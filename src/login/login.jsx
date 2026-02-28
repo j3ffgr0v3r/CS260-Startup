@@ -1,4 +1,4 @@
-import React, { useDeferredValue } from 'react';
+import React from 'react';
 
 import "./login.css";
 
@@ -8,9 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthState } from './authState';
 
 export function Login({ onAuthChange }) {
-    const [loginEmail, setLoginEmail] = React.useState('');
+    const [loginUsername, setLoginUsername] = React.useState('');
     const [loginPassword, setLoginPassword] = React.useState('');
-    const [createUsername, setUsername] = React.useState('');
     const [createFirstName, setFirstName] = React.useState('');
     const [createLastName, setLastName] = React.useState('');
     const [formState, setFormState] = React.useState('login');
@@ -26,14 +25,14 @@ export function Login({ onAuthChange }) {
 
     async function authenticate(user) {
         localStorage.setItem('activeUser', JSON.stringify(user));
-        onAuthChange(loginEmail, loginEmail, AuthState.Authenticated);
+        onAuthChange(user, AuthState.Authenticated);
         navigate("/home");
     }
 
     async function loginUser() {
         setDisplayError(null);
         // Find user
-        const match = users.find(user => user.email === loginEmail);
+        const match = users.find(user => user.username === loginUsername);
         if (match != undefined && match.password == loginPassword) {
             authenticate(match);
         } else {
@@ -43,32 +42,29 @@ export function Login({ onAuthChange }) {
 
     async function beginCreateUser() {
         setDisplayError(null);
-        const match = users.find(user => user.email === loginEmail);
+        const match = users.find(user => user.username === username);
         if (match != undefined) {
-            setDisplayError("Error: Account found with given email. Please sign in.")
+            setDisplayError("Error: Account found with given username. Please sign in.");
         } else {
-            setFormState('create')
+            setFormState('create');
         }
     }
 
     async function createUser() {
         setDisplayError(null);
-        const match = users.find(user => user.username === createUsername);
-        if (match != undefined) {
-            setDisplayError("Error: Username already taken.")
-        } else {
-            const newUser = {
-                username: createUsername,
-                password: loginPassword,
-                firstName: createFirstName,
-                lastName: createLastName,
-                events: []
-            }
-            const usersUpdated = [...users, newUser]
-            setUsers(usersUpdated);
-            localStorage.setItem('users', JSON.stringify(usersUpdated));
-            authenticate(newUser);
+
+        const newUser = {
+            username: loginUsername,
+            password: loginPassword,
+            firstName: createFirstName,
+            lastName: createLastName,
+            events: []
         }
+        const usersUpdated = [...users, newUser]
+        setUsers(usersUpdated);
+        localStorage.setItem('users', JSON.stringify(usersUpdated));
+        authenticate(newUser);
+
     }
 
 
@@ -84,23 +80,20 @@ export function Login({ onAuthChange }) {
                     {formState == 'login' && (<>
                         <h2>What's your schedule looking like today?</h2>
                         <div className="m-3">
-                            <input className="form-control" type="email" placeholder="Email" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+                            <input className="form-control" type="text" placeholder="Username" required value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)} />
                         </div>
                         <div className="m-3">
                             <input className="form-control" type="password" placeholder="Password" onChange={(e) => setLoginPassword(e.target.value)} required />
                         </div>
                         {displayError && <div className="m-3 text-danger">{displayError}</div>}
                         <div className="login-buttons">
-                            <Button className="m-2 btn" variant='primary' onClick={() => loginUser()} disabled={!loginEmail || !loginPassword}>Log In</Button>
-                            <Button className="m-2 btn" variant='secondary' onClick={() => beginCreateUser()} disabled={!loginEmail || !loginPassword}>Create New Account</Button>
+                            <Button className="m-2 btn" variant='primary' onClick={() => loginUser()} disabled={!loginUsername || !loginPassword}>Log In</Button>
+                            <Button className="m-2 btn" variant='secondary' onClick={() => beginCreateUser()} disabled={!loginUsername || !loginPassword}>Create New Account</Button>
                         </div>
                     </>)
                     }
                     {formState == 'create' && (<>
                         <h2>Nice to meet you{(createFirstName.length > 0 ? ", " : "") + createFirstName}!</h2>
-                        <div className="m-3">
-                            <input className="form-control" type="text" placeholder="Username" required value={createUsername} onChange={(e) => setUsername(e.target.value)} />
-                        </div>
                         <div className="m-3">
                             <input className="form-control" type="text" placeholder="First Name" required value={createFirstName} onChange={(e) => setFirstName(e.target.value)} />
                         </div>
