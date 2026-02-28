@@ -24,6 +24,7 @@ export function ResetDatabase() {
     const users = [
         {
             username: "clairevance07",
+            password: "password",
             firstName: "Claire",
             lastName: "Vance",
             events: [
@@ -55,6 +56,7 @@ export function ResetDatabase() {
         },
         {
             username: "turingA113",
+            password: "password",
             firstName: "Alex",
             lastName: "Turing",
             events: [
@@ -86,6 +88,7 @@ export function ResetDatabase() {
         },
         {
             username: "Matt<3",
+            password: "password",
             firstName: "Matthew",
             lastName: "Hart",
             events: [
@@ -117,18 +120,21 @@ export function ResetDatabase() {
         },
                 {
             username: "plarke_",
+            password: "password",
             firstName: "Preston",
             lastName: "Clarke",
             events: []
         },
         {
             username: "LMP",
+            password: "password",
             firstName: "Layne",
             lastName: "Peterson",
             events: []
         },
         {
             username: "JeffersonBestPres",
+            password: "password",
             firstName: "Jessica",
             lastName: "McRae",
             events: []

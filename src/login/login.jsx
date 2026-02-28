@@ -59,6 +59,7 @@ export function Login({ onAuthChange }) {
         } else {
             const newUser = {
                 username: createUsername,
+                password: loginPassword,
                 firstName: createFirstName,
                 lastName: createLastName,
                 events: []
