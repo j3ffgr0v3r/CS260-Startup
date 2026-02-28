@@ -117,7 +117,7 @@ export function Home({ activeUser, friends }) {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Event Description</Form.Label>
+                  <Form.Label>Details</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={3}

@@ -36,6 +36,7 @@ function EventChip({ event }) {
                                             minute: 'numeric',
                                             hour12: true
                                         })}</div>}
+                {event.description && <div><strong>Details:</strong> {event.description}</div>}
                 {event.host && <div><strong>Host:</strong> {event.host.user.firstName + " " + event.host.user.lastName}</div>}
                 {event.location && <div><strong>Location:</strong> {event.location}</div>}
             </Popover.Body>

@@ -6,18 +6,10 @@ import { useToast } from '../components/toast';
 
 import "./friends.css";
 
-export function Friends({ friends, friendRequests }) {
+export function Friends({ friends, setFriends, friendRequests, setFriendRequests }) {
   const [friendRequestUsername, setFriendRequestUsername] = React.useState('');
 
   const { showToast } = useToast();
-
-  // Save whenever state changes
-  React.useEffect(() => {
-    localStorage.setItem('friends', JSON.stringify(friends));
-  }, [friends]);
-  React.useEffect(() => {
-    localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
-  }, [friendRequests]);
 
   async function respondToFriendRequest(request, accepted) {
     if (accepted) {

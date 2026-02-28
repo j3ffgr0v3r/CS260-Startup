@@ -28,6 +28,14 @@ export default function App() {
         return saved ? JSON.parse(saved) : [];
     });
 
+    // Save whenever state changes
+    React.useEffect(() => {
+        localStorage.setItem('friends', JSON.stringify(friends));
+    }, [friends]);
+    React.useEffect(() => {
+        localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
+    }, [friendRequests]);
+
     return (
         <ToastProvider>
             <BrowserRouter>
@@ -44,7 +52,7 @@ export default function App() {
                             <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
                                 <Route path='/home' element={<Home activeUser={activeUser} friends={friends} />} />
                                 <Route path='/friends/:friendID' element={<FriendSchedule />} />
-                                <Route path='/friends' element={<Friends friends={friends} friendRequests={friendRequests} />} />
+                                <Route path='/friends' element={<Friends friends={friends} setFriends={setFriends} friendRequests={friendRequests} setFriendRequests={setFriendRequests} />} />
                                 <Route path='/about' element={<About />} />
                             </Route>
 

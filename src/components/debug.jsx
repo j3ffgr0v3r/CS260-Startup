@@ -4,18 +4,22 @@ export function ResetDatabase() {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 6, 20),
             title: "LoTR Marathon",
+            description: "Bring your swords ;)",
             allDay: false
         },
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 17),
             title: "Camping",
+            location: "Tibble Fork",
             allDay: true
         },
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 23, 10),
             title: "Service Project",
+            description: "Shovel Snow",
+            location: "Nearby Neighborhood",
             allDay: false
         }
     ]
@@ -32,24 +36,23 @@ export function ResetDatabase() {
                     eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 7, 21),
                     title: "Karaoke",
+                    description: "Let's see how good your voice really is",
                     allDay: false
                 },
                 {
                     eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 11, 20),
                     title: "Mission Prep",
+                    description: "Helaman Girls...",
                     allDay: false
                 },
-                {
-                    eventID: events.at(2),
-                    date: new Date(2026, 1, 23, 10),
-                    title: "Service Project",
-                    allDay: false
-                },
+                events.at(2),
                 {
                     eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 27),
                     title: "Ski Trip",
+                    description: "In what snow???",
+                    location: "Somewhere, I suppose",
                     allDay: true
                 }
             ]
@@ -72,12 +75,7 @@ export function ResetDatabase() {
                     title: "Hike",
                     allDay: false
                 },
-                {
-                    eventID: events.at(2),
-                    date: new Date(2026, 1, 23, 10),
-                    title: "Service Project",
-                    allDay: false
-                },
+                events.at(2),
                 {
                     eventID: crypto.randomUUID(),
                     date: new Date(2026, 1, 13, 12),
