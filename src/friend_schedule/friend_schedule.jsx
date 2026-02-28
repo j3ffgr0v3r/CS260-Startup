@@ -7,16 +7,7 @@ import { NotFound } from '../app';
 import { Dropdown } from 'react-bootstrap';
 import { useToast } from '../components/toast';
 
-export function FriendSchedule() {
-  // Import and hook friends list
-  const [friends, setFriends] = React.useState(() => {
-    const saved = localStorage.getItem('friends');
-    return saved ? JSON.parse(saved) : [];
-  });
-  React.useEffect(() => {
-    localStorage.setItem('friends', JSON.stringify(friends));
-  }, [friends]);
-
+export function FriendSchedule({ friends, setFriends }) {
   const { friendID } = useParams();
 
   const { showToast } = useToast();

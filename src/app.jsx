@@ -51,7 +51,7 @@ export default function App() {
 
                             <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
                                 <Route path='/home' element={<Home activeUser={activeUser} friends={friends} />} />
-                                <Route path='/friends/:friendID' element={<FriendSchedule />} />
+                                <Route path='/friends/:friendID' element={<FriendSchedule friends={friends} setFriends={setFriends} />} />
                                 <Route path='/friends' element={<Friends friends={friends} setFriends={setFriends} friendRequests={friendRequests} setFriendRequests={setFriendRequests} />} />
                                 <Route path='/about' element={<About />} />
                             </Route>
