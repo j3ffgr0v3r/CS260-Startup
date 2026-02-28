@@ -23,7 +23,7 @@ export function ToastProvider({ children }) {
     <ToastContext.Provider value={{ showToast }}>
       {children}
 
-      <ToastContainer position="top-end" className="p-3">
+      <ToastContainer position="top-end" containerPosition="fixed" className="p-3">
         <Toast bg={toast.bg} show={toast.show} onClose={hideToast} autohide delay={2500}>
           <Toast.Header closeButton>
             <strong className="me-auto">{toast.title}</strong>
