@@ -1,5 +1,6 @@
 import React from 'react';
-import { data } from 'react-router-dom';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 
 export function Calendar({ year, month, events }) {
     return (
@@ -16,17 +17,47 @@ export function Calendar({ year, month, events }) {
                     <div key={day.date.toISOString()} className={day.classNames.join(" ")}>
                         {day.date.getDate()}<br />
                         {day.events.map((event) => (
-                            <span key={event.eventID} className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>{!event.allDay && event.date.toLocaleString('en-US', {
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                hour12: true
-                            })} {event.title}</span>
+                            <EventChip key={event.id} event={event} />
+                            // <span key={event.eventID} className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>{!event.allDay && event.date.toLocaleString('en-US', {
+                            //     hour: 'numeric',
+                            //     minute: 'numeric',
+                            //     hour12: true
+                            // })} {event.title}</span>
                         ))}
                     </div>
                 ))
             }
         </div>
     )
+}
+
+function EventChip({ event }) {
+    const pop = (
+        <Popover id={`event-${event.eventid}`}>
+            <Popover.Header as="h3">{event.title}</Popover.Header>
+            <Popover.Body>
+                {!event.allDay && <div><strong>Time:</strong> {event.date.toLocaleString('en-US', {
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                            hour12: true
+                                        })}</div>}
+                {event.host && <div><strong>Host:</strong> {event.host.user.firstName + " " + event.host.user.lastName}</div>}
+                {event.location && <div><strong>Location:</strong> {event.location}</div>}
+            </Popover.Body>
+        </Popover>
+    );
+
+    return (
+        <OverlayTrigger trigger={['click']} placement="auto" overlay={pop} rootClose>
+            <button type="button" className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>
+                {!event.allDay && event.date.toLocaleString('en-US', {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                hour12: true
+                            })} {event.title}
+            </button>
+        </OverlayTrigger>
+    );
 }
 
 function GenerateDayKey(date) {

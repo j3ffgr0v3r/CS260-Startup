@@ -106,8 +106,13 @@ menu .nav-item {
 }
 
 .event {
+    all: unset;
     white-space: nowrap;
     align-items: center;
+}
+
+.event:hover {
+    color: darkslategray;
 }
 
 .event-all-day {
