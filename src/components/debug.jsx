@@ -21,10 +21,11 @@ export function ResetDatabase() {
     ]
     localStorage.setItem('userEvents', JSON.stringify(events));
 
-    const friends = [
+    const users = [
         {
             username: "clairevance07",
-            displayName: "Claire Vance",
+            firstName: "Claire",
+            lastName: "Vance",
             events: [
                 {
                     eventID: crypto.randomUUID(),
@@ -54,7 +55,8 @@ export function ResetDatabase() {
         },
         {
             username: "turingA113",
-            displayName: "Alex Turing",
+            firstName: "Alex",
+            lastName: "Turing",
             events: [
                 {
                     eventID: crypto.randomUUID(),
@@ -84,7 +86,8 @@ export function ResetDatabase() {
         },
         {
             username: "Matt<3",
-            displayName: "Matthew Hart",
+            firstName: "Matthew",
+            lastName: "Hart",
             events: [
                 {
                     eventID: crypto.randomUUID(),
@@ -111,23 +114,56 @@ export function ResetDatabase() {
                     allDay: true
                 }
             ]
-        }
-
-    ]
-    localStorage.setItem('friends', JSON.stringify(friends));
-
-    const friendRequests = [
-        {
+        },
+                {
             username: "plarke_",
-            displayName: "Preston Clarke"
+            firstName: "Preston",
+            lastName: "Clarke",
+            events: []
         },
         {
             username: "LMP",
-            displayName: "Layne Peterson"
+            firstName: "Layne",
+            lastName: "Peterson",
+            events: []
         },
         {
             username: "JeffersonBestPres",
-            displayName: "Jessica McRae"
+            firstName: "Jessica",
+            lastName: "McRae",
+            events: []
+        }
+
+    ]
+    localStorage.setItem('users', JSON.stringify(users));
+
+
+    const friends = [ 
+        {
+            user: users.at(0)
+        },
+        {
+            user: users.at(1)
+        },
+        {
+            user: users.at(2)
+        }
+
+
+    ]
+
+    localStorage.setItem('friends', JSON.stringify(friends));
+
+
+    const friendRequests = [
+        {
+            user: users.at(3)
+        },
+        {
+            user: users.at(4)
+        },
+        {
+            user: users.at(5)
         }
 
     ]
