@@ -74,6 +74,7 @@ export function Home({ activeUser, friends }) {
       eventID: crypto.randomUUID(),
       date: new Date(newEventDate + (!newEventAllDay ? newEventTime : "")),
       title: newEventTitle,
+      description: newEventDescription,
       allDay: newEventAllDay,
       host: {
         user: activeUser
@@ -96,46 +97,6 @@ export function Home({ activeUser, friends }) {
       <div className="home-center">
         <Calendar year={2026} month={1} events={userEvents} />
         <div className="management home-management">
-          <div className="modal fade" id="eventCreationModal" tabIndex="-1" aria-labelledby="eventCreationModalLabel" style={{ display: "none" }} aria-hidden="true">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="eventCreationModalLabel">New Event</h5>
-                </div>
-                <div className="modal-body">
-                  <form>
-                    <div>
-                      <span>Event Name:</span>
-                      <input className="form-control" type="text" placeholder="Super Cool Party" required />
-                    </div>
-                    <div>
-                      <span>Event Description</span>
-                      <textarea className="form-control" placeholder="Description"></textarea>
-                    </div>
-                    <div>
-                      <span>Friends</span>
-                      <select className="form-select" multiple size="8">
-                        <option>Claire Vance</option>
-                        <option>Alex Turing</option>
-                        <option>Matthew Hart</option>
-                        <option>Jessica McRae</option>
-                      </select>
-                    </div>
-                    <div>
-                      <span>Date</span>
-                      <input className="form-control" type="date" required></input>
-                    </div>
-                  </form>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" className="btn btn-primary">Save Event</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
           <Button variant="primary" className="btn-lg" onClick={openEventCreationModal}><span>+</span> Create Event</Button>
           <Modal show={showCreateEventModal} onHide={closeEventCreationModal} centered>
             <Modal.Header closeButton>
