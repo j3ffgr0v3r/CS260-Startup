@@ -79,6 +79,11 @@ function Header({ activeUser, setActiveUser, setAuthState }) {
         <Navigate to="/" replace />;
     }
 
+
+    function linkToSchoolAccount() {
+        window.location.href = 'https://my.byu.edu';
+    }
+
     return (
         <>
             <header className="bg-white">
@@ -87,7 +92,7 @@ function Header({ activeUser, setActiveUser, setAuthState }) {
                         <h1 className="text-primary mb-0"><img className="logo" src="/images/logo.svg" alt="logo" />What's Your Schedule?</h1>
                     </div>
                     <div className="profile me-3">
-                        <ProfileMenu activeUser={activeUser} onLogout={logout} />
+                        <ProfileMenu activeUser={activeUser} onLogout={logout} linkToSchoolAccount={linkToSchoolAccount} />
                     </div>
                 </div>
 
@@ -120,13 +125,14 @@ const IconToggle = React.forwardRef(({ username, onClick }, ref) => (
     </button>
 ));
 
-function ProfileMenu({ activeUser, onLogout }) {
+function ProfileMenu({ activeUser, onLogout, linkToSchoolAccount }) {
     return (
         <Dropdown align="end">
             <Dropdown.Toggle username={activeUser.username} as={IconToggle} id="profile-menu" />
 
             <Dropdown.Menu>
                 <Dropdown.Item onClick={onLogout}>Log out</Dropdown.Item>
+                <Dropdown.Item onClick={linkToSchoolAccount}>Import Class Schedule</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );
