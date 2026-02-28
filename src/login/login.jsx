@@ -32,7 +32,7 @@ export function Login({ onAuthChange }) {
     async function loginUser() {
         setDisplayError(null);
         // Find user
-        const match = users.find(user => user.username === loginUsername);
+        const match = users.find(user => user.username.toLowerCase() === loginUsername.toLowerCase());
         if (match != undefined && match.password == loginPassword) {
             authenticate(match);
         } else {
@@ -42,7 +42,7 @@ export function Login({ onAuthChange }) {
 
     async function beginCreateUser() {
         setDisplayError(null);
-        const match = users.find(user => user.username === username);
+        const match = users.find(user => user.username.toLowerCase() === username.toLowerCase());
         if (match != undefined) {
             setDisplayError("Error: Account found with given username. Please sign in.");
         } else {
