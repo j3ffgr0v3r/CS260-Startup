@@ -6,16 +6,8 @@ import { useToast } from '../components/toast';
 
 import "./friends.css";
 
-export function Friends() {
+export function Friends({ friends, friendRequests }) {
   const [friendRequestUsername, setFriendRequestUsername] = React.useState('');
-  const [friends, setFriends] = React.useState(() => {
-    const saved = localStorage.getItem('friends');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [friendRequests, setFriendRequests] = React.useState(() => {
-    const saved = localStorage.getItem('friendRequests');
-    return saved ? JSON.parse(saved) : [];
-  });
 
   const { showToast } = useToast();
 

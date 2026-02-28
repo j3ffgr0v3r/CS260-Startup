@@ -19,6 +19,14 @@ export default function App() {
         return saved ? JSON.parse(saved) : null;
     });
     const [authState, setAuthState] = React.useState(activeUser ? AuthState.Authenticated : AuthState.Unauthenticated);
+    const [friends, setFriends] = React.useState(() => {
+        const saved = localStorage.getItem('friends');
+        return saved ? JSON.parse(saved) : [];
+    });
+    const [friendRequests, setFriendRequests] = React.useState(() => {
+        const saved = localStorage.getItem('friendRequests');
+        return saved ? JSON.parse(saved) : [];
+    });
 
     return (
         <ToastProvider>
@@ -34,9 +42,9 @@ export default function App() {
                         <Route element={<PrivateRoute authState={authState} />}>
 
                             <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
-                                <Route path='/home' element={<Home activeUser={activeUser} />} />
+                                <Route path='/home' element={<Home activeUser={activeUser} friends={friends} />} />
                                 <Route path='/friends/:friendID' element={<FriendSchedule />} />
-                                <Route path='/friends' element={<Friends />} />
+                                <Route path='/friends' element={<Friends friends={friends} friendRequests={friendRequests} />} />
                                 <Route path='/about' element={<About />} />
                             </Route>
 

@@ -5,7 +5,7 @@ import { Calendar } from '../components/calendar';
 import { useToast } from '../components/toast';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-export function Home({ activeUser }) {
+export function Home({ activeUser, friends }) {
   // Import and hook userEvents
   const [userEvents, setEvents] = React.useState(() => {
     const saved = localStorage.getItem('userEvents');
@@ -48,10 +48,18 @@ export function Home({ activeUser }) {
   // Create Event
   const [showCreateEventModal, setShowCreateEventModal] = React.useState(false);
   const [newEventTitle, setNewEventTitle] = React.useState('');
+  const [newEventDescription, setNewEventDescription] = React.useState('');
   const [newEventDate, setNewEventDate] = React.useState('');
   const [newEventAllDay, setNewEventAllDay] = React.useState(false);
   const [newEventTime, setNewEventTime] = React.useState('');
-  const [newEventInvitees, setNewEventInvitees] = React.useState('');
+  const [newEventInvitees, setNewEventInvitees] = React.useState([]);
+  function toggleInvitee(username) {
+    setNewEventInvitees((prev) =>
+      prev.includes(username)
+        ? prev.filter((u) => u !== username)
+        : [...prev, username]
+    );
+  }
 
   function openEventCreationModal() {
     setShowCreateEventModal(true);
@@ -64,16 +72,21 @@ export function Home({ activeUser }) {
   function saveEvent() {
     const newEvent = {
       eventID: crypto.randomUUID(),
-      date: new Date(newEventDate),
+      date: new Date(newEventDate + (!newEventAllDay ? newEventTime : "")),
       title: newEventTitle,
-      allDay: false,
-      host: activeUser
+      allDay: newEventAllDay,
+      host: {
+        user: activeUser
+      }
     }
     setEvents(prev => [...prev, newEvent]);
     closeEventCreationModal();
     setNewEventTitle('');
+    setNewEventDescription('');
     setNewEventDate('');
-    setNewEventInvitees('');
+    setNewEventAllDay(false);
+    setNewEventTime('');
+    setNewEventInvitees([]);
   }
 
   return (
@@ -141,17 +154,17 @@ export function Home({ activeUser }) {
                     required
                   />
                 </Form.Group>
-                {/* 
+
                 <Form.Group className="mb-3">
                   <Form.Label>Event Description</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={3}
                     placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={newEventDescription}
+                    onChange={(e) => setNewEventDescription(e.target.value)}
                   />
-                </Form.Group> */}
+                </Form.Group>
 
                 <Form.Group>
                   <Form.Label>Date</Form.Label>
@@ -180,7 +193,23 @@ export function Home({ activeUser }) {
                   </Form.Group>
                 </div>
 
-                
+                <Form.Group className="mb-3">
+                  <Form.Label>Invite Friends</Form.Label>
+
+                  <div className="border rounded p-2" style={{ maxHeight: 180, overflowY: 'auto' }}>
+                    {friends.map((friend) => (
+                      <Form.Check
+                        key={friend.user.username}
+                        type="checkbox"
+                        id={`invite-${friend.user.username}`}
+                        label={friend.user.firstName + " " + friend.user.lastName}
+                        checked={newEventInvitees.includes(friend.user.username)}
+                        onChange={() => toggleInvitee(friend.user.username)}
+                        className="mb-1"
+                      />
+                    ))}
+                  </div>
+                </Form.Group>
 
               </Form>
             </Modal.Body>
@@ -189,13 +218,11 @@ export function Home({ activeUser }) {
               <Button variant="secondary" onClick={closeEventCreationModal}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={saveEvent} disabled={!newEventTitle || !newEventDate}>
+              <Button variant="primary" onClick={saveEvent} disabled={!newEventTitle || !newEventDate || !(newEventAllDay || newEventTime)}>
                 Save Event
               </Button>
             </Modal.Footer>
           </Modal>
-
-
 
           <h3>Pending Invites</h3>
           <div className="pending-event-invites">
