@@ -3,6 +3,7 @@ import React from 'react';
 import "./home.css";
 import { Calendar } from '../components/calendar';
 import { useToast } from '../components/toast';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 export function Home({ activeUser }) {
   // Import and hook userEvents
@@ -30,18 +31,49 @@ export function Home({ activeUser }) {
     if (accepted) {
       setEvents((prev) => [...prev, event]);
       showToast({
-          title: 'Accepted Event Invite!',
-          message: `Event "${event.title}" has been added to your calendar!`,
-          bg: 'success',
-        });
+        title: 'Accepted Event Invite!',
+        message: `Event "${event.title}" has been added to your calendar!`,
+        bg: 'success',
+      });
     } else {
       showToast({
-          title: 'Declined Event Invite',
-          message: `Event "${event.title}" has been removed from your invites.`,
-          bg: 'warning',
-        });
+        title: 'Declined Event Invite',
+        message: `Event "${event.title}" has been removed from your invites.`,
+        bg: 'warning',
+      });
     }
     setEventInvites((prev) => prev.filter((req) => req !== event));
+  }
+
+  // Create Event
+  const [showCreateEventModal, setShowCreateEventModal] = React.useState(false);
+  const [newEventTitle, setNewEventTitle] = React.useState('');
+  const [newEventDate, setNewEventDate] = React.useState('');
+  const [newEventAllDay, setNewEventAllDay] = React.useState(false);
+  const [newEventTime, setNewEventTime] = React.useState('');
+  const [newEventInvitees, setNewEventInvitees] = React.useState('');
+
+  function openEventCreationModal() {
+    setShowCreateEventModal(true);
+  }
+
+  function closeEventCreationModal() {
+    setShowCreateEventModal(false);
+  }
+
+  function saveEvent() {
+    const newEvent = {
+      eventID: crypto.randomUUID(),
+      date: new Date(newEventDate),
+      title: newEventTitle,
+      allDay: false,
+      host: activeUser
+    }
+    setEvents(prev => [...prev, newEvent]);
+    closeEventCreationModal();
+    setNewEventTitle('');
+    setNewEventDate('');
+    setNewEventInvitees('');
   }
 
   return (
@@ -91,7 +123,80 @@ export function Home({ activeUser }) {
           </div>
 
 
-          <button type="button" className="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#eventCreationModal"><span>+</span> Create Event</button>
+          <Button variant="primary" className="btn-lg" onClick={openEventCreationModal}><span>+</span> Create Event</Button>
+          <Modal show={showCreateEventModal} onHide={closeEventCreationModal} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>New Event</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Label>Event Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Super Cool Party"
+                    value={newEventTitle}
+                    onChange={(e) => setNewEventTitle(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+                {/* 
+                <Form.Group className="mb-3">
+                  <Form.Label>Event Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </Form.Group> */}
+
+                <Form.Group>
+                  <Form.Label>Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={newEventDate}
+                    onChange={(e) => setNewEventDate(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+
+                <div className='create-event-time-wrapper'>
+                  <Form.Group>
+                    <Form.Label>Time</Form.Label>
+                    <Form.Control
+                      type="time"
+                      value={newEventTime}
+                      onChange={(e) => setNewEventTime(e.target.value)}
+                      required
+                      disabled={newEventAllDay}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>All Day Event</Form.Label>
+                    <Form.Check value={newEventAllDay} onChange={(e) => setNewEventAllDay(e.target.checked)} type="checkbox" />
+                  </Form.Group>
+                </div>
+
+                
+
+              </Form>
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeEventCreationModal}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={saveEvent} disabled={!newEventTitle || !newEventDate}>
+                Save Event
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+
+
           <h3>Pending Invites</h3>
           <div className="pending-event-invites">
             {eventInvites.length == 0 ? <div><i>There are no pending invites</i></div> :

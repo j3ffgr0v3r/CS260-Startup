@@ -13,6 +13,18 @@
     flex: 1;
 }
 
+.create-event-time-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 10px;
+}
+
+.create-event-time-wrapper input[type="checkbox"]{
+  width: 30px;
+  height: 30px;
+}
+
 @media (orientation: portrait) {
   .home-center {
     flex-direction: column;
