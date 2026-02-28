@@ -2,6 +2,7 @@ import React from 'react';
 
 import "./home.css";
 import { Calendar } from '../components/calendar';
+import { useToast } from '../components/toast';
 
 export function Home({ activeUser }) {
   // Import and hook userEvents
@@ -22,11 +23,24 @@ export function Home({ activeUser }) {
     localStorage.setItem('eventInvites', JSON.stringify(eventInvites));
   }, [eventInvites]);
 
+  const { showToast } = useToast();
+
 
   // Respond to event invite
   async function respondToEventInvite(event, accepted) {
     if (accepted) {
       setEvents((prev) => [...prev, event]);
+      showToast({
+          title: 'Accepted Event Invite!',
+          message: `Event "${event.title}" has been added to your calendar!`,
+          bg: 'success',
+        });
+    } else {
+      showToast({
+          title: 'Declined Event Invite',
+          message: `Event "${event.title}" has been removed from your invites.`,
+          bg: 'warning',
+        })
     }
     setEventInvites((prev) => prev.filter((req) => req !== event));
   }
@@ -82,7 +96,7 @@ export function Home({ activeUser }) {
           <button className="btn btn-secondary btn-lg"><span>✎</span> Edit Availability</button>
           <h3>Pending Invites</h3>
           <div className="pending-event-invites">
-            { eventInvites.length == 0 ? <div><i>There are no pending invites</i></div> :
+            {eventInvites.length == 0 ? <div><i>There are no pending invites</i></div> :
               eventInvites.map((event) => (
                 <div key={event.eventID} className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(event.date))}<br />
                   {event.host.user.firstName + " " + event.host.user.lastName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToEventInvite(event, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>

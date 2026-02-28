@@ -10,6 +10,7 @@ import { FriendSchedule } from './friend_schedule/friend_schedule';
 import { About } from './about/about';
 import { AuthState } from './login/authState';
 import { ResetDatabase } from './components/debug';
+import { ToastProvider } from './components/toast';
 import { Button, Dropdown } from 'react-bootstrap';
 
 export default function App() {
@@ -20,34 +21,37 @@ export default function App() {
     const [authState, setAuthState] = React.useState(activeUser ? AuthState.Authenticated : AuthState.Unauthenticated);
 
     return (
-        <BrowserRouter>
-            <div className="app">
-                <Routes>
-                    <Route element={<PublicRoute authState={authState} />}>
-                        <Route path='/' element={<Login onAuthChange={(activeUser, authState) => {
-                            setActiveUser(activeUser);
-                            setAuthState(authState);
-                        }} />} exact />
-                    </Route>
-                    <Route element={<PrivateRoute authState={authState} />}>
-                        <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
-                            <Route path='/home' element={<Home activeUser={activeUser} />} />
-                            <Route path='/friends/:friendID' element={<FriendSchedule />} />
-                            <Route path='/friends' element={<Friends />} />
-                            {/* <Route path='/friend_schedule' element={<FriendSchedule />} /> */}
-                            <Route path='/about' element={<About />} />
+        <ToastProvider>
+            <BrowserRouter>
+                <div className="app">
+                    <Routes>
+                        <Route element={<PublicRoute authState={authState} />}>
+                            <Route path='/' element={<Login onAuthChange={(activeUser, authState) => {
+                                setActiveUser(activeUser);
+                                setAuthState(authState);
+                            }} />} exact />
                         </Route>
-                    </Route>
-                    <Route path='*' element={<NotFound />} />
-                </Routes>
+                        <Route element={<PrivateRoute authState={authState} />}>
 
-                <footer className="border-top bg-light py-1 px-2">
-                    <div>Jeff Grover</div>
-                    <Button onClick={ResetDatabase}>Reset Database</Button>
-                    <div><a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a></div>
-                </footer>
-            </div>
-        </BrowserRouter>
+                            <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
+                                <Route path='/home' element={<Home activeUser={activeUser} />} />
+                                <Route path='/friends/:friendID' element={<FriendSchedule />} />
+                                <Route path='/friends' element={<Friends />} />
+                                <Route path='/about' element={<About />} />
+                            </Route>
+
+                        </Route>
+                        <Route path='*' element={<NotFound />} />
+                    </Routes>
+
+                    <footer className="border-top bg-light py-1 px-2">
+                        <div>Jeff Grover</div>
+                        <Button onClick={ResetDatabase}>Reset Database</Button>
+                        <div><a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a></div>
+                    </footer>
+                </div>
+            </BrowserRouter>
+        </ToastProvider>
     );
 }
 
@@ -67,7 +71,7 @@ function Header({ activeUser, setActiveUser, setAuthState }) {
                         <h1 className="text-primary mb-0"><img className="logo" src="/images/logo.svg" alt="logo" />What's Your Schedule?</h1>
                     </div>
                     <div className="profile me-3">
-                        <ProfileMenu activeUser={activeUser} onLogout={() => logout()} />
+                        <ProfileMenu activeUser={activeUser} onLogout={logout} />
                     </div>
                 </div>
 
