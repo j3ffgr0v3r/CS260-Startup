@@ -95,10 +95,10 @@ Converted all the old HTML files into JSX files, and used Routing to make this a
 
 ## 🚀 React part 2: Reactivity deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+It's reactive now! Using React the calendars and friends list are actually responsive.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - Everything do be working! I got a little lazy with making super detailed events... but you'll get the idea.
+- [x] **Hooks** - `useState` and `useEffect` for live events and friend list updates. Also used `context` for the toast to work.
 
 ## 🚀 Service deliverable
 
