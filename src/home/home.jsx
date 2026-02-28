@@ -95,7 +95,7 @@ export function Home({ activeUser, friends }) {
       <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{activeUser.firstName}</i>?</h2>
 
       <div className="home-center">
-        <Calendar year={2026} month={1} events={userEvents} />
+        <Calendar events={userEvents} />
         <div className="management home-management">
           <Button variant="primary" className="btn-lg" onClick={openEventCreationModal}><span>+</span> Create Event</Button>
           <Modal show={showCreateEventModal} onHide={closeEventCreationModal} centered>

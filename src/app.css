@@ -70,6 +70,23 @@ menu .nav-item {
     text-align: center;
 }
 
+.calendar-wrapper {
+    flex: 7;
+}
+
+.home-management {
+    flex: 3;
+}
+
+.calendar-cycle-control{
+    display: flex;
+    gap: 5px;
+}
+
+.calendar-cycle-control h3{
+    font-size: xx-large;
+}
+
 .day-label {
     padding-top: 3px;
     font-size: 75%;

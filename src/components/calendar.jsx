@@ -1,27 +1,49 @@
 import React from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import { Button } from 'react-bootstrap';
 
-export function Calendar({ year, month, events }) {
+export function Calendar({ events }) {
+    const today = new Date();
+    const [calendarMonth, setMonth] = React.useState(new Date(today.getFullYear(), today.getMonth(), 1));
+
+    function goToToday() {
+        setMonth(new Date(today.getFullYear(), today.getMonth(), 1));
+    }
+
+    function moveCalendar(dir) {
+        const newMonth = new Date(calendarMonth);
+        newMonth.setMonth(newMonth.getMonth() + dir);
+        setMonth(newMonth);
+    }
+
     return (
-        <div className="mx-1 bg-white border rounded-4 calendar home-calendar">
-            <div className="day-label day-left">SUN</div>
-            <div className="day-label">MON</div>
-            <div className="day-label">TUE</div>
-            <div className="day-label">WED</div>
-            <div className="day-label">THU</div>
-            <div className="day-label">FRI</div>
-            <div className="day-label day-right">SAT</div>
-            {
-                GenerateDays(year, month, events).map((day) => (
-                    <div key={day.date.toISOString()} className={day.classNames.join(" ")}>
-                        {day.date.getDate()}<br />
-                        {day.events.map((event) => (
-                            <EventChip key={event.eventID} event={event} />
-                        ))}
-                    </div>
-                ))
-            }
+        <div className='calendar-wrapper'>
+            <div className='calendar-cycle-control'>
+                <Button variant="primary" onClick={goToToday}>Today</Button>
+                <Button variant="secondary" onClick={() => moveCalendar(-1)}>&lt;</Button>
+                <Button variant="secondary" onClick={() => moveCalendar(+1)}>&gt;</Button>
+                <h3>{calendarMonth.toLocaleString('en-US', {month: 'long', year: 'numeric'})}</h3>
+            </div>
+            <div className="mx-1 bg-white border rounded-4 calendar home-calendar">
+                <div className="day-label day-left">SUN</div>
+                <div className="day-label">MON</div>
+                <div className="day-label">TUE</div>
+                <div className="day-label">WED</div>
+                <div className="day-label">THU</div>
+                <div className="day-label">FRI</div>
+                <div className="day-label day-right">SAT</div>
+                {
+                    GenerateDays(calendarMonth.getFullYear(), calendarMonth.getMonth(), events).map((day) => (
+                        <div key={day.date.toISOString()} className={day.classNames.join(" ")}>
+                            {day.date.getDate()}<br />
+                            {day.events.map((event) => (
+                                <EventChip key={event.eventID} event={event} />
+                            ))}
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     )
 }
@@ -32,10 +54,10 @@ function EventChip({ event }) {
             <Popover.Header as="h3">{event.title}</Popover.Header>
             <Popover.Body>
                 {!event.allDay && <div><strong>Time:</strong> {event.date.toLocaleString('en-US', {
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                            hour12: true
-                                        })}</div>}
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                })}</div>}
                 {event.description && <div><strong>Details:</strong> {event.description}</div>}
                 {event.host && <div><strong>Host:</strong> {event.host.user.firstName + " " + event.host.user.lastName}</div>}
                 {event.location && <div><strong>Location:</strong> {event.location}</div>}
@@ -47,10 +69,10 @@ function EventChip({ event }) {
         <OverlayTrigger trigger={['click']} placement="auto" overlay={pop} rootClose>
             <button type="button" className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>
                 {!event.allDay && event.date.toLocaleString('en-US', {
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                hour12: true
-                            })} {event.title}
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                })} {event.title}
             </button>
         </OverlayTrigger>
     );

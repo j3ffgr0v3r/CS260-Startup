@@ -50,7 +50,7 @@ export function FriendSchedule() {
         </Dropdown>
       </div>
       <div className="center">
-        <Calendar year={2026} month={1} events={friend.user.events} />
+        <Calendar events={friend.user.events} />
       </div>
     </main>
   );
