@@ -18,11 +18,6 @@ export function Calendar({ year, month, events }) {
                         {day.date.getDate()}<br />
                         {day.events.map((event) => (
                             <EventChip key={event.id} event={event} />
-                            // <span key={event.eventID} className={"event " + (event.allDay ? "event-all-day" : "event-timed")}>{!event.allDay && event.date.toLocaleString('en-US', {
-                            //     hour: 'numeric',
-                            //     minute: 'numeric',
-                            //     hour12: true
-                            // })} {event.title}</span>
                         ))}
                     </div>
                 ))
