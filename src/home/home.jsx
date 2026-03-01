@@ -69,10 +69,19 @@ export function Home({ activeUser, friends }) {
     setShowCreateEventModal(false);
   }
 
+  function createDate(date, time) {
+    let [year, month, day] = date.split('-').map(Number);
+    let [hour, minute] = time.split(':').map(Number);
+
+    month = month - 1;
+
+    return new Date(year, month, day, hour, minute)
+  }
+
   function saveEvent() {
     const newEvent = {
       eventID: crypto.randomUUID(),
-      date: new Date(newEventDate + (!newEventAllDay ? newEventTime : "")),
+      date: createDate(newEventDate, !newEventAllDay ? newEventTime : "00:00"),
       title: newEventTitle,
       description: newEventDescription,
       allDay: newEventAllDay,
@@ -109,7 +118,7 @@ export function Home({ activeUser, friends }) {
                   <Form.Label>Event Name</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Super Cool Party"
+                    placeholder="Event Name"
                     value={newEventTitle}
                     onChange={(e) => setNewEventTitle(e.target.value)}
                     required

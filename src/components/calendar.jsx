@@ -78,14 +78,6 @@ function EventChip({ event }) {
     );
 }
 
-function GenerateDayKey(date) {
-    return date.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric'
-    })
-}
-
 function GenerateDays(year, month, events) {
     events = events == undefined ? [] : events
     // Get Date Range
@@ -100,7 +92,7 @@ function GenerateDays(year, month, events) {
     for (const event of events) {
         event.date = new Date(event.date)
         eventDate = event.date
-        const key = GenerateDayKey(eventDate);
+        const key = eventDate.toDateString();
         if (!eventsMap.has(key)) {
             eventsMap.set(key, []);
         }
@@ -129,7 +121,7 @@ function GenerateDays(year, month, events) {
             classNames.push("day-right");
         }
 
-        dayEvents = eventsMap.get(GenerateDayKey(currentDate));
+        dayEvents = eventsMap.get(currentDate.toDateString());
         dayEvents = !dayEvents ? [] : dayEvents;
 
         days.push({ date: new Date(currentDate), classNames: classNames, events: dayEvents });
