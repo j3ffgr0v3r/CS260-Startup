@@ -12,7 +12,7 @@ export function Home({ activeUser, friends }) {
     fetch('/api/events')
       .then((response) => response.json())
       .then((events) => {
-        setEvents(events);
+        setEvents(Array.isArray(events) ? events : []);
       });
   }, []);
 
@@ -21,8 +21,8 @@ export function Home({ activeUser, friends }) {
   React.useEffect(() => {
     fetch('/api/eventInvites')
       .then((response) => response.json())
-      .then((invite) => {
-        setEventInvites(invite);
+      .then((invites) => {
+        setEventInvites(Array.isArray(invites) ? invites : []);
       });
   }, []);
 
@@ -100,21 +100,29 @@ export function Home({ activeUser, friends }) {
   }
 
   async function saveEvent() {
-    const response = await fetch("/api/events", {
-      method: 'post',
-      body: JSON.stringify({
+    const newEvent = {
         date: createDate(newEventDate, !newEventAllDay ? newEventTime : "00:00"),
         title: newEventTitle,
         description: newEventDescription,
         allDay: newEventAllDay,
-      }),
+        host: activeUser.username,
+        hostName: activeUser.displayName,
+      };
+    const response = await fetch("/api/events", {
+      method: 'post',
+      body: JSON.stringify(newEvent),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
     });
     const body = await response.json();
     if (response?.status === 200) {
-      return JSON.parse(body.event)
+      showToast({
+        title: 'New Event Created!',
+        message: `${newEvent.title} has been added to your calendar!`,
+        bg: 'success',
+      });
+      return newEvent;
     } else {
       showToast({
         title: 'Error!',

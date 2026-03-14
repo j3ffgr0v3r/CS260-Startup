@@ -27,7 +27,7 @@ export function FriendSchedule({ friends, setFriends }) {
     fetch(`/api/events?username=${friendUsername}`)
       .then((response) => response.json())
       .then((events) => {
-        setFriendEvents(events);
+        setFriendEvents(Array.isArray(events) ? events : []);
       });
   }, []);
 

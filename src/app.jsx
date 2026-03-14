@@ -30,7 +30,7 @@ export default function App() {
         fetch('/api/friends')
             .then((response) => response.json())
             .then((friendsList) => {
-                setFriends(friendsList);
+                setFriends(Array.isArray(friendsList) ? friendsList : []);
             });
     }, []);
     const [friendRequests, setFriendRequests] = React.useState([]);
@@ -38,7 +38,7 @@ export default function App() {
         fetch('/api/friendRequests')
             .then((response) => response.json())
             .then((friendRequestsList) => {
-                setFriendRequests(friendRequestsList);
+                setFriendRequests(Array.isArray(friendRequestsList) ? friendRequestsList : []);
             });
     }, []);
 
