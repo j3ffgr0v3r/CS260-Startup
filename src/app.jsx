@@ -14,6 +14,8 @@ import { ToastProvider } from './components/toast';
 import { Button, Dropdown } from 'react-bootstrap';
 
 export default function App() {
+    const [authState, setAuthState] = React.useState(localStorage.getItem('username') ? AuthState.Authenticated : AuthState.Unauthenticated);
+
     // Get active user
     const [activeUser, setActiveUser] = React.useState(null);
     React.useEffect(() => {
@@ -23,9 +25,8 @@ export default function App() {
             .then((user) => {
                 setActiveUser(user);
             });
-    }, []);
+    }, [authState]);
 
-    const [authState, setAuthState] = React.useState(localStorage.getItem('username') ? AuthState.Authenticated : AuthState.Unauthenticated);
     const [friends, setFriends] = React.useState([]);
     React.useEffect(() => {
         if (authState !== AuthState.Authenticated) return;
@@ -34,7 +35,7 @@ export default function App() {
             .then((friendsList) => {
                 setFriends(Array.isArray(friendsList) ? friendsList : []);
             });
-    }, []);
+    }, [authState]);
     const [friendRequests, setFriendRequests] = React.useState([]);
     React.useEffect(() => {
         if (authState !== AuthState.Authenticated) return;
@@ -43,7 +44,7 @@ export default function App() {
             .then((friendRequestsList) => {
                 setFriendRequests(Array.isArray(friendRequestsList) ? friendRequestsList : []);
             });
-    }, []);
+    }, [authState]);
 
     return (
         <ToastProvider>
