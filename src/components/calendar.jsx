@@ -23,7 +23,7 @@ export function Calendar({ events }) {
                 <Button variant="primary" onClick={goToToday}>Today</Button>
                 <Button variant="secondary" onClick={() => moveCalendar(-1)}>&lt;</Button>
                 <Button variant="secondary" onClick={() => moveCalendar(+1)}>&gt;</Button>
-                <h3>{calendarMonth.toLocaleString('en-US', {month: 'long', year: 'numeric'})}</h3>
+                <h3>{calendarMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' })}</h3>
             </div>
             <div className="mx-1 bg-white border rounded-4 calendar home-calendar">
                 <div className="day-label day-left">SUN</div>
@@ -59,7 +59,8 @@ function EventChip({ event }) {
                     hour12: true
                 })}</div>}
                 {event.description && <div><strong>Details:</strong> {event.description}</div>}
-                {event.host && <div><strong>Host:</strong> {event.host.user.firstName + " " + event.host.user.lastName}</div>}
+                {event.host && <div><strong>Host:</strong> {fetch(`/api/users/${event.host}`)
+                                                            .then((response) => response.json())}</div>}
                 {event.location && <div><strong>Location:</strong> {event.location}</div>}
             </Popover.Body>
         </Popover>
