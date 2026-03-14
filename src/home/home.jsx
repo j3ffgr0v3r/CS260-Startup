@@ -43,7 +43,7 @@ export function Home({ activeUser, friends }) {
 
   // Respond to event invite
   async function respondToEventInvite(event, accepted) {
-    fetch(`/api/event-invites/${event.eventID}`, {
+    fetch(`/api/eventInvites/${event.eventID}`, {
       method: 'put',
       body: JSON.stringify({ action: accepted ? "accept" : "decline" }),
       headers: {
