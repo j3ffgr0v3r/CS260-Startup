@@ -75,7 +75,7 @@ const verifyAuth = async (req, res, next) => {
 
 // Middleware to verify that the user has permission to view target users information (is self, or is friends)
 const verifyPermsToTargetUser = async (req, res, next) => {
-    const targetUser = req.body.username == req.user.username ? req.user : users.friends.find((u) => u["username"] === req.body.username);
+    const targetUser = req.query.username == req.user.username ? req.user : users.friends.find((u) => u["username"] === req.query.username);
     if (targetUser) {
         req.targetUser = targetUser;
         next();
@@ -85,7 +85,7 @@ const verifyPermsToTargetUser = async (req, res, next) => {
 };
 
 // GetEvents
-apiRouter.post('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
+apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
     res.send(_req.targetUser.events);
 });
 
