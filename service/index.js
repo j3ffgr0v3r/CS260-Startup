@@ -98,7 +98,7 @@ apiRouter.post('/resetDB', async (req, res) => {
             friends: ["turingA113"],
             friendRequests: ["Matt<3"],
             events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
-            eventInvites: [],
+            eventInvites: [events.at(0).eventID],
         },
         {
             username: "turingA113",

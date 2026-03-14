@@ -17,13 +17,14 @@ export function Home({ activeUser, friends }) {
   }, []);
 
   // Import and hook eventInvites
-  const [eventInvites, setEventInvites] = React.useState(() => {
-    const saved = localStorage.getItem('eventInvites');
-    return saved ? JSON.parse(saved) : [];
-  });
-  React.useEffect(() => {
-    localStorage.setItem('eventInvites', JSON.stringify(eventInvites));
-  }, [eventInvites]);
+  const [eventInvites, setEventInvites] = React.useState([]);
+    React.useEffect(() => {
+    fetch('/api/eventInvites')
+      .then((response) => response.json())
+      .then((events) => {
+        setEvents(events);
+      });
+  }, []);
 
   const { showToast } = useToast();
 
