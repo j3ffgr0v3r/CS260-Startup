@@ -17,6 +17,7 @@ export default function App() {
     // Get active user
     const [activeUser, setActiveUser] = React.useState(null);
     React.useEffect(() => {
+        if (authState !== AuthState.Authenticated) return;
         fetch(`/api/users/${localStorage.getItem('username')}`)
             .then((response) => response.json())
             .then((user) => {
@@ -27,6 +28,7 @@ export default function App() {
     const [authState, setAuthState] = React.useState(localStorage.getItem('username') ? AuthState.Authenticated : AuthState.Unauthenticated);
     const [friends, setFriends] = React.useState([]);
     React.useEffect(() => {
+        if (authState !== AuthState.Authenticated) return;
         fetch('/api/friends')
             .then((response) => response.json())
             .then((friendsList) => {
@@ -35,6 +37,7 @@ export default function App() {
     }, []);
     const [friendRequests, setFriendRequests] = React.useState([]);
     React.useEffect(() => {
+        if (authState !== AuthState.Authenticated) return;
         fetch('/api/friendRequests')
             .then((response) => response.json())
             .then((friendRequestsList) => {
