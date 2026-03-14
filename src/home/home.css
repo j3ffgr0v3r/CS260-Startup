@@ -1,6 +1,7 @@
 .home-center {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    align-items: stretch;
     flex: 1;
 }
 

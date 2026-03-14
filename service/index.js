@@ -237,6 +237,15 @@ apiRouter.get('/users/:username', verifyAuth, verifyPermsToTargetUser, (_req, re
     res.send(user);
 });
 
+// GetBYUEvents
+apiRouter.get('/BYUEvents', verifyAuth, async (_req, res) => {
+    const url = 'https://calendar.byu.edu/api/Events.json?categories=all';
+    const response = await fetch(url);
+    const data = await response.json();
+    const result = data.map(BYUEventToCustomEvent);
+    res.send(result);
+});
+
 // GetEvents
 apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, async (_req, res) => {
     const eventIDs = new Set(_req.targetUser.events);
@@ -325,6 +334,19 @@ app.use(function (err, req, res, next) {
 app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });
 });
+
+function BYUEventToCustomEvent(BYUEvent) {
+    return {
+        eventID: `byu-${BYUEvent.EventId}`,
+        date: BYUEvent.StartDateTime,
+        title: BYUEvent.Title,
+        description: (BYUEvent.Description || '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
+        location: BYUEvent.LocationName || '',
+        allDay: BYUEvent.AllDay === 'true',
+        host: 'BYU',
+        hostName: BYUEvent.DeptNames,
+    };
+}
 
 // Creates new event, and adds it to current users events, and to invitees event invites
 function createEvent(owner, newEvent) {

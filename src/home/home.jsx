@@ -26,17 +26,30 @@ export function Home({ activeUser, friends }) {
       });
   }, []);
 
+  // Import and hook BYUEvents
+  const [BYUEvents, setBYUEvents] = React.useState([]);
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setDate(today.getDate() + 28);
+  React.useEffect(() => {
+    fetch(`/api/BYUEvents?start=${today.toISOString().split('T')[0]}&end=${maxDate.toISOString().split('T')[0]}`)
+      .then((response) => response.json())
+      .then((events) => {
+        setBYUEvents(Array.isArray(events) ? events : []);
+      });
+  }, []);
+
   const { showToast } = useToast();
 
   // Respond to event invite
   async function respondToEventInvite(event, accepted) {
-    fetch(`/api/eventInvites/${event.eventID}`, {
-        method: 'put',
-        body: JSON.stringify({ action: accepted ? "accept" : "decline" }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      });
+    fetch(`/api/event-invites/${event.eventID}`, {
+      method: 'put',
+      body: JSON.stringify({ action: accepted ? "accept" : "decline" }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
     if (accepted) {
       setEvents((prev) => [...prev, event]);
       showToast({
@@ -101,13 +114,13 @@ export function Home({ activeUser, friends }) {
 
   async function saveEvent() {
     const newEvent = {
-        date: createDate(newEventDate, !newEventAllDay ? newEventTime : "00:00"),
-        title: newEventTitle,
-        description: newEventDescription,
-        allDay: newEventAllDay,
-        host: activeUser.username,
-        hostName: activeUser.displayName,
-      };
+      date: createDate(newEventDate, !newEventAllDay ? newEventTime : "00:00"),
+      title: newEventTitle,
+      description: newEventDescription,
+      allDay: newEventAllDay,
+      host: activeUser.username,
+      hostName: activeUser.displayName,
+    };
     const response = await fetch("/api/events", {
       method: 'post',
       body: JSON.stringify(newEvent),
@@ -235,6 +248,17 @@ export function Home({ activeUser, friends }) {
                   {event.hostName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToEventInvite(event, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
               ))
             }
+          </div>
+          <h3>BYU Events</h3>
+          <div>
+            <div className="pending-event-invites">
+              {BYUEvents.length == 0 ? <div><i>There are no pending BYU Events... somehow</i></div> :
+                BYUEvents.map((event) => (
+                  <div key={event.eventID} className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(event.date))}<br />
+                    {event.hostName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Add to Calendar</button></div>
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>
