@@ -26,16 +26,10 @@ export function Login({ onAuthChange }) {
         navigate("/home");
     }
 
-    async function loginOrCreateUser(endpoint) {
+    async function loginOrCreateUser(request) {
         setDisplayError(null);
 
-        const response = await fetch(endpoint, {
-            method: 'post',
-            body: JSON.stringify({ username: loginUsername, password: loginPassword }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        });
+        const response = await request();
         if (response?.status === 200) {
             localStorage.setItem('username', loginUsername);
             authenticate(loginUsername)
@@ -45,8 +39,20 @@ export function Login({ onAuthChange }) {
         }
     }
 
-    const loginUser = () => loginOrCreateUser('/api/auth/login');
-    const createUser = () => loginOrCreateUser('/api/auth/create');
+    const loginUser = () => loginOrCreateUser(() => fetch('/api/auth/login', {
+            method: 'post',
+            body: JSON.stringify({ username: loginUsername, password: loginPassword }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        }));
+    const createUser = () => loginOrCreateUser(() => fetch('/api/auth/create', {
+            method: 'post',
+            body: JSON.stringify({ username: loginUsername, password: loginPassword, firstName: createFirstName, lastName: createLastName }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        }));
 
 
     async function beginCreateUser() {
