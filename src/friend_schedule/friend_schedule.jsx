@@ -14,13 +14,19 @@ export function FriendSchedule({ friends, setFriends }) {
 
   const { friendID } = useParams();
   const [friend, setFriend] = React.useState(null);
-  React.useEffect(() => {
-    fetch(`/api/users/${friendID}`)
-      .then((response) => response.json())
-      .then((currentFriend) => {
-        setFriend(currentFriend);
-      });
-  }, []);
+  try {
+    React.useEffect(() => {
+      fetch(`/api/users/${friendID}`)
+        .then((response) => response.json())
+        .then((response) => { if (response.status === 401) response = null })
+        .then((currentFriend) => {
+          setFriend(currentFriend);
+        });
+    }, []);
+  } catch {
+    return <NotFound />;
+  }
+  
 
   const [friendEvents, setFriendEvents] = React.useState([]);
   React.useEffect(() => {
@@ -31,7 +37,7 @@ export function FriendSchedule({ friends, setFriends }) {
       });
   }, []);
 
-  if (!friendID in friends || friend == undefined) {
+  if (!(friendID in friends) || !friend) {
     return <NotFound />;
   }
 
@@ -49,7 +55,7 @@ export function FriendSchedule({ friends, setFriends }) {
   return (
     <main>
       <div className="management friend-schedule-management">
-        <h2>{friend.firstName}'{friend.firstName.at(-1) == "s" ? "" : "s"} Schedule</h2>
+        <h2>{friend?.firstName}'{friend?.firstName.at(-1) == "s" ? "" : "s"} Schedule</h2>
         <Dropdown align="end">
           <Dropdown.Toggle id="profile-menu" />
 

@@ -213,14 +213,20 @@ const verifyAuth = async (req, res, next) => {
 
 // Middleware to verify that the user has permission to view target users information (is self, or is friends)
 const verifyPermsToTargetUser = async (req, res, next) => {
-    const targetUserByPath = (!req.params.username || req.params.username == req.user.username) ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.params.username));
-    const targetUserByQuery = (!req.query.username || req.query.username == req.user.username) ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.query.username));
-    const targetUser = targetUserByPath ? targetUserByPath : targetUserByQuery;
+    let targetUser = null;
+    if (req.params.username){
+        targetUser = req.params.username == req.user.username ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.params.username));
+    } else if (req.query.username) {
+        targetUser = req.query.username == req.user.username ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.query.username));
+    } else {
+        targetUser = req.user;
+    }
+
     if (targetUser) {
         req.targetUser = targetUser;
         next();
     } else {
-        res.status(401).send({ msg: 'Unauthorized' });
+        res.status(404).send({ msg: 'Error: Address unknown' });
     }
 };
 
