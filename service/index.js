@@ -160,7 +160,7 @@ apiRouter.post('/resetDB', async (req, res) => {
     ]
 
 
-    res.status(200);
+    res.status(200).send();
 });
 
 // CreateAuth a new user
@@ -275,6 +275,11 @@ apiRouter.get('/friends', verifyAuth, async (_req, res) => {
     res.send(result);
 });
 
+// Remove Friend
+apiRouter.delete('/friends/:username', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
+    res.send(deleteFriendship(_req.user, _req.targetUser));
+});
+
 // GetFriendRequests
 apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
     const result = await Promise.all(
@@ -382,13 +387,18 @@ async function handleEventInvite(action, user, eventID) {
 }
 
 async function handleFriendRequest(action, recipientUser, senderUsername) {
-    const senderUser = await findUser("username", senderUsername)
+    const senderUser = await findUser("username", senderUsername);
 
-    recipientUser.friendRequests.splice(recipientUser.friendRequests.indexOf(senderUsername), 1)
+    recipientUser.friendRequests.splice(recipientUser.friendRequests.indexOf(senderUsername), 1);
     if (action === "accept") {
         recipientUser.friends.push(senderUsername);
         senderUser.friends.push(recipientUser.username);
     }
+}
+
+async function deleteFriendship(activeUser, noLongerFriendUser) {
+    activeUser.friends.splice(activeUser.friends.indexOf(noLongerFriendUser.username), 1);
+    noLongerFriendUser.friends.splice(noLongerFriendUser.friends.indexOf(activeUser.username), 1);
 }
 
 // setAuthCookie in the HTTP response

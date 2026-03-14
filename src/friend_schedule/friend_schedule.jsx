@@ -14,13 +14,13 @@ export function FriendSchedule({ friends, setFriends }) {
 
   const { friendID: friendUsername } = useParams();
   const [friend, setFriend] = React.useState(true);
-    React.useEffect(() => {
-      fetch(`/api/users/${friendUsername}`)
-        .then((response) => response.json())
-        .then((currentFriend) => {
-          setFriend(currentFriend);
-        });
-    }, []);
+  React.useEffect(() => {
+    fetch(`/api/users/${friendUsername}`)
+      .then((response) => response.json())
+      .then((currentFriend) => {
+        setFriend(currentFriend);
+      });
+  }, []);
 
   const [friendEvents, setFriendEvents] = React.useState([]);
   React.useEffect(() => {
@@ -36,14 +36,17 @@ export function FriendSchedule({ friends, setFriends }) {
   }
 
 
-  function removeFriend() {
+  async function removeFriend() {
+    fetch(`/api/friends/${friendUsername}`, {
+      method: 'delete',
+    });
     navigate("/friends");
     showToast({
       title: 'Friend Removed',
       message: `You and ${friend.firstName} are no longer friends`,
       bg: 'danger',
     });
-    setFriends((prev) => prev.filter((f) => f.username !== friendUsername));
+    setFriends((prev) => prev.filter((f) => f.user.username !== friendUsername));
   }
 
   return (
