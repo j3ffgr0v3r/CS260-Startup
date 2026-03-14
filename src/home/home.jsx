@@ -116,7 +116,6 @@ export function Home({ activeUser, friends }) {
 
   function submitEvent() {
     const newEvent = saveEvent();
-    setEvents(prev => [...prev, newEvent]);
     closeEventCreationModal();
     setNewEventTitle('');
     setNewEventDescription('');
@@ -144,12 +143,12 @@ export function Home({ activeUser, friends }) {
     });
     const body = await response.json();
     if (response?.status === 200) {
+      setEvents(prev => [...prev, newEvent]);
       showToast({
         title: 'New Event Created!',
         message: `${newEvent.title} has been added to your calendar!`,
         bg: 'success',
       });
-      return newEvent;
     } else {
       showToast({
         title: 'Error!',
