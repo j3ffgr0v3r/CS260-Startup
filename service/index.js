@@ -105,8 +105,7 @@ apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
 
 // CreateEvent
 apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (req, res) => {
-    events = createEvent(req.body);
-    res.send(events);
+    res.send(createEvent(req.user, req.body));
 });
 
 // Default error handler
@@ -120,36 +119,29 @@ app.use((_req, res) => {
 });
 
 // Creates new event, and adds it to current users events, and to invitees event invites
-function createEvent(newEvent) {
-    const date = newEvent.date;
-    const title = newEvent.title;
-    const description = newEvent.description;
-    const location = newEvent.location;
-    const allDay = newEvent.allDay;
-    const host = newEvent.host;
-    const invitees = newEvent.invitees;
-
-    // if(!)
-
-    let found = false;
-    for (const [i, prevScore] of events.entries()) {
-        if (newScore.score > prevScore.score) {
-            events.splice(i, 0, newScore);
-            found = true;
-            break;
-        }
+function createEvent(owner, newEvent) {
+    const event = {
+        eventID: crypto.randomUUID(),
+        date: newEvent.date,
+        title: newEvent.title,
+        description: newEvent.description,
+        location: newEvent.location,
+        allDay: newEvent.allDay,
+        host: owner.username,
+        invitees: newEvent.invitees,
     }
 
-    if (!found) {
-        events.push(newScore);
-    }
+    events.push(event);
 
-    if (events.length > 10) {
-        events.length = 10;
-    }
+    owner.events.push(event.eventID);
 
-    return events;
+    // for (const friend of newEvent.invitees) {
+    //     invitees.events.push(event);
+    // }
+
+    return event.eventID;
 }
+
 
 async function createUser(username, password) {
     const passwordHash = await bcrypt.hash(password, 10);
