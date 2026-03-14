@@ -6,6 +6,16 @@ import { useToast } from '../components/toast';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 export function Home({ activeUser, friends }) {
+  // Get user firstName
+  const [firstName, setFirstName] = React.useState('');
+    React.useEffect(() => {
+    fetch(`/api/users/${activeUser}`)
+      .then((response) => response.json())
+      .then((user) => {
+        setFirstName(user.firstName);
+      });
+  }, []);
+
   // Import and hook userEvents
   const [userEvents, setEvents] = React.useState([]);
   React.useEffect(() => {
@@ -118,7 +128,7 @@ export function Home({ activeUser, friends }) {
 
   return (
     <main className="m-1 bg-light text-dark">
-      <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{activeUser.firstName}</i>?</h2>
+      <h2 className="mt-4 mb-3">What's your schedule looking like today, <i>{firstName}</i>?</h2>
 
       <div className="home-center">
         <Calendar events={userEvents} />
