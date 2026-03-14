@@ -31,7 +31,7 @@ const verifyParams = (...args) => {
     return async (req, res, next) => {
         for (const arg of args) {
             if (!Object.hasOwn(req.body, arg)) {
-                res.status(400).send({ msg: 'Bad Request' });
+                res.status(400).send({ msg: 'Error: Bad Request' });
                 return;
             }
         }
@@ -62,7 +62,7 @@ apiRouter.post('/auth/login', verifyParams("username", "password"), async (req, 
             return;
         }
     }
-    res.status(401).send({ msg: 'Unauthorized' });
+    res.status(401).send({ msg: 'Error: Invalid Login Credentials' });
 });
 
 // DeleteAuth logout a user
@@ -83,7 +83,7 @@ const verifyAuth = async (req, res, next) => {
         req.user = user;
         next();
     } else {
-        res.status(401).send({ msg: 'Unauthorized' });
+        res.status(401).send({ msg: 'Error: Unauthorized' });
     }
 };
 

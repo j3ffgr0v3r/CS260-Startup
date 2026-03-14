@@ -19,26 +19,35 @@ export function Login({ onAuthChange }) {
         return saved ? JSON.parse(saved) : [];
     });
 
-
     const navigate = useNavigate();
 
-
-    async function authenticate(user) {
-        localStorage.setItem('activeUser', JSON.stringify(user));
-        onAuthChange(user, AuthState.Authenticated);
+    async function authenticate(username) {
+        onAuthChange(username, AuthState.Authenticated);
         navigate("/home");
     }
 
-    async function loginUser() {
+    async function loginOrCreateUser(endpoint) {
         setDisplayError(null);
-        // Find user
-        const match = users.find(user => user.username.toLowerCase() === loginUsername.toLowerCase());
-        if (match != undefined && match.password == loginPassword) {
-            authenticate(match);
+
+        const response = await fetch(endpoint, {
+            method: 'post',
+            body: JSON.stringify({ username: loginUsername, password: loginPassword }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        if (response?.status === 200) {
+            localStorage.setItem('username', response?.username);
+            authenticate(response?.username)
         } else {
-            setDisplayError("Invalid login credentials.");
+            const body = await response.json();
+            setDisplayError(body.msg);
         }
     }
+
+    const loginUser = () => loginOrCreateUser('/api/auth/login');
+    const createUser = () => loginOrCreateUser('/api/auth/create');
+
 
     async function beginCreateUser() {
         setDisplayError(null);
@@ -49,24 +58,6 @@ export function Login({ onAuthChange }) {
             setFormState('create');
         }
     }
-
-    async function createUser() {
-        setDisplayError(null);
-
-        const newUser = {
-            username: loginUsername,
-            password: loginPassword,
-            firstName: createFirstName,
-            lastName: createLastName,
-            events: []
-        }
-        const usersUpdated = [...users, newUser]
-        setUsers(usersUpdated);
-        localStorage.setItem('users', JSON.stringify(usersUpdated));
-        authenticate(newUser);
-
-    }
-
 
     return (
         <main className="login-content">
