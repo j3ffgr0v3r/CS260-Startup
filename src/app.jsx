@@ -37,18 +37,10 @@ export default function App() {
     React.useEffect(() => {
         fetch('/api/friendRequests')
             .then((response) => response.json())
-            .then((user) => {
-                setActiveUser(user);
+            .then((friendRequestsList) => {
+                setFriendRequests(friendRequestsList);
             });
     }, []);
-
-    // Save whenever state changes
-    React.useEffect(() => {
-        localStorage.setItem('friends', JSON.stringify(friends));
-    }, [friends]);
-    React.useEffect(() => {
-        localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
-    }, [friendRequests]);
 
     return (
         <ToastProvider>

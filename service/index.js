@@ -268,6 +268,18 @@ apiRouter.get('/friends', verifyAuth, async (_req, res) => {
     res.send(result);
 });
 
+// GetFriendRequests
+apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
+    const result = await Promise.all(
+        _req.user.friendRequests.map(async (friend) => {
+            const user = await findUser('username', friend);
+            return {user : publicUser(user)};
+        })
+    );
+
+    res.send(result);
+});
+
 // Default error handler
 app.use(function (err, req, res, next) {
     res.status(500).send({ type: err.name, message: err.message });
