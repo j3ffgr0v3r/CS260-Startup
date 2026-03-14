@@ -45,7 +45,7 @@ apiRouter.post('/resetDB', async (req, res) => {
     events = [
         {
             eventID: crypto.randomUUID(),
-            date: new Date(2026, 1, 6, 20),
+            date: new Date(2026, 2, 6, 20),
             title: "LoTR Marathon",
             description: "Bring your swords ;)",
             allDay: false,
@@ -53,7 +53,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         },
         {
             eventID: crypto.randomUUID(),
-            date: new Date(2026, 1, 17),
+            date: new Date(2026, 2, 17),
             title: "Camping",
             location: "Tibble Fork",
             allDay: true,
@@ -61,7 +61,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         },
         {
             eventID: crypto.randomUUID(),
-            date: new Date(2026, 1, 23, 10),
+            date: new Date(2026, 2, 23, 10),
             title: "Service Project",
             description: "Shovel Snow",
             location: "Nearby Neighborhood",
@@ -70,7 +70,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         },
         {
             eventID: crypto.randomUUID(),
-            date: new Date(2026, 1, 7, 21),
+            date: new Date(2026, 2, 7, 21),
             title: "Karaoke",
             description: "Let's see how good your voice really is",
             allDay: false,
@@ -78,7 +78,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         },
         {
             eventID: crypto.randomUUID(),
-            date: new Date(2026, 1, 11, 20),
+            date: new Date(2026, 2, 11, 20),
             title: "Mission Prep",
             description: "Helaman Girls...",
             allDay: false,
@@ -86,7 +86,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         },
         {
             eventID: crypto.randomUUID(),
-            date: new Date(2026, 1, 27),
+            date: new Date(2026, 2, 27),
             title: "Ski Trip",
             description: "In what snow???",
             location: "Somewhere, I suppose",
