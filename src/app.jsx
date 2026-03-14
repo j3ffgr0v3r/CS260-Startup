@@ -84,6 +84,9 @@ export default function App() {
 
 function Header({ activeUser, setActiveUser, setAuthState }) {
     function logout() {
+        fetch('/api/auth/logout', {
+            method: 'delete',
+        });
         setActiveUser(null);
         localStorage.removeItem("activeUser");
         setAuthState(AuthState.Unauthenticated);

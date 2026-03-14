@@ -192,7 +192,7 @@ export function Home({ activeUser, friends }) {
                   <Form.Label>Invite Friends</Form.Label>
 
                   <div className="border rounded p-2" style={{ maxHeight: 180, overflowY: 'auto' }}>
-                    {friends.map((friend) => (
+                    {friends?.map((friend) => (
                       <Form.Check
                         key={friend.user.username}
                         type="checkbox"

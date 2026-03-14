@@ -214,7 +214,7 @@ const verifyAuth = async (req, res, next) => {
 // Middleware to verify that the user has permission to view target users information (is self, or is friends)
 const verifyPermsToTargetUser = async (req, res, next) => {
     let targetUser = null;
-    if (req.params.username){
+    if (req.params.username) {
         targetUser = req.params.username == req.user.username ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.params.username));
     } else if (req.query.username) {
         targetUser = req.query.username == req.user.username ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.query.username));
@@ -238,10 +238,17 @@ apiRouter.get('/users/:username', verifyAuth, verifyPermsToTargetUser, (_req, re
 });
 
 // GetEvents
-apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
-    const eventIds = new Set(_req.targetUser.events);
-    const result = events.filter(event => eventIds.has(event.eventID));
-    result.map(async (event) => event.hostName = publicUser(await findUser("username", event.host)).displayName);
+apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, async (_req, res) => {
+    const eventIDs = new Set(_req.targetUser.events);
+    const result = await Promise.all(
+        events
+            .filter((event) => eventIDs.has(event.eventID))
+            .map(async (event) => ({
+                ...event,
+                hostName: publicUser(await findUser('username', event.host)).displayName,
+            }))
+    );
+
     res.send(result);
 });
 
@@ -251,10 +258,17 @@ apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (
 });
 
 // GetEventInvites
-apiRouter.get('/eventInvites', verifyAuth, (_req, res) => {
+apiRouter.get('/eventInvites', verifyAuth, async (_req, res) => {
     const eventIDs = new Set(_req.user.eventInvites);
-    const result = events.filter(event => eventIDs.has(event.eventID));
-    result.map(async (event) => event.hostName = publicUser(await findUser("username", event.host)).displayName);
+    const result = await Promise.all(
+        events
+            .filter((event) => eventIDs.has(event.eventID))
+            .map(async (event) => ({
+                ...event,
+                hostName: publicUser(await findUser('username', event.host)).displayName,
+            }))
+    );
+
     res.send(result);
 });
 
@@ -268,7 +282,7 @@ apiRouter.get('/friends', verifyAuth, async (_req, res) => {
     const result = await Promise.all(
         _req.user.friends.map(async (friend) => {
             const user = await findUser('username', friend);
-            return {user : publicUser(user)};
+            return { user: publicUser(user) };
         })
     );
 
@@ -285,7 +299,7 @@ apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
     const result = await Promise.all(
         _req.user.friendRequests.map(async (friend) => {
             const user = await findUser('username', friend);
-            return {user : publicUser(user)};
+            return { user: publicUser(user) };
         })
     );
 
