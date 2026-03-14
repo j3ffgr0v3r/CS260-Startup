@@ -26,8 +26,21 @@ app.use(express.static('public'));
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
+// Middleware to verify that the request is good
+const verifyParams = (...args) => {
+    return async (req, res, next) => {
+        for (const arg of args) {
+            if (!Object.hasOwn(req.body, arg)) {
+                res.status(400).send({ msg: 'Bad Request' });
+                return;
+            }
+        }
+        next();
+    };
+}
+
 // CreateAuth a new user
-apiRouter.post('/auth/create', async (req, res) => {
+apiRouter.post('/auth/create', verifyParams("username", "password"), async (req, res) => {
     if (await findUser('username', req.body.username)) {
         res.status(409).send({ msg: 'Existing user' });
     } else {
@@ -39,7 +52,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 });
 
 // GetAuth login an existing user
-apiRouter.post('/auth/login', async (req, res) => {
+apiRouter.post('/auth/login', verifyParams("username", "password"), async (req, res) => {
     const user = await findUser('username', req.body.username);
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
@@ -61,6 +74,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     res.clearCookie(authCookieName);
     res.status(204).end();
 });
+
 
 // Middleware to verify that the user is authorized to call an endpoint
 const verifyAuth = async (req, res, next) => {
@@ -89,9 +103,9 @@ apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
     res.send(_req.targetUser.events);
 });
 
-// SubmitScore
-apiRouter.post('/score', verifyAuth, (req, res) => {
-    events = updateScores(req.body);
+// CreateEvent
+apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (req, res) => {
+    events = createEvent(req.body);
     res.send(events);
 });
 
@@ -105,8 +119,18 @@ app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });
 });
 
-// updateScores considers a new score for inclusion in the high scores.
-function updateScores(newScore) {
+// Creates new event, and adds it to current users events, and to invitees event invites
+function createEvent(newEvent) {
+    const date = newEvent.date;
+    const title = newEvent.title;
+    const description = newEvent.description;
+    const location = newEvent.location;
+    const allDay = newEvent.allDay;
+    const host = newEvent.host;
+    const invitees = newEvent.invitees;
+
+    // if(!)
+
     let found = false;
     for (const [i, prevScore] of events.entries()) {
         if (newScore.score > prevScore.score) {
