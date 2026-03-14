@@ -306,6 +306,11 @@ apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
     res.send(result);
 });
 
+// Send FriendRequest
+apiRouter.post('/friendRequests/:username', verifyAuth, async (_req, res) => {
+    res.status((await sendFriendRequest(_req.user.username, _req.params.username))).send();
+});
+
 // Accept/Decline FriendRequests
 apiRouter.put('/friendRequests/:username', verifyAuth, verifyParams("action"), (_req, res) => {
     res.send(handleFriendRequest(_req.body.action, _req.user, _req.params.username));
@@ -407,6 +412,21 @@ async function handleFriendRequest(action, recipientUser, senderUsername) {
     if (action === "accept") {
         recipientUser.friends.push(senderUsername);
         senderUser.friends.push(recipientUser.username);
+    }
+}
+
+async function sendFriendRequest(senderUserName, recipientUserName) {
+    const recipientUser = await findUser("username", recipientUserName);
+
+    if (recipientUser) {
+        if (recipientUser.friendRequests.includes(senderUserName)) {
+            return 429
+        } else {
+            recipientUser.friendRequests.push(senderUserName);
+            return 200;
+        }
+    } else {
+        return 404;
     }
 }
 

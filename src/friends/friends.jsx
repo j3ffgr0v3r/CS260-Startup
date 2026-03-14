@@ -13,12 +13,12 @@ export function Friends({ friends, setFriends, friendRequests, setFriendRequests
 
   async function respondToFriendRequest(request, accepted) {
     fetch(`/api/friendRequests/${request.user.username}`, {
-        method: 'put',
-        body: JSON.stringify({ action: accepted ? "accept" : "decline" }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      });
+      method: 'put',
+      body: JSON.stringify({ action: accepted ? "accept" : "decline" }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
     if (accepted) {
       setFriends((prev) => [...prev, request]);
       showToast({
@@ -37,12 +37,30 @@ export function Friends({ friends, setFriends, friendRequests, setFriendRequests
   }
 
   async function sendFriendRequest() {
-    showToast({
-      title: 'Friend Request Sent!',
-      message: `Friend Request successfully sent to ${friendRequestUsername}!`,
-      bg: 'info',
+    const response = await fetch(`/api/friendRequests/${friendRequestUsername}`, {
+      method: 'post',
     });
-    setFriendRequestUsername('');
+    if (response?.status === 200) {
+      showToast({
+        title: 'Friend Request Sent!',
+        message: `Friend Request successfully sent to ${friendRequestUsername}!`,
+        bg: 'info',
+      });
+      setFriendRequestUsername('');
+    } else if (response?.status === 429) {
+      showToast({
+        title: 'Calm down now!',
+        message: `You've already sent a friend request to ${friendRequestUsername}. Please wait for them to respond.`,
+        bg: 'warning',
+      });
+      setFriendRequestUsername('');
+    } else if (response?.status === 404) {
+      showToast({
+        title: 'User not found!',
+        message: `Unable to send Friend Request to ${friendRequestUsername}. Please check the username and try again.`,
+        bg: 'danger',
+      });
+    }
   }
 
 
@@ -50,8 +68,8 @@ export function Friends({ friends, setFriends, friendRequests, setFriendRequests
     <main>
       <h3>Pending Invites</h3>
       <div className="pending-friend-invites">
-        {friendRequests.length == 0 ? <div><i>There are no pending friend requests</i></div> :
-          friendRequests.map((request) => (
+        {friendRequests?.length == 0 ? <div><i>There are no pending friend requests</i></div> :
+          friendRequests && friendRequests.map((request) => (
             <div key={request.user.username} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.user.firstName + " " + request.user.lastName}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
           ))
         }
@@ -69,8 +87,8 @@ export function Friends({ friends, setFriends, friendRequests, setFriendRequests
 
       <h3>Friends</h3>
       <div className="friends">
-        {friends.length == 0 ? <div><i>It's looking a little empty here... why don't you invite some friends?</i></div> :
-          friends.map((friend) => (
+        {friends?.length == 0 ? <div><i>It's looking a little empty here... why don't you invite some friends?</i></div> :
+          friends && friends.map((friend) => (
             <div key={friend.user.username} className="friend my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{friend.user.firstName + " " + friend.user.lastName}<NavLink to={friend.user.username} className="btn mx-1 btn-outline-info">View Schedule</NavLink></div>
           ))
         }
