@@ -48,14 +48,16 @@ apiRouter.post('/resetDB', async (req, res) => {
             date: new Date(2026, 1, 6, 20),
             title: "LoTR Marathon",
             description: "Bring your swords ;)",
-            allDay: false
+            allDay: false,
+            host: "turingA113",
         },
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 17),
             title: "Camping",
             location: "Tibble Fork",
-            allDay: true
+            allDay: true,
+            host: "turingA113",
         },
         {
             eventID: crypto.randomUUID(),
@@ -63,21 +65,24 @@ apiRouter.post('/resetDB', async (req, res) => {
             title: "Service Project",
             description: "Shovel Snow",
             location: "Nearby Neighborhood",
-            allDay: false
+            allDay: false,
+            host: "turingA113",
         },
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 7, 21),
             title: "Karaoke",
             description: "Let's see how good your voice really is",
-            allDay: false
+            allDay: false,
+            host: "turingA113",
         },
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 1, 11, 20),
             title: "Mission Prep",
             description: "Helaman Girls...",
-            allDay: false
+            allDay: false,
+            host: "turingA113",
         },
         {
             eventID: crypto.randomUUID(),
@@ -85,7 +90,8 @@ apiRouter.post('/resetDB', async (req, res) => {
             title: "Ski Trip",
             description: "In what snow???",
             location: "Somewhere, I suppose",
-            allDay: true
+            allDay: true,
+            host: "turingA113",
         }
     ]
 
@@ -241,6 +247,7 @@ apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (
 apiRouter.get('/eventInvites', verifyAuth, (_req, res) => {
     const eventIds = new Set(_req.user.eventInvites);
     const result = events.filter(event => eventIds.has(event.eventID));
+    result.map(async (event) => event.hostName = publicUser(await findUser("username", event.host)).displayName);
     res.send(result);
 });
 

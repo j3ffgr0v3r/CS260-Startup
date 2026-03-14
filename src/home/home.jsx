@@ -21,8 +21,8 @@ export function Home({ activeUser, friends }) {
     React.useEffect(() => {
     fetch('/api/eventInvites')
       .then((response) => response.json())
-      .then((events) => {
-        setEvents(events);
+      .then((invite) => {
+        setEventInvites(invite);
       });
   }, []);
 
@@ -217,7 +217,7 @@ export function Home({ activeUser, friends }) {
             {eventInvites.length == 0 ? <div><i>There are no pending invites</i></div> :
               eventInvites.map((event) => (
                 <div key={event.eventID} className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(event.date))}<br />
-                  {event.host.user.firstName + " " + event.host.user.lastName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToEventInvite(event, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
+                  {event.hostName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToEventInvite(event, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
               ))
             }
           </div>
