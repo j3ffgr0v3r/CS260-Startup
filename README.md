@@ -102,14 +102,14 @@ It's reactive now! Using React the calendars and friends list are actually respo
 
 ## 🚀 Service deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+I hope you know I pull an all nighter for this ;-; Either way, the thing uses a server now. My mom won't be able to tell the difference.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
+- [X] **Node.js/Express HTTP service** - Done
+- [X] **Static middleware for frontend** - Diddy done. Made some of my own to to make variable parsing easier
+- [X] **Calls to third party endpoints** - Using the BYU Events API. However... they don't specify a CORS, so... I kinda cheated and have my server call their API.
+- [X] **Backend service endpoints** - Endpoints for getting, making, and updating users, friends, friendRequest, events, and eventInvites
+- [X] **Frontend calls service endpoints** - Fetch bro. It's great.
+- [X] **Supports registration, login, logout, and restricted endpoint** - You can log in, register, and logout! Just don't expect it to stay if the server restarts.
 
 ## 🚀 DB deliverable
 
