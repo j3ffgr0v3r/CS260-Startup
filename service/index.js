@@ -163,7 +163,7 @@ apiRouter.post('/auth/create', verifyParams("username", "password", "firstName",
         res.status(409).send({ msg: 'Existing user' });
     } else {
         const user = await createUser(req.body.username, req.body.password, req.body.firstName, req.body.lastName);
-
+        user.authToken = uuid.v4();
         setAuthCookie(res, user.authToken);
         res.send(publicUser(user));
     }
@@ -174,7 +174,7 @@ apiRouter.post('/auth/login', verifyParams("username", "password"), async (req, 
     const user = await findUser('username', req.body.username);
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            user.token = uuid.v4();
+            user.authToken = uuid.v4();
             setAuthCookie(res, user.authToken);
             res.send(publicUser(user));
             return;
