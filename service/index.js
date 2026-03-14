@@ -119,6 +119,13 @@ apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (
     res.send(JSON.stringify({event : createEvent(req.user, req.body)}));
 });
 
+// GetEventInvites
+apiRouter.get('/eventInvites', verifyAuth, (_req, res) => {
+    const eventIds = new Set(_req.user.eventInvites);
+    const result = events.filter(event => eventIds.has(event.eventID));
+    res.send(result);
+});
+
 // Default error handler
 app.use(function (err, req, res, next) {
     res.status(500).send({ type: err.name, message: err.message });
