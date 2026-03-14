@@ -30,27 +30,21 @@ export function Home({ activeUser, friends }) {
 
   // Respond to event invite
   async function respondToEventInvite(event, accepted) {
-    if (accepted) {
-      setEvents((prev) => [...prev, fetch(`/api/eventInvites/${event.eventID}`, {
+    fetch(`/api/eventInvites/${event.eventID}`, {
         method: 'put',
-        body: JSON.stringify({ action: "accept" }),
+        body: JSON.stringify({ action: accepted ? "accept" : "decline" }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
         },
-      })]);
+      });
+    if (accepted) {
+      setEvents((prev) => [...prev, event]);
       showToast({
         title: 'Accepted Event Invite!',
         message: `Event "${event.title}" has been added to your calendar!`,
         bg: 'success',
       });
     } else {
-      fetch(`/api/eventInvites/${event.eventID}`, {
-        method: 'put',
-        body: JSON.stringify({ action: "decline" }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      });
       showToast({
         title: 'Declined Event Invite',
         message: `Event "${event.title}" has been removed from your invites.`,

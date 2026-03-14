@@ -235,6 +235,7 @@ apiRouter.get('/users/:username', verifyAuth, verifyPermsToTargetUser, (_req, re
 apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
     const eventIds = new Set(_req.targetUser.events);
     const result = events.filter(event => eventIds.has(event.eventID));
+    result.map(async (event) => event.hostName = publicUser(await findUser("username", event.host)).displayName);
     res.send(result);
 });
 
