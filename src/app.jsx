@@ -14,11 +14,17 @@ import { ToastProvider } from './components/toast';
 import { Button, Dropdown } from 'react-bootstrap';
 
 export default function App() {
-    const [activeUser, setActiveUser] = React.useState(() => {
-        const saved = localStorage.getItem('username');
-        return saved ? saved : null;
-    });
-    const [authState, setAuthState] = React.useState(activeUser ? AuthState.Authenticated : AuthState.Unauthenticated);
+    // Get active user
+    const [activeUser, setActiveUser] = React.useState(null);
+    React.useEffect(() => {
+        fetch(`/api/users/${localStorage.getItem('username')}`)
+            .then((response) => response.json())
+            .then((user) => {
+                setActiveUser(user);
+            });
+    }, []);
+
+    const [authState, setAuthState] = React.useState(localStorage.getItem('username') ? AuthState.Authenticated : AuthState.Unauthenticated);
     const [friends, setFriends] = React.useState(() => {
         const saved = localStorage.getItem('friends');
         return saved ? JSON.parse(saved) : [];
@@ -128,7 +134,7 @@ const IconToggle = React.forwardRef(({ username, onClick }, ref) => (
 function ProfileMenu({ activeUser, onLogout, linkToSchoolAccount }) {
     return (
         <Dropdown align="end">
-            <Dropdown.Toggle username={activeUser} as={IconToggle} id="profile-menu" />
+            <Dropdown.Toggle username={activeUser?.username} as={IconToggle} id="profile-menu" />
 
             <Dropdown.Menu>
                 <Dropdown.Item onClick={linkToSchoolAccount}>Import Class Schedule</Dropdown.Item>

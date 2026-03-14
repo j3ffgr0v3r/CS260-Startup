@@ -30,11 +30,11 @@ export function Login({ onAuthChange }) {
         setDisplayError(null);
 
         const response = await request();
+        const body = await response.json();
         if (response?.status === 200) {
             localStorage.setItem('username', loginUsername);
-            authenticate(loginUsername)
+            authenticate(body)
         } else {
-            const body = await response.json();
             setDisplayError(body.msg);
         }
     }

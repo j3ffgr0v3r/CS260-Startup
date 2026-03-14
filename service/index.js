@@ -47,7 +47,7 @@ apiRouter.post('/auth/create', verifyParams("username", "password", "firstName",
         const user = await createUser(req.body.username, req.body.password, req.body.firstName, req.body.lastName);
 
         setAuthCookie(res, user.authToken);
-        res.send({ username: user.username });
+        res.send(publicUser(user));
     }
 });
 
@@ -57,8 +57,8 @@ apiRouter.post('/auth/login', verifyParams("username", "password"), async (req, 
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
             user.token = uuid.v4();
-            setAuthCookie(res, user.token);
-            res.send({ username: user.username });
+            setAuthCookie(res, user.authToken);
+            res.send(publicUser(user));
             return;
         }
     }
