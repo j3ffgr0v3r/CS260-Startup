@@ -245,8 +245,8 @@ apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (
 
 // GetEventInvites
 apiRouter.get('/eventInvites', verifyAuth, (_req, res) => {
-    const eventIds = new Set(_req.user.eventInvites);
-    const result = events.filter(event => eventIds.has(event.eventID));
+    const eventIDs = new Set(_req.user.eventInvites);
+    const result = events.filter(event => eventIDs.has(event.eventID));
     result.map(async (event) => event.hostName = publicUser(await findUser("username", event.host)).displayName);
     res.send(result);
 });
@@ -254,6 +254,18 @@ apiRouter.get('/eventInvites', verifyAuth, (_req, res) => {
 // Accept/Decline EventInvite
 apiRouter.put('/eventInvites/:eventID', verifyAuth, verifyParams("action"), (_req, res) => {
     res.send(handleEventInvite(_req.body.action, _req.user, _req.params.eventID));
+});
+
+// GetFriends
+apiRouter.get('/friends', verifyAuth, async (_req, res) => {
+    const result = await Promise.all(
+        _req.user.friends.map(async (friend) => {
+            const user = await findUser('username', friend);
+            return publicUser(user);
+        })
+    );
+
+    res.send(result);
 });
 
 // Default error handler
