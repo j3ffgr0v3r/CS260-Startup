@@ -213,8 +213,8 @@ const verifyAuth = async (req, res, next) => {
 
 // Middleware to verify that the user has permission to view target users information (is self, or is friends)
 const verifyPermsToTargetUser = async (req, res, next) => {
-    const targetUserByPath = (!req.params.username || req.params.username == req.user.username) ? req.user : users.friends.find((u) => u["username"] === req.params.username);
-    const targetUserByQuery = (!req.query.username || req.query.username == req.user.username) ? req.user : users.friends.find((u) => u["username"] === req.query.username);
+    const targetUserByPath = (!req.params.username || req.params.username == req.user.username) ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.params.username));
+    const targetUserByQuery = (!req.query.username || req.query.username == req.user.username) ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.query.username));
     const targetUser = targetUserByPath ? targetUserByPath : targetUserByQuery;
     if (targetUser) {
         req.targetUser = targetUser;
@@ -249,6 +249,11 @@ apiRouter.get('/eventInvites', verifyAuth, (_req, res) => {
     const result = events.filter(event => eventIds.has(event.eventID));
     result.map(async (event) => event.hostName = publicUser(await findUser("username", event.host)).displayName);
     res.send(result);
+});
+
+// Accept/Decline EventInvite
+apiRouter.put('/eventInvites/:eventID', verifyAuth, verifyParams("action"), (_req, res) => {
+    res.send(handleEventInvite(_req.body.action, _req.user, _req.params.eventID));
 });
 
 // Default error handler
@@ -315,6 +320,12 @@ async function findUser(field, value) {
     return users.find((u) => u[field] === value);
 }
 
+async function findEvent(field, value) {
+    if (!value) return null;
+
+    return events.find((u) => u[field] === value);
+}
+
 // Formats user into safe to share object
 function publicUser(user) {
     return {
@@ -323,6 +334,25 @@ function publicUser(user) {
         firstName: user.firstName,
         lastName: user.lastName,
     };
+}
+
+async function handleEventInvite(action, user, eventID) {
+    user.eventInvites.splice(user.eventInvites.indexOf(eventID), 1)
+
+    if (action === "accept") {
+        user.events.push(eventID);
+        return findEvent("eventID", eventID);
+    }
+}
+
+async function handleFriendRequest(action, recipientUser, senderUsername) {
+    const senderUser = await findUser("username", senderUsername)
+
+    recipientUser.friendRequests.splice(recipientUser.friendRequests.indexOf(senderUsername), 1)
+    if (action === "accept") {
+        recipientUser.friends.push(senderUsername);
+        senderUser.friends.push(recipientUser.username);
+    }
 }
 
 // setAuthCookie in the HTTP response

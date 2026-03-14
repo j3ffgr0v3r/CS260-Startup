@@ -18,7 +18,7 @@ export function Home({ activeUser, friends }) {
 
   // Import and hook eventInvites
   const [eventInvites, setEventInvites] = React.useState([]);
-    React.useEffect(() => {
+  React.useEffect(() => {
     fetch('/api/eventInvites')
       .then((response) => response.json())
       .then((invite) => {
@@ -31,13 +31,26 @@ export function Home({ activeUser, friends }) {
   // Respond to event invite
   async function respondToEventInvite(event, accepted) {
     if (accepted) {
-      setEvents((prev) => [...prev, event]);
+      setEvents((prev) => [...prev, fetch(`/api/eventInvites/${event.eventID}`, {
+        method: 'put',
+        body: JSON.stringify({ action: "accept" }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })]);
       showToast({
         title: 'Accepted Event Invite!',
         message: `Event "${event.title}" has been added to your calendar!`,
         bg: 'success',
       });
     } else {
+      fetch(`/api/eventInvites/${event.eventID}`, {
+        method: 'put',
+        body: JSON.stringify({ action: "decline" }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
       showToast({
         title: 'Declined Event Invite',
         message: `Event "${event.title}" has been removed from your invites.`,
