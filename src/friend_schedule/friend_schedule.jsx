@@ -12,32 +12,26 @@ export function FriendSchedule({ friends, setFriends }) {
   const navigate = useNavigate();
 
 
-  const { friendID } = useParams();
-  const [friend, setFriend] = React.useState(null);
-  try {
+  const { friendID: friendUsername } = useParams();
+  const [friend, setFriend] = React.useState(true);
     React.useEffect(() => {
-      fetch(`/api/users/${friendID}`)
+      fetch(`/api/users/${friendUsername}`)
         .then((response) => response.json())
-        .then((response) => { if (response.status === 401) response = null })
         .then((currentFriend) => {
           setFriend(currentFriend);
         });
     }, []);
-  } catch {
-    return <NotFound />;
-  }
-  
 
   const [friendEvents, setFriendEvents] = React.useState([]);
   React.useEffect(() => {
-    fetch(`/api/events?username=${friendID}`)
+    fetch(`/api/events?username=${friendUsername}`)
       .then((response) => response.json())
       .then((events) => {
         setFriendEvents(events);
       });
   }, []);
 
-  if (!(friendID in friends) || !friend) {
+  if (!(friends.find((u) => u.user["username"] === friendUsername)) || !friend) {
     return <NotFound />;
   }
 
@@ -49,13 +43,13 @@ export function FriendSchedule({ friends, setFriends }) {
       message: `You and ${friend.firstName} are no longer friends`,
       bg: 'danger',
     });
-    setFriends((prev) => prev.filter((f) => f.username !== friendID));
+    setFriends((prev) => prev.filter((f) => f.username !== friendUsername));
   }
 
   return (
     <main>
       <div className="management friend-schedule-management">
-        <h2>{friend?.firstName}'{friend?.firstName.at(-1) == "s" ? "" : "s"} Schedule</h2>
+        <h2>{friend?.firstName}'{friend?.firstName?.at(-1) == "s" ? "" : "s"} Schedule</h2>
         <Dropdown align="end">
           <Dropdown.Toggle id="profile-menu" />
 
