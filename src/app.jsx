@@ -128,7 +128,7 @@ const IconToggle = React.forwardRef(({ username, onClick }, ref) => (
 function ProfileMenu({ activeUser, onLogout, linkToSchoolAccount }) {
     return (
         <Dropdown align="end">
-            <Dropdown.Toggle username={activeUser.username} as={IconToggle} id="profile-menu" />
+            <Dropdown.Toggle username={activeUser} as={IconToggle} id="profile-menu" />
 
             <Dropdown.Menu>
                 <Dropdown.Item onClick={linkToSchoolAccount}>Import Class Schedule</Dropdown.Item>
