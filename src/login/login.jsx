@@ -37,8 +37,9 @@ export function Login({ onAuthChange }) {
             },
         });
         if (response?.status === 200) {
-            localStorage.setItem('username', response?.username);
-            authenticate(response?.username)
+            const body = await response.json();
+            localStorage.setItem('username', body.username);
+            authenticate(body.username)
         } else {
             const body = await response.json();
             setDisplayError(body.msg);
