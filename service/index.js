@@ -39,6 +39,124 @@ const verifyParams = (...args) => {
     };
 }
 
+// Reset Database for testing and demonstration purposes
+apiRouter.post('/resetDB', async (req, res) => {
+
+    events = [
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 6, 20),
+            title: "LoTR Marathon",
+            description: "Bring your swords ;)",
+            allDay: false
+        },
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 17),
+            title: "Camping",
+            location: "Tibble Fork",
+            allDay: true
+        },
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 23, 10),
+            title: "Service Project",
+            description: "Shovel Snow",
+            location: "Nearby Neighborhood",
+            allDay: false
+        },
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 7, 21),
+            title: "Karaoke",
+            description: "Let's see how good your voice really is",
+            allDay: false
+        },
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 11, 20),
+            title: "Mission Prep",
+            description: "Helaman Girls...",
+            allDay: false
+        },
+        {
+            eventID: crypto.randomUUID(),
+            date: new Date(2026, 1, 27),
+            title: "Ski Trip",
+            description: "In what snow???",
+            location: "Somewhere, I suppose",
+            allDay: true
+        }
+    ]
+
+    users = [
+        {
+            username: "clairevance07",
+            password: await bcrypt.hash("password", 10),
+            firstName: "Claire",
+            lastName: "Vance",
+            friends: ["turingA113"],
+            friendRequests: ["Matt<3"],
+            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            eventInvites: [],
+        },
+        {
+            username: "turingA113",
+            password: await bcrypt.hash("password", 10),
+            firstName: "Alex",
+            lastName: "Turing",
+            friends: ["clairevance07"],
+            friendRequests: [],
+            events: [events.at(1).eventID, events.at(2).eventID, events.at(5).eventID],
+            eventInvites: [],
+        },
+        {
+            username: "Matt<3",
+            password: await bcrypt.hash("password", 10),
+            firstName: "Matthew",
+            lastName: "Hart",
+            friends: [],
+            friendRequests: [],
+            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            eventInvites: [],
+        },
+        {
+            username: "plarke_",
+            password: await bcrypt.hash("password", 10),
+            firstName: "Preston",
+            lastName: "Clarke",
+            friends: [],
+            friendRequests: [],
+            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            eventInvites: [],
+        },
+        {
+            username: "LMP",
+            password: await bcrypt.hash("password", 10),
+            firstName: "Layne",
+            lastName: "Peterson",
+            friends: [],
+            friendRequests: [],
+            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            eventInvites: [],
+        },
+        {
+            username: "JeffersonBestPres",
+            password: await bcrypt.hash("password", 10),
+            firstName: "Jessica",
+            lastName: "McRae",
+            friends: [],
+            friendRequests: [],
+            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            eventInvites: [],
+        }
+
+    ]
+
+
+    res.status(200);
+});
+
 // CreateAuth a new user
 apiRouter.post('/auth/create', verifyParams("username", "password", "firstName", "lastName"), async (req, res) => {
     if (await findUser('username', req.body.username)) {
@@ -102,7 +220,7 @@ const verifyPermsToTargetUser = async (req, res, next) => {
 
 // GetUser information
 apiRouter.get('/users/:username', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
-    const user = publicUser( _req.targetUser);
+    const user = publicUser(_req.targetUser);
 
     res.send(user);
 });
@@ -116,7 +234,7 @@ apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
 
 // CreateEvent
 apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (req, res) => {
-    res.send(JSON.stringify({event : createEvent(req.user, req.body)}));
+    res.send(JSON.stringify({ event: createEvent(req.user, req.body) }));
 });
 
 // GetEventInvites
@@ -192,12 +310,12 @@ async function findUser(field, value) {
 
 // Formats user into safe to share object
 function publicUser(user) {
-  return {
-    username: user.username,
-    displayName: user.firstName + " " + user.lastName,
-    firstName: user.firstName,
-    lastName: user.lastName,
-  };
+    return {
+        username: user.username,
+        displayName: user.firstName + " " + user.lastName,
+        firstName: user.firstName,
+        lastName: user.lastName,
+    };
 }
 
 // setAuthCookie in the HTTP response

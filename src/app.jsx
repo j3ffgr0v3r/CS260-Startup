@@ -68,7 +68,12 @@ export default function App() {
 
                     <footer className="border-top bg-light py-1 px-2">
                         <div>Jeff Grover</div>
-                        <Button onClick={ResetDatabase}>Reset Database</Button>
+                        <Button onClick={() => fetch('/api/resetDB', {
+                            method: 'post',
+                            headers: {
+                                'Content-type': 'application/json; charset=UTF-8',
+                            },
+                        })}>Reset Database</Button>
                         <div><a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a></div>
                     </footer>
                 </div>
