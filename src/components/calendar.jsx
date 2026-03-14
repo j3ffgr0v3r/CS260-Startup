@@ -60,7 +60,7 @@ function EventChip({ event }) {
                 })}</div>}
                 {event.description && <div><strong>Details:</strong> {event.description}</div>}
                 {event.host && <div><strong>Host:</strong> {fetch(`/api/users/${event.host}`)
-                                                            .then((response) => response.json())}</div>}
+                    .then((response) => response.json()).then((user) => user.displayName)}</div>}
                 {event.location && <div><strong>Location:</strong> {event.location}</div>}
             </Popover.Body>
         </Popover>
