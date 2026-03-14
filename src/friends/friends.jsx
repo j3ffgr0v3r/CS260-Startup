@@ -12,6 +12,13 @@ export function Friends({ friends, setFriends, friendRequests, setFriendRequests
   const { showToast } = useToast();
 
   async function respondToFriendRequest(request, accepted) {
+    fetch(`/api/friendRequests/${request.user.username}`, {
+        method: 'put',
+        body: JSON.stringify({ action: accepted ? "accept" : "decline" }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
     if (accepted) {
       setFriends((prev) => [...prev, request]);
       showToast({

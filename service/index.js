@@ -280,6 +280,11 @@ apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
     res.send(result);
 });
 
+// Accept/Decline FriendRequests
+apiRouter.put('/friendRequests/:username', verifyAuth, verifyParams("action"), (_req, res) => {
+    res.send(handleFriendRequest(_req.body.action, _req.user, _req.params.username));
+});
+
 // Default error handler
 app.use(function (err, req, res, next) {
     res.status(500).send({ type: err.name, message: err.message });
