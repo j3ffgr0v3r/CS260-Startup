@@ -105,3 +105,17 @@ Handling the toggling of the checkboxes was particularly interesting.
   ))}
 </div>
 ```
+
+## Services
+### Endpoints
+- POST user (create user)
+- POST session (login)
+- DELETE session (logout)
+- POST event (create event)
+- GET events (get events)
+
+#### Future: 
+- PUT user (update account details)
+- DELETE user (delete account)
+- PUT event (update event)
+- DELETE event (delete event)
