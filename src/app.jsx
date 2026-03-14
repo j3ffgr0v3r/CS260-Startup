@@ -25,14 +25,22 @@ export default function App() {
     }, []);
 
     const [authState, setAuthState] = React.useState(localStorage.getItem('username') ? AuthState.Authenticated : AuthState.Unauthenticated);
-    const [friends, setFriends] = React.useState(() => {
-        const saved = localStorage.getItem('friends');
-        return saved ? JSON.parse(saved) : [];
-    });
-    const [friendRequests, setFriendRequests] = React.useState(() => {
-        const saved = localStorage.getItem('friendRequests');
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [friends, setFriends] = React.useState([]);
+    React.useEffect(() => {
+        fetch('/api/friends')
+            .then((response) => response.json())
+            .then((friendsList) => {
+                setFriends(friendsList);
+            });
+    }, []);
+    const [friendRequests, setFriendRequests] = React.useState([]);
+    React.useEffect(() => {
+        fetch('/api/friendRequests')
+            .then((response) => response.json())
+            .then((user) => {
+                setActiveUser(user);
+            });
+    }, []);
 
     // Save whenever state changes
     React.useEffect(() => {

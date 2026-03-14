@@ -261,7 +261,7 @@ apiRouter.get('/friends', verifyAuth, async (_req, res) => {
     const result = await Promise.all(
         _req.user.friends.map(async (friend) => {
             const user = await findUser('username', friend);
-            return publicUser(user);
+            return {user : publicUser(user)};
         })
     );
 
