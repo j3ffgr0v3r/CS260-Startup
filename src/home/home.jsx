@@ -7,13 +7,14 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 export function Home({ activeUser, friends }) {
   // Import and hook userEvents
-  const [userEvents, setEvents] = React.useState(() => {
-    const saved = localStorage.getItem('userEvents');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [userEvents, setEvents] = React.useState([]);
   React.useEffect(() => {
-    localStorage.setItem('userEvents', JSON.stringify(userEvents));
-  }, [userEvents]);
+    fetch('/api/events')
+      .then((response) => response.json())
+      .then((events) => {
+        setEvents(events);
+      });
+  }, []);
 
   // Import and hook eventInvites
   const [eventInvites, setEventInvites] = React.useState(() => {
@@ -78,17 +79,8 @@ export function Home({ activeUser, friends }) {
     return new Date(year, month, day, hour, minute)
   }
 
-  function saveEvent() {
-    const newEvent = {
-      eventID: crypto.randomUUID(),
-      date: createDate(newEventDate, !newEventAllDay ? newEventTime : "00:00"),
-      title: newEventTitle,
-      description: newEventDescription,
-      allDay: newEventAllDay,
-      host: {
-        user: activeUser
-      }
-    }
+  function submitEvent() {
+    const newEvent = saveEvent();
     setEvents(prev => [...prev, newEvent]);
     closeEventCreationModal();
     setNewEventTitle('');
@@ -97,6 +89,31 @@ export function Home({ activeUser, friends }) {
     setNewEventAllDay(false);
     setNewEventTime('');
     setNewEventInvitees([]);
+  }
+
+  async function saveEvent() {
+    const response = await fetch("/api/events", {
+      method: 'post',
+      body: JSON.stringify({
+        date: createDate(newEventDate, !newEventAllDay ? newEventTime : "00:00"),
+        title: newEventTitle,
+        description: newEventDescription,
+        allDay: newEventAllDay,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+    const body = await response.json();
+    if (response?.status === 200) {
+      return JSON.parse(body.event)
+    } else {
+      showToast({
+        title: 'Error!',
+        message: body.msg,
+        bg: 'warning',
+      });
+    }
   }
 
   return (
@@ -188,7 +205,7 @@ export function Home({ activeUser, friends }) {
               <Button variant="secondary" onClick={closeEventCreationModal}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={saveEvent} disabled={!newEventTitle || !newEventDate || !(newEventAllDay || newEventTime)}>
+              <Button variant="primary" onClick={submitEvent} disabled={!newEventTitle || !newEventDate || !(newEventAllDay || newEventTime)}>
                 Save Event
               </Button>
             </Modal.Footer>

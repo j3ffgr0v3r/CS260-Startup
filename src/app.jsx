@@ -16,7 +16,7 @@ import { Button, Dropdown } from 'react-bootstrap';
 export default function App() {
     const [activeUser, setActiveUser] = React.useState(() => {
         const saved = localStorage.getItem('username');
-        return saved ? JSON.parse(saved) : null;
+        return saved ? saved : null;
     });
     const [authState, setAuthState] = React.useState(activeUser ? AuthState.Authenticated : AuthState.Unauthenticated);
     const [friends, setFriends] = React.useState(() => {

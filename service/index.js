@@ -100,12 +100,14 @@ const verifyPermsToTargetUser = async (req, res, next) => {
 
 // GetEvents
 apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
-    res.send(_req.targetUser.events);
+    const eventIds = new Set(_req.targetUser.events);
+    const result = events.filter(event => eventIds.has(event.eventID));
+    res.send(result);
 });
 
 // CreateEvent
 apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (req, res) => {
-    res.send(createEvent(req.user, req.body));
+    res.send(JSON.stringify({event : createEvent(req.user, req.body)}));
 });
 
 // Default error handler
@@ -143,7 +145,7 @@ function createEvent(owner, newEvent) {
         }
     }
 
-    return event.eventID;
+    return event;
 }
 
 
