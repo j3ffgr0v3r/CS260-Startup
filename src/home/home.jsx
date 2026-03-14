@@ -67,6 +67,20 @@ export function Home({ activeUser, friends }) {
     setEventInvites((prev) => prev.filter((req) => req !== event));
   }
 
+  // Add BYU Event to calendar
+  async function addBYUEventToCalendar(event) {
+    fetch(`/api/BYUEvents/${event.eventID}`, {
+      method: 'put',
+    });
+    setBYUEvents((prev) => prev.filter((req) => req !== event));
+    setEvents(prev => [...prev, event]);
+    showToast({
+      title: 'Added BYU Event!',
+      message: `Event "${event.title}" has been added to your calendar!`,
+      bg: 'success',
+    });
+  }
+
   // Create Event
   const [showCreateEventModal, setShowCreateEventModal] = React.useState(false);
   const [newEventTitle, setNewEventTitle] = React.useState('');
@@ -255,7 +269,7 @@ export function Home({ activeUser, friends }) {
               {BYUEvents.length == 0 ? <div><i>There are no pending BYU Events... somehow</i></div> :
                 BYUEvents.map((event) => (
                   <div key={event.eventID} className="event-invite mx-3 my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{event.title} - {new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(event.date))}<br />
-                    {event.hostName}<br /><button onClick={() => respondToEventInvite(event, true)} className="btn mx-1 btn-outline-primary">Add to Calendar</button></div>
+                    {event.hostName}<br /><button onClick={() => addBYUEventToCalendar(event)} className="btn mx-1 btn-outline-primary">Add to Calendar</button></div>
                 ))
               }
             </div>

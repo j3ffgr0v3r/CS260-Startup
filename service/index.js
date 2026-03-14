@@ -239,11 +239,13 @@ apiRouter.get('/users/:username', verifyAuth, verifyPermsToTargetUser, (_req, re
 
 // GetBYUEvents
 apiRouter.get('/BYUEvents', verifyAuth, async (_req, res) => {
-    const url = 'https://calendar.byu.edu/api/Events.json?categories=all';
-    const response = await fetch(url);
-    const data = await response.json();
-    const result = data.map(BYUEventToCustomEvent);
-    res.send(result);
+    const allEvents = await getBYUEvents();
+    res.send(allEvents.filter((event) => !_req.user.events.includes(event["eventID"])));
+});
+
+// Add BYUEvent
+apiRouter.put('/BYUEvents/:eventID', verifyAuth, async (_req, res) => {
+    res.send(addBYUEvent(_req.user, _req.params.eventID));
 });
 
 // GetEvents
@@ -254,7 +256,7 @@ apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, async (_req, res) 
             .filter((event) => eventIDs.has(event.eventID))
             .map(async (event) => ({
                 ...event,
-                hostName: publicUser(await findUser('username', event.host)).displayName,
+                hostName: Object.hasOwn(event, 'hostName') ? event.hostName : publicUser(await findUser('username', event.host)).displayName,
             }))
     );
 
@@ -338,13 +340,13 @@ app.use((_req, res) => {
 function BYUEventToCustomEvent(BYUEvent) {
     return {
         eventID: `byu-${BYUEvent.EventId}`,
-        date: BYUEvent.StartDateTime,
+        date: new Date(BYUEvent.StartDateTime),
         title: BYUEvent.Title,
         description: (BYUEvent.Description || '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
         location: BYUEvent.LocationName || '',
         allDay: BYUEvent.AllDay === 'true',
         host: 'BYU',
-        hostName: BYUEvent.DeptNames,
+        hostName: BYUEvent.DeptNames ? BYUEvent.DeptNames : "BYU",
     };
 }
 
@@ -424,6 +426,27 @@ async function handleEventInvite(action, user, eventID) {
     if (action === "accept") {
         user.events.push(eventID);
         return findEvent("eventID", eventID);
+    }
+}
+
+async function getBYUEvents() {
+    const url = 'https://calendar.byu.edu/api/Events.json?categories=all';
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.map(BYUEventToCustomEvent);
+}
+
+async function addBYUEvent(user, eventID) {
+    const allEvents = await getBYUEvents();
+    const event = await allEvents.find((event) => event["eventID"] === eventID);
+
+    if (event) {
+        // Add event to database, if not already there
+        if (!(await findEvent("eventID", eventID))) {
+            events.push(event)
+        }
+
+        user.events.push(eventID);
     }
 }
 
