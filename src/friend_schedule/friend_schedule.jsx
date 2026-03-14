@@ -8,30 +8,48 @@ import { Dropdown } from 'react-bootstrap';
 import { useToast } from '../components/toast';
 
 export function FriendSchedule({ friends, setFriends }) {
-  const { friendID } = useParams();
-
   const { showToast } = useToast();
   const navigate = useNavigate();
+
+
+  const { friendID } = useParams();
+  const [friend, setFriend] = React.useState(null);
+  React.useEffect(() => {
+    fetch(`/api/users/${friendID}`)
+      .then((response) => response.json())
+      .then((currentFriend) => {
+        setFriend(currentFriend);
+      });
+  }, []);
+
+  const [friendEvents, setFriendEvents] = React.useState([]);
+  React.useEffect(() => {
+    fetch(`/api/events?username=${friendID}`)
+      .then((response) => response.json())
+      .then((events) => {
+        setFriendEvents(events);
+      });
+  }, []);
+
+  if (!friendID in friends || friend == undefined) {
+    return <NotFound />;
+  }
+
 
   function removeFriend() {
     navigate("/friends");
     showToast({
       title: 'Friend Removed',
-      message: `You and ${friend.user.firstName} are no longer friends`,
+      message: `You and ${friend.firstName} are no longer friends`,
       bg: 'danger',
     });
-    setFriends((prev) => prev.filter((f) => f.user.username !== friendID));
-  }
-
-  const friend = friends.find((friend) => friend.user.username === friendID)
-  if (friend == undefined) {
-    return <NotFound />;
+    setFriends((prev) => prev.filter((f) => f.username !== friendID));
   }
 
   return (
     <main>
       <div className="management friend-schedule-management">
-        <h2>{friend.user.firstName}'{friend.user.firstName.at(-1) == "s" ? "" : "s"} Schedule</h2>
+        <h2>{friend.firstName}'{friend.firstName.at(-1) == "s" ? "" : "s"} Schedule</h2>
         <Dropdown align="end">
           <Dropdown.Toggle id="profile-menu" />
 
@@ -41,7 +59,7 @@ export function FriendSchedule({ friends, setFriends }) {
         </Dropdown>
       </div>
       <div className="center">
-        <Calendar events={friend.user.events} />
+        <Calendar events={friendEvents} />
       </div>
     </main>
   );
