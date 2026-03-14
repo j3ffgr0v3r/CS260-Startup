@@ -88,14 +88,9 @@ function Header({ activeUser, setActiveUser, setAuthState }) {
             method: 'delete',
         });
         setActiveUser(null);
-        localStorage.removeItem("activeUser");
+        localStorage.removeItem("username");
         setAuthState(AuthState.Unauthenticated);
         <Navigate to="/" replace />;
-    }
-
-
-    function linkToSchoolAccount() {
-        window.location.href = 'https://my.byu.edu';
     }
 
     return (
@@ -106,7 +101,7 @@ function Header({ activeUser, setActiveUser, setAuthState }) {
                         <h1 className="text-primary mb-0"><img className="logo" src="/images/logo.svg" alt="logo" />What's Your Schedule?</h1>
                     </div>
                     <div className="profile me-3">
-                        <ProfileMenu activeUser={activeUser} onLogout={logout} linkToSchoolAccount={linkToSchoolAccount} />
+                        <ProfileMenu activeUser={activeUser} onLogout={logout} />
                     </div>
                 </div>
 
@@ -139,13 +134,12 @@ const IconToggle = React.forwardRef(({ username, onClick }, ref) => (
     </button>
 ));
 
-function ProfileMenu({ activeUser, onLogout, linkToSchoolAccount }) {
+function ProfileMenu({ activeUser, onLogout }) {
     return (
         <Dropdown align="end">
             <Dropdown.Toggle username={activeUser?.username} as={IconToggle} id="profile-menu" />
 
             <Dropdown.Menu>
-                <Dropdown.Item onClick={linkToSchoolAccount}>Import Class Schedule</Dropdown.Item>
                 <Dropdown.Item onClick={onLogout}>Log Out</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
