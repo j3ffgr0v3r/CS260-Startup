@@ -73,7 +73,7 @@ export function Login({ onAuthChange }) {
                 <h3 className="wys-motto px-3 text-secondary">Plan with friends, easier than ever.</h3>
             </div>
             <div className="login-interface">
-                <form method="get" action="/home" className="login-form mx-3 px-4 py-3 bg-light bg-opacity-50 border rounded">
+                <form className="login-form mx-3 px-4 py-3 bg-light bg-opacity-50 border rounded">
                     {formState == 'login' && (<>
                         <h2>What's your schedule looking like today?</h2>
                         <div className="m-3">
