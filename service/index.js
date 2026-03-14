@@ -135,9 +135,13 @@ function createEvent(owner, newEvent) {
 
     owner.events.push(event.eventID);
 
-    // for (const friend of newEvent.invitees) {
-    //     invitees.events.push(event);
-    // }
+    if (newEvent.invitees) {
+        for (const username of newEvent.invitees) {
+            if (owner.friends.find((u) => u["username"] === username)) {
+                findUser("username", username).eventInvites.push(event);
+            }
+        }
+    }
 
     return event.eventID;
 }
@@ -153,7 +157,7 @@ async function createUser(username, password) {
         friends: [],
         friendRequests: [],
         events: [],
-        eventRequests: [],
+        eventInvites: [],
     };
     users.push(user);
 
