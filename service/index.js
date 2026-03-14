@@ -40,11 +40,11 @@ const verifyParams = (...args) => {
 }
 
 // CreateAuth a new user
-apiRouter.post('/auth/create', verifyParams("username", "password"), async (req, res) => {
+apiRouter.post('/auth/create', verifyParams("username", "password", "firstName", "lastName"), async (req, res) => {
     if (await findUser('username', req.body.username)) {
         res.status(409).send({ msg: 'Existing user' });
     } else {
-        const user = await createUser(req.body.username, req.body.password);
+        const user = await createUser(req.body.username, req.body.password, req.body.firstName, req.body.lastName);
 
         setAuthCookie(res, user.authToken);
         res.send({ username: user.username });
@@ -89,7 +89,9 @@ const verifyAuth = async (req, res, next) => {
 
 // Middleware to verify that the user has permission to view target users information (is self, or is friends)
 const verifyPermsToTargetUser = async (req, res, next) => {
-    const targetUser = (!req.query.username || req.query.username == req.user.username) ? req.user : users.friends.find((u) => u["username"] === req.query.username);
+    const targetUserByPath = (!req.params.username || req.params.username == req.user.username) ? req.user : users.friends.find((u) => u["username"] === req.params.username);
+    const targetUserByQuery = (!req.query.username || req.query.username == req.user.username) ? req.user : users.friends.find((u) => u["username"] === req.query.username);
+    const targetUser = targetUserByPath ? targetUserByPath : targetUserByQuery;
     if (targetUser) {
         req.targetUser = targetUser;
         next();
@@ -97,6 +99,13 @@ const verifyPermsToTargetUser = async (req, res, next) => {
         res.status(401).send({ msg: 'Unauthorized' });
     }
 };
+
+// GetUser information
+apiRouter.get('/users/:username', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
+    const user = publicUser( _req.targetUser);
+
+    res.send(user);
+});
 
 // GetEvents
 apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, (_req, res) => {
@@ -149,12 +158,14 @@ function createEvent(owner, newEvent) {
 }
 
 
-async function createUser(username, password) {
+async function createUser(username, password, firstName, lastName) {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = {
         authToken: uuid.v4(),
         username: username,
+        firstName: firstName,
+        lastName: lastName,
         password: passwordHash,
         friends: [],
         friendRequests: [],
@@ -170,6 +181,16 @@ async function findUser(field, value) {
     if (!value) return null;
 
     return users.find((u) => u[field] === value);
+}
+
+// Formats user into safe to share object
+function publicUser(user) {
+  return {
+    username: user.username,
+    displayName: user.firstName + " " + user.lastName,
+    firstName: user.firstName,
+    lastName: user.lastName,
+  };
 }
 
 // setAuthCookie in the HTTP response
