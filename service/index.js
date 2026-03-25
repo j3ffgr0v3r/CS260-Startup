@@ -7,10 +7,6 @@ const DB = require('./database.js');
 
 const authCookieName = 'authToken';
 
-// The users and events are saved in memory and disappear whenever the service is restarted.
-let users = [];
-let events = [];
-
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -43,7 +39,9 @@ const verifyParams = (...args) => {
 // Reset Database for testing and demonstration purposes
 apiRouter.post('/resetDB', async (req, res) => {
 
-    events = [
+    DB.clearDatabase();
+
+    const defaultEvents = [
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 2, 6, 20),
@@ -96,7 +94,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         }
     ]
 
-    users = [
+    const defaultUsers = [
         {
             username: "clairevance07",
             password: await bcrypt.hash("password", 10),
@@ -104,8 +102,8 @@ apiRouter.post('/resetDB', async (req, res) => {
             lastName: "Vance",
             friends: ["turingA113"],
             friendRequests: ["Matt<3"],
-            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
-            eventInvites: [events.at(0).eventID],
+            events: [defaultEvents.at(3).eventID, defaultEvents.at(4).eventID, defaultEvents.at(2).eventID],
+            eventInvites: [defaultEvents.at(0).eventID],
         },
         {
             username: "turingA113",
@@ -114,7 +112,7 @@ apiRouter.post('/resetDB', async (req, res) => {
             lastName: "Turing",
             friends: ["clairevance07"],
             friendRequests: [],
-            events: [events.at(1).eventID, events.at(2).eventID, events.at(5).eventID],
+            events: [defaultEvents.at(1).eventID, defaultEvents.at(2).eventID, defaultEvents.at(5).eventID],
             eventInvites: [],
         },
         {
@@ -124,7 +122,7 @@ apiRouter.post('/resetDB', async (req, res) => {
             lastName: "Hart",
             friends: [],
             friendRequests: [],
-            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            events: [defaultEvents.at(3).eventID, defaultEvents.at(4).eventID, defaultEvents.at(2).eventID],
             eventInvites: [],
         },
         {
@@ -134,7 +132,7 @@ apiRouter.post('/resetDB', async (req, res) => {
             lastName: "Clarke",
             friends: [],
             friendRequests: [],
-            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            events: [defaultEvents.at(3).eventID, defaultEvents.at(4).eventID, defaultEvents.at(2).eventID],
             eventInvites: [],
         },
         {
@@ -144,7 +142,7 @@ apiRouter.post('/resetDB', async (req, res) => {
             lastName: "Peterson",
             friends: [],
             friendRequests: [],
-            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            events: [defaultEvents.at(3).eventID, defaultEvents.at(4).eventID, defaultEvents.at(2).eventID],
             eventInvites: [],
         },
         {
@@ -154,12 +152,19 @@ apiRouter.post('/resetDB', async (req, res) => {
             lastName: "McRae",
             friends: [],
             friendRequests: [],
-            events: [events.at(3).eventID, events.at(4).eventID, events.at(2).eventID],
+            events: [defaultEvents.at(3).eventID, defaultEvents.at(4).eventID, defaultEvents.at(2).eventID],
             eventInvites: [],
         }
 
     ]
 
+    for (const event of defaultEvents) {
+        await DB.createEvent(event);
+    }
+
+    for (const user of defaultUsers) {
+        await DB.addUser(user);
+    }
 
     res.status(200).send();
 });

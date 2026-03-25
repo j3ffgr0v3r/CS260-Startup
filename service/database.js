@@ -18,6 +18,11 @@ const eventCollection = db.collection('event');
   }
 })();
 
+async function clearDatabase() {
+  userCollection.drop();
+  eventCollection.drop();
+}
+
 function findUser(field, value) {
   return userCollection.findOne({ [field]: value });
 }
@@ -47,6 +52,7 @@ async function createEvent(event) {
 }
 
 module.exports = {
+  clearDatabase,
   findUser,
   addUser,
   updateUser,
