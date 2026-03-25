@@ -43,7 +43,7 @@ const verifyParams = (...args) => {
 // Reset Database for testing and demonstration purposes
 apiRouter.post('/resetDB', async (req, res) => {
 
-    asdasdasdas = [
+    events = [
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 2, 6, 20),
@@ -96,7 +96,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         }
     ]
 
-    asdasdasdasd = [
+    users = [
         {
             username: "clairevance07",
             password: await bcrypt.hash("password", 10),
@@ -166,7 +166,7 @@ apiRouter.post('/resetDB', async (req, res) => {
 
 // CreateAuth a new user
 apiRouter.post('/auth/create', verifyParams("username", "password", "firstName", "lastName"), async (req, res) => {
-    if (await findUser('username', req.body.username)) {
+    if (await DB.findUser('username', req.body.username)) {
         res.status(409).send({ msg: 'Existing user' });
     } else {
         const user = await createUser(req.body.username, req.body.password, req.body.firstName, req.body.lastName);
@@ -178,7 +178,7 @@ apiRouter.post('/auth/create', verifyParams("username", "password", "firstName",
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', verifyParams("username", "password"), async (req, res) => {
-    const user = await findUser('username', req.body.username);
+    const user = await DB.findUser('username', req.body.username);
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
             user.authToken = uuid.v4();
@@ -193,7 +193,7 @@ apiRouter.post('/auth/login', verifyParams("username", "password"), async (req, 
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-    const user = await findUser('authToken', req.cookies[authCookieName]);
+    const user = await DB.findUser('authToken', req.cookies[authCookieName]);
     if (user) {
         await DB.updateUserRemoveAuth(user);
     }
@@ -204,7 +204,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // Middleware to verify that the user is authorized to call an endpoint
 const verifyAuth = async (req, res, next) => {
-    const user = await findUser('authToken', req.cookies[authCookieName]);
+    const user = await DB.findUser('authToken', req.cookies[authCookieName]);
     if (user) {
         req.user = user;
         next();
@@ -217,9 +217,9 @@ const verifyAuth = async (req, res, next) => {
 const verifyPermsToTargetUser = async (req, res, next) => {
     let targetUser = null;
     if (req.params.username) {
-        targetUser = req.params.username == req.user.username ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.params.username));
+        targetUser = req.params.username == req.user.username ? req.user : await DB.findUser("username", req.user.friends.find((friendName) => friendName === req.params.username));
     } else if (req.query.username) {
-        targetUser = req.query.username == req.user.username ? req.user : await findUser("username", req.user.friends.find((friendName) => friendName === req.query.username));
+        targetUser = req.query.username == req.user.username ? req.user : await DB.findUser("username", req.user.friends.find((friendName) => friendName === req.query.username));
     } else {
         targetUser = req.user;
     }
@@ -257,7 +257,7 @@ apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, async (_req, res) 
     const result = await Promise.all(
         events.map(async (event) => ({
                 ...event,
-                hostName: Object.hasOwn(event, 'hostName') ? event.hostName : publicUser(await findUser('username', event.host)).displayName,
+                hostName: Object.hasOwn(event, 'hostName') ? event.hostName : publicUser(await DB.findUser('username', event.host)).displayName,
             }))
     );
 
@@ -272,12 +272,11 @@ apiRouter.post('/events', verifyAuth, verifyParams("date", "title", "allDay"), (
 // GetEventInvites
 apiRouter.get('/eventInvites', verifyAuth, async (_req, res) => {
     const eventIDs = new Set(_req.user.eventInvites);
+    const events = await DB.getEvents(eventIDs);
     const result = await Promise.all(
-        events
-            .filter((event) => eventIDs.has(event.eventID))
-            .map(async (event) => ({
+        events.map(async (event) => ({
                 ...event,
-                hostName: publicUser(await findUser('username', event.host)).displayName,
+                hostName: publicUser(await DB.findUser('username', event.host)).displayName,
             }))
     );
 
@@ -293,7 +292,7 @@ apiRouter.put('/eventInvites/:eventID', verifyAuth, verifyParams("action"), (_re
 apiRouter.get('/friends', verifyAuth, async (_req, res) => {
     const result = await Promise.all(
         _req.user.friends.map(async (friend) => {
-            const user = await findUser('username', friend);
+            const user = await DB.findUser('username', friend);
             return { user: publicUser(user) };
         })
     );
@@ -310,7 +309,7 @@ apiRouter.delete('/friends/:username', verifyAuth, verifyPermsToTargetUser, (_re
 apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
     const result = await Promise.all(
         _req.user.friendRequests.map(async (friend) => {
-            const user = await findUser('username', friend);
+            const user = await DB.findUser('username', friend);
             return { user: publicUser(user) };
         })
     );
@@ -402,21 +401,6 @@ async function createUser(username, password, firstName, lastName) {
     return user;
 }
 
-async function findUser(field, value) {
-    if (!value) return null;
-
-    if (field === 'authToken') {
-        return DB.getUserByAuthToken(value);
-    }
-    return DB.getUser(value);
-}
-
-async function findEvent(field, value) {
-    if (!value) return null;
-
-    return events.find((u) => u[field] === value);
-}
-
 // Formats user into safe to share object
 function publicUser(user) {
     return {
@@ -433,7 +417,7 @@ async function handleEventInvite(action, user, eventID) {
     if (action === "accept") {
         user.events.push(eventID);
         DB.updateUser(user);
-        return findEvent("eventID", eventID);
+        return await DB.findEvent("eventID", eventID);
     }
 }
 
@@ -450,7 +434,7 @@ async function addBYUEvent(user, eventID) {
 
     if (event) {
         // Add event to database, if not already there
-        if (!(await findEvent("eventID", eventID))) {
+        if (!(await DB.findEvent("eventID", eventID))) {
             events.push(event)
             DB.createEvent(event);
         }
@@ -461,7 +445,7 @@ async function addBYUEvent(user, eventID) {
 }
 
 async function handleFriendRequest(action, recipientUser, senderUsername) {
-    const senderUser = await findUser("username", senderUsername);
+    const senderUser = await DB.findUser("username", senderUsername);
 
     recipientUser.friendRequests.splice(recipientUser.friendRequests.indexOf(senderUsername), 1);
     if (action === "accept") {
@@ -473,7 +457,7 @@ async function handleFriendRequest(action, recipientUser, senderUsername) {
 }
 
 async function sendFriendRequest(senderUserName, recipientUserName) {
-    const recipientUser = await findUser("username", recipientUserName);
+    const recipientUser = await DB.findUser("username", recipientUserName);
 
     if (recipientUser) {
         if (recipientUser.friendRequests.includes(senderUserName)) {

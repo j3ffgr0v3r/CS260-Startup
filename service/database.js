@@ -18,12 +18,8 @@ const eventCollection = db.collection('event');
   }
 })();
 
-function getUser(username) {
-  return userCollection.findOne({ username: username });
-}
-
-function getUserByAuthToken(authToken) {
-  return userCollection.findOne({ authToken: authToken });
+function findUser(field, value) {
+  return userCollection.findOne({ [field]: value });
 }
 
 async function addUser(user) {
@@ -42,16 +38,20 @@ function getEvents(eventIDs) {
   return eventCollection.find({ eventID: {$in: [...eventIDs]} }).toArray();
 }
 
+function findEvent(field, value) {
+  return eventCollection.findOne({ [field]: value });
+}
+
 async function createEvent(event) {
   await eventCollection.insertOne(event);
 }
 
 module.exports = {
-  getUser,
-  getUserByAuthToken,
+  findUser,
   addUser,
   updateUser,
   updateUserRemoveAuth,
   getEvents,
+  findEvent,
   createEvent,
 };
