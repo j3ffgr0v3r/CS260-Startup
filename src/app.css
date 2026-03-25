@@ -119,7 +119,7 @@ menu .nav-item {
     flex-direction: column;
 }
 
-.management > div{
+.home-management > div{
     flex: 1 20vh;
     overflow-y : scroll;
 }
