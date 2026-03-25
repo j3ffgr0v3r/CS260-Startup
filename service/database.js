@@ -5,7 +5,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url);
 const db = client.db('whatsyourschedule');
 const userCollection = db.collection('user');
-const scoreCollection = db.collection('event');
+const eventCollection = db.collection('event');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -38,18 +38,12 @@ async function updateUserRemoveAuth(user) {
   await userCollection.updateOne({ username: user.username }, { $unset: { authToken: 1 } });
 }
 
-async function addScore(score) {
-  return scoreCollection.insertOne(score);
+function getEvents(eventIDs) {
+  return eventCollection.find({ eventID: {$in: [...eventIDs]} }).toArray();
 }
 
-function getHighScores() {
-  const query = { score: { $gt: 0, $lt: 900 } };
-  const options = {
-    sort: { score: -1 },
-    limit: 10,
-  };
-  const cursor = scoreCollection.find(query, options);
-  return cursor.toArray();
+async function createEvent(event) {
+  await eventCollection.insertOne(event);
 }
 
 module.exports = {
@@ -58,6 +52,6 @@ module.exports = {
   addUser,
   updateUser,
   updateUserRemoveAuth,
-  addScore,
-  getHighScores,
+  getEvents,
+  createEvent,
 };

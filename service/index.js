@@ -253,10 +253,9 @@ apiRouter.put('/BYUEvents/:eventID', verifyAuth, async (_req, res) => {
 // GetEvents
 apiRouter.get('/events', verifyAuth, verifyPermsToTargetUser, async (_req, res) => {
     const eventIDs = new Set(_req.targetUser.events);
+    const events = await DB.getEvents(eventIDs);
     const result = await Promise.all(
-        events
-            .filter((event) => eventIDs.has(event.eventID))
-            .map(async (event) => ({
+        events.map(async (event) => ({
                 ...event,
                 hostName: Object.hasOwn(event, 'hostName') ? event.hostName : publicUser(await findUser('username', event.host)).displayName,
             }))
@@ -365,14 +364,17 @@ function createEvent(owner, newEvent) {
         invitees: newEvent.invitees,
     }
 
-    events.push(event);
+    DB.createEvent(event);
 
     owner.events.push(event.eventID);
+    DB.updateUser(owner);
 
     if (newEvent.invitees) {
         for (const username of newEvent.invitees) {
             if (owner.friends.find((u) => u["username"] === username)) {
-                findUser("username", username).eventInvites.push(event);
+                const user = findUser("username", username);
+                user.eventInvites.push(event);
+                DB.updateUser(user);
             }
         }
     }
