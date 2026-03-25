@@ -435,7 +435,6 @@ async function addBYUEvent(user, eventID) {
     if (event) {
         // Add event to database, if not already there
         if (!(await DB.findEvent("eventID", eventID))) {
-            events.push(event)
             DB.createEvent(event);
         }
 
