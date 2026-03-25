@@ -43,7 +43,7 @@ const verifyParams = (...args) => {
 // Reset Database for testing and demonstration purposes
 apiRouter.post('/resetDB', async (req, res) => {
 
-    events = [
+    asdasdasdas = [
         {
             eventID: crypto.randomUUID(),
             date: new Date(2026, 2, 6, 20),
@@ -96,7 +96,7 @@ apiRouter.post('/resetDB', async (req, res) => {
         }
     ]
 
-    users = [
+    asdasdasdasd = [
         {
             username: "clairevance07",
             password: await bcrypt.hash("password", 10),
@@ -432,6 +432,7 @@ async function handleEventInvite(action, user, eventID) {
 
     if (action === "accept") {
         user.events.push(eventID);
+        DB.updateUser(user);
         return findEvent("eventID", eventID);
     }
 }
@@ -451,9 +452,11 @@ async function addBYUEvent(user, eventID) {
         // Add event to database, if not already there
         if (!(await findEvent("eventID", eventID))) {
             events.push(event)
+            DB.createEvent(event);
         }
 
         user.events.push(eventID);
+        DB.updateUser(user);
     }
 }
 
@@ -463,7 +466,9 @@ async function handleFriendRequest(action, recipientUser, senderUsername) {
     recipientUser.friendRequests.splice(recipientUser.friendRequests.indexOf(senderUsername), 1);
     if (action === "accept") {
         recipientUser.friends.push(senderUsername);
+        DB.updateUser(recipientUser);
         senderUser.friends.push(recipientUser.username);
+        DB.updateUser(senderUser);
     }
 }
 
@@ -484,7 +489,9 @@ async function sendFriendRequest(senderUserName, recipientUserName) {
 
 async function deleteFriendship(activeUser, noLongerFriendUser) {
     activeUser.friends.splice(activeUser.friends.indexOf(noLongerFriendUser.username), 1);
+    DB.updateUser(activeUser);
     noLongerFriendUser.friends.splice(noLongerFriendUser.friends.indexOf(activeUser.username), 1);
+    DB.updateUser(noLongerFriendUser);
 }
 
 // setAuthCookie in the HTTP response
