@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const express = require('express');
 const uuid = require('uuid');
 const app = express();
+const DB = require('./database.js');
 
 const authCookieName = 'authToken';
 
@@ -181,6 +182,7 @@ apiRouter.post('/auth/login', verifyParams("username", "password"), async (req, 
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
             user.authToken = uuid.v4();
+            await DB.updateUser(user);
             setAuthCookie(res, user.authToken);
             res.send(publicUser(user));
             return;
@@ -393,7 +395,7 @@ async function createUser(username, password, firstName, lastName) {
         events: [],
         eventInvites: [],
     };
-    users.push(user);
+    await DB.addUser(user);
 
     return user;
 }
@@ -401,7 +403,10 @@ async function createUser(username, password, firstName, lastName) {
 async function findUser(field, value) {
     if (!value) return null;
 
-    return users.find((u) => u[field] === value);
+    if (field === 'authToken') {
+        return DB.getUserByAuthToken(value);
+    }
+    return DB.getUser(value);
 }
 
 async function findEvent(field, value) {
