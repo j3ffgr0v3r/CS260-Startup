@@ -18,13 +18,19 @@ export default function App() {
 
     // Get active user
     const [activeUser, setActiveUser] = React.useState(null);
-    React.useEffect(() => {
+    React.useEffect(() => {const fetchUser = async () => {
         if (authState !== AuthState.Authenticated) return;
-        fetch(`/api/users/${localStorage.getItem('username')}`)
-            .then((response) => response.json())
-            .then((user) => {
-                setActiveUser(user);
-            });
+        const response = await fetch(`/api/users/${localStorage.getItem('username')}`);
+        if (response.status === 401) {
+            localStorage.removeItem("username");
+            setAuthState(AuthState.Unauthenticated);
+        } else {
+            response.json().then((user) => {
+                    setActiveUser(user);
+                });
+        }};
+        fetchUser();
+
     }, [authState]);
 
     const [friends, setFriends] = React.useState([]);
