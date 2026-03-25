@@ -113,10 +113,10 @@ I hope you know I pull an all nighter for this ;-; Either way, the thing uses a 
 
 ## 🚀 DB deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+This was actually a lot more straight forward than I thought it would be. That's nice.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - Events are stored in Mongo
+- [x] **Stores credentials in MongoDB** - User data stored in Mongo
 
 ## 🚀 WebSocket deliverable
 
