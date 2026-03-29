@@ -324,7 +324,8 @@ apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
 
 // Send FriendRequest
 apiRouter.post('/friendRequests/:username', verifyAuth, async (_req, res) => {
-    res.status((await sendFriendRequest(_req.user.username, _req.params.username))).send();
+    const result = await sendFriendRequest(_req.user, _req.params.username);
+    res.status(result.status).send({action_taken: result.action_taken});
 });
 
 // Accept/Decline FriendRequests
@@ -460,18 +461,24 @@ async function handleFriendRequest(action, recipientUser, senderUsername) {
     }
 }
 
-async function sendFriendRequest(senderUserName, recipientUserName) {
+async function sendFriendRequest(senderUser, recipientUserName) {
     const recipientUser = await DB.findUser("username", recipientUserName);
 
     if (recipientUser) {
-        if (recipientUser.friendRequests.includes(senderUserName)) {
-            return 429
+        if (recipientUser.friendRequests.includes(senderUser.username)) {
+            return {status: 429}
+        } if (senderUser.friends.includes(recipientUserName)) {
+            return {status: 409}
+        } if (senderUser.friendRequests.includes(recipientUserName)) {
+            handleFriendRequest("accept", senderUser, recipientUser.username);
+            return {status: 200, action_taken: "invite_accepted"}
         } else {
-            recipientUser.friendRequests.push(senderUserName);
-            return 200;
+            recipientUser.friendRequests.push(senderUser.username);
+            DB.updateUser(recipientUser);
+            return {status: 200, action_taken: "invite_sent"};
         }
     } else {
-        return 404;
+        return {status: 404}
     }
 }
 

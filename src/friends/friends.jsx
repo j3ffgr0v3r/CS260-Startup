@@ -40,10 +40,29 @@ export function Friends({ friends, setFriends, friendRequests, setFriendRequests
     const response = await fetch(`/api/friendRequests/${friendRequestUsername}`, {
       method: 'post',
     });
+    const body = await response.json();
     if (response?.status === 200) {
+      if (body.action_taken == "invite_accepted") {
+        const newFriend = friendRequests.find((req) => req.user.username === friendRequestUsername);
+        setFriendRequests((prev) => prev.filter((req) => req !== newFriend));
+        setFriends((prev) => [...prev, newFriend]);
+                showToast({
+          title: 'Accepted Friend Request!',
+          message: `You and ${newFriend.user.firstName} are now friends!`,
+          bg: 'success',
+        });
+      } else {
+        showToast({
+          title: 'Friend Request Sent!',
+          message: `Friend Request successfully sent to ${friendRequestUsername}!`,
+          bg: 'success',
+        });
+      }
+      setFriendRequestUsername('');
+    } else if (response?.status === 409) {
       showToast({
-        title: 'Friend Request Sent!',
-        message: `Friend Request successfully sent to ${friendRequestUsername}!`,
+        title: 'Do you not know your friends?',
+        message: `You are already friends with ${friendRequestUsername}!`,
         bg: 'info',
       });
       setFriendRequestUsername('');
@@ -63,14 +82,13 @@ export function Friends({ friends, setFriends, friendRequests, setFriendRequests
     }
   }
 
-
   return (
     <main>
       <h3>Pending Invites</h3>
       <div className="pending-friend-invites">
         {friendRequests?.length == 0 ? <div><i>There are no pending friend requests</i></div> :
           friendRequests && friendRequests.map((request) => (
-            <div key={request.user.username} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.user.firstName + " " + request.user.lastName}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
+            <div key={request.user.username} className="friend-invite my-1 px-4 py-3 bg-primary bg-opacity-10 border border-primary rounded">{request.user.displayName}<br /><button onClick={() => respondToFriendRequest(request, true)} className="btn mx-1 btn-outline-primary">Accept</button><button onClick={() => respondToFriendRequest(request, false)} className="btn mx-1 btn-outline-danger">Decline</button></div>
           ))
         }
       </div>
