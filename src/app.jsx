@@ -9,7 +9,6 @@ import { Friends } from './friends/friends';
 import { FriendSchedule } from './friend_schedule/friend_schedule';
 import { About } from './about/about';
 import { AuthState } from './login/authState';
-import { ResetDatabase } from './components/debug';
 import { ToastProvider } from './components/toast';
 import { Button, Dropdown } from 'react-bootstrap';
 
