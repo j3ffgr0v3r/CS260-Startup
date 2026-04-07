@@ -50,13 +50,10 @@ class PeerProxy {
     this.socketServer = new WebSocketServer({ server: httpServer });
 
     this.socketServer.on('connection', async (socket, req) => {
-      console.log('ws connection hit');
       socket.isAlive = true;
       const cookies = parseCookies(req.headers.cookie);
       const authToken = cookies[authCookieName];
       const user = await DB.findUser('authToken', authToken);
-
-      console.log('user: ' + user);
 
       if (!user) {
         socket.close();

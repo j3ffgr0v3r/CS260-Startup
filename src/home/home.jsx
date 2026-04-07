@@ -5,7 +5,7 @@ import { Calendar } from '../components/calendar';
 import { useToast } from '../components/toast';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-export function Home({ activeUser, friends }) {
+export function Home({ activeUser, friends, eventInvites, setEventInvites }) {
   // Import and hook userEvents
   const [userEvents, setEvents] = React.useState([]);
   React.useEffect(() => {
@@ -13,16 +13,6 @@ export function Home({ activeUser, friends }) {
       .then((response) => response.json())
       .then((events) => {
         setEvents(Array.isArray(events) ? events : []);
-      });
-  }, []);
-
-  // Import and hook eventInvites
-  const [eventInvites, setEventInvites] = React.useState([]);
-  React.useEffect(() => {
-    fetch('/api/eventInvites')
-      .then((response) => response.json())
-      .then((invites) => {
-        setEventInvites(Array.isArray(invites) ? invites : []);
       });
   }, []);
 
@@ -133,6 +123,7 @@ export function Home({ activeUser, friends }) {
       allDay: newEventAllDay,
       host: activeUser.username,
       hostName: activeUser.displayName,
+      invitees: newEventInvitees,
     };
     const response = await fetch("/api/events", {
       method: 'post',

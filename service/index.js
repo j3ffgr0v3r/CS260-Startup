@@ -327,7 +327,7 @@ apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
 apiRouter.post('/friendRequests/:username', verifyAuth, async (_req, res) => {
     const result = await sendFriendRequest(_req.user, _req.params.username);
     res.status(result.status).send({action_taken: result.action_taken});
-    proxy.sendToUser(_req.params.username, { type: "new_friend_request", from: { user : publicUser(_req.user) } })
+    proxy.sendToUser(_req.params.username, { type: "new_friend_request", payload: { user : publicUser(_req.user) } });
 });
 
 // Accept/Decline FriendRequests
@@ -359,7 +359,7 @@ function BYUEventToCustomEvent(BYUEvent) {
 }
 
 // Creates new event, and adds it to current users events, and to invitees event invites
-function createEvent(owner, newEvent) {
+async function createEvent(owner, newEvent) {
     const event = {
         eventID: crypto.randomUUID(),
         date: newEvent.date,
@@ -378,10 +378,12 @@ function createEvent(owner, newEvent) {
 
     if (newEvent.invitees) {
         for (const username of newEvent.invitees) {
-            if (owner.friends.find((u) => u["username"] === username)) {
-                const user = findUser("username", username);
-                user.eventInvites.push(event);
+            if (owner.friends.find((u) => u === username)) {
+                const user = await DB.findUser("username", username);
+                user.eventInvites.push(event.eventID);
                 DB.updateUser(user);
+                event.hostName = Object.hasOwn(event, 'hostName') ? event.hostName : publicUser(owner).displayName,
+                proxy.sendToUser(username, { type: "new_event_invite", payload: event });
             }
         }
     }
@@ -424,9 +426,9 @@ async function handleEventInvite(action, user, eventID) {
 
     if (action === "accept") {
         user.events.push(eventID);
-        DB.updateUser(user);
         return await DB.findEvent("eventID", eventID);
     }
+    DB.updateUser(user);
 }
 
 async function getBYUEvents() {

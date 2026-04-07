@@ -54,6 +54,16 @@ export default function App() {
             });
     }, [authState]);
 
+    // Import and hook eventInvites
+    const [eventInvites, setEventInvites] = React.useState([]);
+    React.useEffect(() => {
+        fetch('/api/eventInvites')
+            .then((response) => response.json())
+            .then((invites) => {
+                setEventInvites(Array.isArray(invites) ? invites : []);
+            });
+    }, []);
+
     React.useEffect(() => {
         LiveNotifier.addHandler(handleNewNotification);
 
@@ -66,7 +76,7 @@ export default function App() {
     function handleNewNotification(notification) {
         switch (notification.type) {
             case 'new_friend_request':
-                setFriendRequests((current) => [...current, notification.from]);
+                setFriendRequests((current) => [...current, notification.payload]);
                 // setToasts((current) => [...current, ...]);
                 break;
             case 'new_event_invite':
@@ -89,7 +99,7 @@ export default function App() {
                         <Route element={<PrivateRoute authState={authState} />}>
 
                             <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
-                                <Route path='/home' element={<Home activeUser={activeUser} friends={friends} />} />
+                                <Route path='/home' element={<Home activeUser={activeUser} friends={friends} eventInvites={eventInvites} setEventInvites={setEventInvites} />} />
                                 <Route path='/friends/:friendID' element={<FriendSchedule friends={friends} setFriends={setFriends} />} />
                                 <Route path='/friends' element={<Friends friends={friends} setFriends={setFriends} friendRequests={friendRequests} setFriendRequests={setFriendRequests} />} />
                                 <Route path='/about' element={<About />} />
