@@ -120,10 +120,10 @@ This was actually a lot more straight forward than I thought it would be. That's
 
 ## 🚀 WebSocket deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+Not gonna lie... I was a little lost on this one for a while, but we got there eventually.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - Backend listens for connection, and stores it alongside the username
+- [x] **Frontend makes WebSocket connection** - The frontend does indeed connect
+- [x] **Data sent over WebSocket connection** - The server will send notifications to users when certain events happen
+- [x] **WebSocket data displayed** - On new friend requests, new event invites, and when someone accepts your friend request, a toast is displayed and the corresponding list is updated as well.
+- [x] **Application is fully functional** - Maybe not exactly how I pictured it at the beginning of the semester, but hey! It works!
