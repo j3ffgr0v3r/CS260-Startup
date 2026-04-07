@@ -4,6 +4,7 @@ const express = require('express');
 const uuid = require('uuid');
 const app = express();
 const DB = require('./database.js');
+const { PeerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'authToken';
 
@@ -326,6 +327,7 @@ apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
 apiRouter.post('/friendRequests/:username', verifyAuth, async (_req, res) => {
     const result = await sendFriendRequest(_req.user, _req.params.username);
     res.status(result.status).send({action_taken: result.action_taken});
+    proxy.sendToUser(_req.params.username, { msg: "new_friend_request", from: _req.user.username })
 });
 
 // Accept/Decline FriendRequests
@@ -499,6 +501,8 @@ function setAuthCookie(res, authToken) {
     });
 }
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
+
+const proxy = new PeerProxy(httpService);
