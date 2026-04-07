@@ -9,7 +9,7 @@ import { Friends } from './friends/friends';
 import { FriendSchedule } from './friend_schedule/friend_schedule';
 import { About } from './about/about';
 import { AuthState } from './login/authState';
-import { ToastProvider } from './components/toast';
+import { useToast } from './components/toast';
 import { Button, Dropdown } from 'react-bootstrap';
 import { LiveNotifier } from './liveNotifier';
 
@@ -64,6 +64,8 @@ export default function App() {
             });
     }, []);
 
+    const { showToast } = useToast();
+
     React.useEffect(() => {
         LiveNotifier.addHandler(handleNewNotification);
 
@@ -72,59 +74,72 @@ export default function App() {
         };
     }, []);
 
-
     function handleNewNotification(notification) {
         switch (notification.type) {
             case 'new_friend_request':
                 setFriendRequests((current) => [...current, notification.payload]);
-                // setToasts((current) => [...current, ...]);
+                showToast({
+                    title: 'New Friend Request!',
+                    message: `${notification.payload.user.displayName} has sent you a friend request!`,
+                    bg: 'primary',
+                });
                 break;
             case 'accept_friend_request':
                 setFriends((current) => [...current, notification.payload]);
+                showToast({
+                    title: 'Friend Request Accepted!',
+                    message: `${notification.payload.user.displayName} has accepted your friend request!`,
+                    bg: 'success',
+                });
                 break;
             case 'new_event_invite':
                 setEventInvites((current) => [...current, notification.payload]);
+                showToast({
+                    title: 'New Event Invite!',
+                    message: `${notification.payload.hostName} has invited to to attend ${notification.payload.title}!`,
+                    bg: 'info',
+                });
                 break;
         }
     }
 
+
+
     return (
-        <ToastProvider>
-            <BrowserRouter>
-                <div className="app">
-                    <Routes>
-                        <Route element={<PublicRoute authState={authState} />}>
-                            <Route path='/' element={<Login onAuthChange={(activeUser, authState) => {
-                                setActiveUser(activeUser);
-                                setAuthState(authState);
-                            }} />} exact />
+        <BrowserRouter>
+            <div className="app">
+                <Routes>
+                    <Route element={<PublicRoute authState={authState} />}>
+                        <Route path='/' element={<Login onAuthChange={(activeUser, authState) => {
+                            setActiveUser(activeUser);
+                            setAuthState(authState);
+                        }} />} exact />
+                    </Route>
+                    <Route element={<PrivateRoute authState={authState} />}>
+
+                        <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
+                            <Route path='/home' element={<Home activeUser={activeUser} friends={friends} eventInvites={eventInvites} setEventInvites={setEventInvites} />} />
+                            <Route path='/friends/:friendID' element={<FriendSchedule friends={friends} setFriends={setFriends} />} />
+                            <Route path='/friends' element={<Friends friends={friends} setFriends={setFriends} friendRequests={friendRequests} setFriendRequests={setFriendRequests} />} />
+                            <Route path='/about' element={<About />} />
                         </Route>
-                        <Route element={<PrivateRoute authState={authState} />}>
 
-                            <Route element={<Header activeUser={activeUser} setActiveUser={setActiveUser} setAuthState={setAuthState} />}>
-                                <Route path='/home' element={<Home activeUser={activeUser} friends={friends} eventInvites={eventInvites} setEventInvites={setEventInvites} />} />
-                                <Route path='/friends/:friendID' element={<FriendSchedule friends={friends} setFriends={setFriends} />} />
-                                <Route path='/friends' element={<Friends friends={friends} setFriends={setFriends} friendRequests={friendRequests} setFriendRequests={setFriendRequests} />} />
-                                <Route path='/about' element={<About />} />
-                            </Route>
+                    </Route>
+                    <Route path='*' element={<NotFound />} />
+                </Routes>
 
-                        </Route>
-                        <Route path='*' element={<NotFound />} />
-                    </Routes>
-
-                    <footer className="border-top bg-light py-1 px-2">
-                        <div>Jeff Grover</div>
-                        <Button onClick={() => fetch('/api/resetDB', {
-                            method: 'post',
-                            headers: {
-                                'Content-type': 'application/json; charset=UTF-8',
-                            },
-                        })}>Reset Database</Button>
-                        <div><a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a></div>
-                    </footer>
-                </div>
-            </BrowserRouter>
-        </ToastProvider>
+                <footer className="border-top bg-light py-1 px-2">
+                    <div>Jeff Grover</div>
+                    <Button onClick={() => fetch('/api/resetDB', {
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+                    })}>Reset Database</Button>
+                    <div><a href="https://github.com/j3ffgr0v3r/CS260-Startup">GitHub</a></div>
+                </footer>
+            </div>
+        </BrowserRouter>
     );
 }
 
