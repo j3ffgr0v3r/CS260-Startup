@@ -79,6 +79,9 @@ export default function App() {
                 setFriendRequests((current) => [...current, notification.payload]);
                 // setToasts((current) => [...current, ...]);
                 break;
+            case 'accept_friend_request':
+                setFriends((current) => [...current, notification.payload]);
+                break;
             case 'new_event_invite':
                 setEventInvites((current) => [...current, notification.payload]);
                 break;

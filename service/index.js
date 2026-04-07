@@ -461,6 +461,7 @@ async function handleFriendRequest(action, recipientUser, senderUsername) {
         recipientUser.friends.push(senderUsername);
         senderUser.friends.push(recipientUser.username);
         DB.updateUser(senderUser);
+        proxy.sendToUser(senderUsername, { type: "accept_friend_request", payload: { user : publicUser(recipientUser) } });
     }
     DB.updateUser(recipientUser);
 }
