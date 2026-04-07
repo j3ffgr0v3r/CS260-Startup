@@ -327,7 +327,7 @@ apiRouter.get('/friendRequests', verifyAuth, async (_req, res) => {
 apiRouter.post('/friendRequests/:username', verifyAuth, async (_req, res) => {
     const result = await sendFriendRequest(_req.user, _req.params.username);
     res.status(result.status).send({action_taken: result.action_taken});
-    proxy.sendToUser(_req.params.username, { msg: "new_friend_request", from: _req.user.username })
+    proxy.sendToUser(_req.params.username, { type: "new_friend_request", from: { user : publicUser(_req.user) } })
 });
 
 // Accept/Decline FriendRequests
@@ -457,10 +457,10 @@ async function handleFriendRequest(action, recipientUser, senderUsername) {
     recipientUser.friendRequests.splice(recipientUser.friendRequests.indexOf(senderUsername), 1);
     if (action === "accept") {
         recipientUser.friends.push(senderUsername);
-        DB.updateUser(recipientUser);
         senderUser.friends.push(recipientUser.username);
         DB.updateUser(senderUser);
     }
+    DB.updateUser(recipientUser);
 }
 
 async function sendFriendRequest(senderUser, recipientUserName) {

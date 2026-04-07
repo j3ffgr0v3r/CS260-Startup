@@ -11,6 +11,7 @@ import { About } from './about/about';
 import { AuthState } from './login/authState';
 import { ToastProvider } from './components/toast';
 import { Button, Dropdown } from 'react-bootstrap';
+import { LiveNotifier } from './liveNotifier';
 
 export default function App() {
     const [authState, setAuthState] = React.useState(localStorage.getItem('username') ? AuthState.Authenticated : AuthState.Unauthenticated);
@@ -52,6 +53,27 @@ export default function App() {
                 setFriendRequests(Array.isArray(friendRequestsList) ? friendRequestsList : []);
             });
     }, [authState]);
+
+    React.useEffect(() => {
+        LiveNotifier.addHandler(handleNewNotification);
+
+        return () => {
+            LiveNotifier.removeHandler(handleNewNotification);
+        };
+    }, []);
+
+
+    function handleNewNotification(notification) {
+        switch (notification.type) {
+            case 'new_friend_request':
+                setFriendRequests((current) => [...current, notification.from]);
+                // setToasts((current) => [...current, ...]);
+                break;
+            case 'new_event_invite':
+                setEventInvites((current) => [...current, notification.payload]);
+                break;
+        }
+    }
 
     return (
         <ToastProvider>
